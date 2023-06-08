@@ -38,11 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    "bootstrap4",
+    "taggit",
+    "crispy_forms",
+    
+    
     'doctor',
     'client',
+    'settings',
     
-    
-    "taggit"
+
 ]
 
 MIDDLEWARE = [
@@ -56,6 +61,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'project.urls'
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'   #####
+#CRISPY_TEMPLATE_PACK = 'uni_form'
+
+
 
 TEMPLATES = [
     {
@@ -149,4 +160,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-TAGGIT_CASE_INSENSITIVE = True
+TAGGIT_CASE_INSENSITIVE = True       #######
+
+
+
+LOGIN_URL = 'doctor:login'

@@ -2,7 +2,7 @@ from django.shortcuts import render , redirect
 from django.urls import reverse
 from .models import Profile_Doctor
 from .forms import Login_Form , UserCreationForms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -18,15 +18,13 @@ from django.contrib import messages
     doctors = User.objects.all()
     return render(request , 'users/index.html.html' , context={'doctors':doctors,})  """  
 
+def welcome(request):
+    return render(request,'doctor/doctors_list.html', context={})
 
     
 def doctors_list(request):
     doctors = User.objects.all()
     return render(request , 'doctor/doctors_list.html' , context={'doctors':doctors,})
-
-
-
-
 
 
 def doctors_detail(request , slug):
@@ -37,16 +35,7 @@ def doctors_detail(request , slug):
 
 
 
-
-
-
-
-
-
-
-
-
-def user_login(request):
+def doctor_login(request):
     if request.method == 'POST':
         form = Login_Form
         username = request.POST['username']
@@ -54,9 +43,42 @@ def user_login(request):
         user = authenticate(request , username=username , password=password)
         if user is not None :
             login(request , user)
-            return redirect('accounts:doctors_list')
+            return redirect('doctor:doctors_list')
+        else:
+            messages.warning(request, "Username or password is incorrect. please try again")
     form  = Login_Form()
-    return render(request , 'users/login.html' , context={'form':form})
+    return render(request , 'doctor/doctor_login.html' , context={'form':form})
+
+
+@login_required
+def doctor_logout(request):
+    logout(request)
+    return redirect(reverse('doctor:doctors_list'))
+
+
+
+@login_required
+def myprofile(request,slug):
+    
+    return render(request , 'doctor/doctor-myprofile.html' , context={})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def signup(request):
@@ -76,20 +98,6 @@ def signup(request):
 
 
 
-@login_required
-def myprofile(request,slug):
-    
-    return render(request , 'users/my_profile.html' , context={})
-
-
-
-@login_required
-def user_logout(request):
-    logout(request)
-    return redirect(reverse('accounts:doctors_list'))
-
-
-
 
 @login_required
 def delete_profile(request,id):
@@ -103,10 +111,3 @@ def update_profile(request):
     return render(request , 'users/updata_profile.html')
 
 
-
-
-
-
-def doc_home_chat(request):
-
-    return render(request,'users/index.html', context={})

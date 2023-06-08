@@ -62,7 +62,7 @@
 					</div>
 					<ul class="main-nav">
 						<li class="active">
-							<a href="index-2.html">Home</a>
+							<a href="{% url 'doctor:doctors_list' %}">Home</a>
 						</li>
 						<li class="has-submenu">
 							<a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
@@ -121,6 +121,22 @@
 						<li class="login-link">
 							<a href="login.html">Login / Signup</a>
 						</li>
+
+						{% if user.is_authenticated %}
+
+						<li class="active">
+							<a href="{% url 'doctor:doctors_list' %}">{{user}}</a>
+						</li>
+						{% else %}
+						  
+						<li class="active">
+							<a href="{% url 'doctor:login' %}">login</a>
+						</li>
+
+						{% endif %}
+
+
+
 					</ul>
 				</div>
 				<ul class="nav header-navbar-rht">
@@ -136,11 +152,11 @@
 					{% if user.is_authenticated %}
 
 					<li class="nav-item">
-						<a class="nav-link header-login" href="login.html">logout</a>
+						<a class="nav-link header-login" href="{% url 'doctor:logout' %}">logout</a>
 					</li>
 					{% else %}
 					<li class="nav-item">
-						<a class="nav-link header-login" href="login.html">login / Signup </a>
+						<a class="nav-link header-login" href="{% url 'doctor:login' %}">login / Signup </a>
 					</li>
 					{% endif %}
 				</ul>
@@ -155,9 +171,9 @@
 
 
 		{% block body %}
-		
-		
-		
+
+
+
 		{% endblock body %}
 
 

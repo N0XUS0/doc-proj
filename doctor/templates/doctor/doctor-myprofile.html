@@ -30,8 +30,8 @@
 							<div class="doc-info-left">
 								<div class="doctor-img">
 
-									{% if doctors_detail.image %}
-										<img class="img-fluid" alt="User Image" src="{{doctors_detail.image.url}}">
+									{% if user.profile_doctor.image %}
+										<img class="img-fluid" alt="User Image" src="{{user.profile_doctor.image.url}}">
 
 										{% else %}
 										<img class="img-fluid" alt="User Image" src="{% static 'assets/img/doctors/doctor-01.jpg' %}">
@@ -42,10 +42,10 @@
 
 								</div>
 								<div class="doc-info-cont">
-									<h4 class="doc-name">Dr. {{doctors_detail.name}}</h4>
-									<p class="doc-speciality">{{doctors_detail.subtitle}}</p>
-									<p class="doc-department"><img src="{{doctors_detail.specialization.image.url}}"
-											class="img-fluid" alt="Speciality">{{doctors_detail.specialization}}</p>
+									<h4 class="doc-name">Dr. {{user.profile_doctor.name}}</h4>
+									<p class="doc-speciality">{{user.profile_doctor.subtitle}}</p>
+									<p class="doc-department"><img src="{{user.profile_doctor.specialization.image.url}}"
+											class="img-fluid" alt="Speciality">{{user.profile_doctor.specialization}}</p>
 									<div class="rating">
 										<i class="fas fa-star filled"></i>
 										<i class="fas fa-star filled"></i>
@@ -55,9 +55,9 @@
 										<span class="d-inline-block average-rating">(35)</span>
 									</div>
 									<div class="clinic-details">
-										<p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{doctors_detail.address_detail}}, {{doctors_detail.address}}</p>
+										<p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{user.profile_doctor.address_detail}}, {{user.profile_doctor.address}}</p>
 										<ul class="clinic-gallery">
-											{% for img in doctors_detail.image_doctor.all %}
+											{% for img in user.profile_doctor.image_doctor.all %}
 											<li>
 												<a href="{{img.image.url}}" data-fancybox="gallery">
 													<img src="{{img.image.url}}" alt="Feature">
@@ -69,7 +69,7 @@
 									</div>
 									<div class="clinic-services">
 										
-										{% for tag in doctors_detail.tags.all %}
+										{% for tag in user.profile_doctor.tags.all %}
 										<span>{{tag}}</span>
 
 										{% endfor %}
@@ -83,8 +83,8 @@
 									<ul>
 										<li><i class="far fa-thumbs-up"></i> 99%</li>
 										<li><i class="far fa-comment"></i> 35 Feedback</li>
-										<li><i class="fas fa-map-marker-alt"></i>{{doctors_detail.address}}</li>
-										<li><i class="far fa-money-bill-alt"></i> {{doctors_detail.price}} $ </li>
+										<li><i class="fas fa-map-marker-alt"></i>{{user.profile_doctor.address}}</li>
+										<li><i class="far fa-money-bill-alt"></i> {{user.profile_doctor.price}} $ </li>
 									</ul>
 								</div>
 								<div class="doctor-action">
@@ -146,7 +146,7 @@
 										<!-- About Details -->
 										<div class="widget about-widget">
 											<h4 class="widget-title">About Me</h4>
-											<p>{{doctors_detail.who_i}}</p>
+											<p>{{user.profile_doctor.who_i}}</p>
 										</div>
 										<!-- /About Details -->
 
@@ -303,7 +303,7 @@
 										<div class="service-list">
 											<h4>Specializations</h4>
 											<ul class="clearfix">
-												{% for tag in doctors_detail.tags.all %}
+												{% for tag in user.profile_doctor.tags.all %}
 												<li>{{tag}}</li>
 		
 												{% endfor %}
