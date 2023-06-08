@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect
 from django.urls import reverse
 from .models import Profile_Doctor
-from .forms import Login_Form , UserCreationForms
+from .forms import Login_Form , SignupForm
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -35,7 +35,7 @@ def doctors_detail(request , slug):
 
 
 
-def doctor_login(request):
+def doctor_login(request):                               #! اعمل اضافه لي method == get 
     if request.method == 'POST':
         form = Login_Form
         username = request.POST['username']
@@ -83,16 +83,19 @@ def myprofile(request,slug):
 
 def signup(request):
     if request.method == 'POST':
-        form2 = UserCreationForms(request.POST)
-        if form2.is_valid():
-            form2.save()
-
-            return redirect('accounts:login')
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username , password = password)
+            login(request , user)
+            return redirect('doctor:doctors_list')
     else:
-        form2 = UserCreationForms
+        form = SignupForm()
         
 
-    return render(request , 'users/register.html' , context={'form2':form2})
+    return render(request , 'doctor/doctor-register.html' , context={'form':form})
 
 
 
