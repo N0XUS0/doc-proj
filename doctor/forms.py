@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import Profile_Doctor , Doctor_Image
 
 
 """ class Signup_Form(UserCreationForm):
@@ -47,3 +48,20 @@ class Login_Form(forms.ModelForm):
         
         
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name' , 'last_name' , 'email']
+        
+        
+class ProfileDoctorForm(forms.ModelForm):
+    class Meta:
+        model = Profile_Doctor
+        exclude = ['user']        
+        
+        
+class Doctor_Image_form(forms.ModelForm):
+    class Meta:
+        model = Doctor_Image
+        exclude = ['doctor']        
+    

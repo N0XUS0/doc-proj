@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect
 from django.urls import reverse
-from .models import Profile_Doctor
-from .forms import Login_Form , SignupForm
+from .models import Profile_Doctor , Doctor_Image
+from .forms import Login_Form , SignupForm , UserForm , ProfileDoctorForm , Doctor_Image_form
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -34,7 +34,6 @@ def doctors_detail(request , slug):
 
 
 
-
 def doctor_login(request):                               #! اعمل اضافه لي method == get 
     if request.method == 'POST':
         form = Login_Form
@@ -46,37 +45,9 @@ def doctor_login(request):                               #! اعمل اضافه 
             return redirect('doctor:doctors_list')
         else:
             messages.warning(request, "Username or password is incorrect. please try again")
-    form  = Login_Form()
+    else:
+        form  = Login_Form()
     return render(request , 'doctor/doctor_login.html' , context={'form':form})
-
-
-@login_required
-def doctor_logout(request):
-    logout(request)
-    return redirect(reverse('doctor:doctors_list'))
-
-
-
-@login_required
-def myprofile(request,slug):
-    
-    return render(request , 'doctor/doctor-myprofile.html' , context={})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -100,6 +71,42 @@ def signup(request):
 
 
 
+@login_required
+def update_profile(request ,  slug):
+    doctor_profile = Profile_Doctor.objects.get(user = request.user)
+    
+    if request.method=='POST':
+        userform = UserForm(request.POST , instance=request.user)
+        doctor_profileform = ProfileDoctorForm(request.POST , request.FILES , instance=doctor_profile)
+        if userform.is_valid() and doctor_profileform.is_valid():
+            userform.save()
+            mydoctor_profileform = doctor_profileform.save(commit=False)
+            mydoctor_profileform.user = request.user
+            mydoctor_profileform.save()
+            return redirect(reverse('doctor:myprofile' , kwargs={'slug': doctor_profile.slug}))
+    else:
+        userform = UserForm(instance=request.user)
+        doctor_profileform = ProfileDoctorForm(instance=doctor_profile)
+    return render(request , 'doctor/doctor-profile-settings.html' , {'userform':userform ,'doctor_profileform':doctor_profileform })
+
+
+
+@login_required
+def doctor_logout(request):
+    logout(request)
+    return redirect(reverse('doctor:doctors_list'))
+
+
+@login_required
+def myprofile(request,slug):
+    return render(request , 'doctor/doctor-myprofile.html' , context={})
+
+
+
+    
+    
+
+
 
 
 @login_required
@@ -109,8 +116,16 @@ def delete_profile(request,id):
     return redirect(reverse('accounts:doctors_list'))
 
 
-def update_profile(request):
-    
-    return render(request , 'users/updata_profile.html')
 
 
+
+
+
+
+
+
+
+
+
+def test(request):
+    return render(request , 'doctor/doctor-profile-settings.html' , {})

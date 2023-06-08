@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.core.validators import MaxValueValidator , MinValueValidator
 from django.utils import timezone
 from taggit.managers import TaggableManager
+from PIL import Image
 
 
 
