@@ -31,7 +31,7 @@ class Profile_Doctor(models.Model):
     gender = models.CharField(_("Gender"), max_length=10 , choices=GENDER_OPTION)
     who_i = models.CharField(_("Who_i"), max_length=250 , null=True , blank=True)
     price  = models.IntegerField(_("Price") , null=True , blank=True)
-    image = models.ImageField(_("Image"), upload_to='profile/',null=True,blank=True)
+    image = models.ImageField(_("Image"), upload_to='doctor/profile/',null=True,blank=True)
     specialist_doctor = models.CharField(_("specialist_doctor"), max_length=150 , null=True ,blank=True)
     fb_link = models.URLField(_("Facebook"), max_length=250 , null=True , blank=True)
     twit_link = models.URLField(_("Twitter_link"), max_length=200 , null=True , blank=True)
@@ -44,13 +44,23 @@ class Profile_Doctor(models.Model):
 
 
     def save(self, *args, **kwargs):
-    
-       if not self.slug:
-           self.slug = slugify(self.user.username)
-           
-       if not self.who_i:
-           self.who_i = slugify(self.name)
-       super(Profile_Doctor, self).save(*args, **kwargs)
+        
+                
+#        img = Image.open(self.image.path)
+#        if img.height > 230 or img.width > 153:
+#            output_size = (230 ,153 )
+#            img.thumbnail(output_size)
+#            img.save(self.image.path)
+            
+        if not self.slug:
+            self.slug = slugify(self.user.username)
+            
+        if not self.who_i:
+            self.who_i = slugify(self.name)
+            
+        super(Profile_Doctor, self).save(*args, **kwargs)
+       
+
      
     
     def __str__(self):
@@ -86,7 +96,7 @@ class Specialization(models.Model):
 
 class Doctor_Image(models.Model):
     doctor = models.ForeignKey(Profile_Doctor , related_name='image_doctor' ,on_delete=models.CASCADE)
-    image = models.ImageField(_('Image'),upload_to='image_doctor/',null=True,blank=True)
+    image = models.ImageField(_('Image'),upload_to='doctor/image_doctor/',null=True,blank=True)
     
     
     def __str__(self):
@@ -114,3 +124,9 @@ class DoctorReview(models.Model):
     class Meta:
         verbose_name = 'DoctorReview'
         verbose_name_plural = 'DoctorReviews'
+        
+        
+        
+        
+        
+        

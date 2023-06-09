@@ -133,6 +133,10 @@
 						<div class="doctor-slider slider">
 							
 							{% for d in doctors %}
+								
+								{% if d.profile_doctor.name and d.profile_doctor.specialization %}
+									
+								
 									
 							<!-- Doctor Widget -->
 							<div class="profile-widget">
@@ -188,6 +192,7 @@
 								</div>
 							</div>
 							<!-- /Doctor Widget -->
+							{% endif %}
 							{% endfor %}
 							
 

@@ -34,20 +34,7 @@ def doctors_detail(request , slug):
 
 
 
-def doctor_login(request):                               #! اعمل اضافه لي method == get 
-    if request.method == 'POST':
-        form = Login_Form
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request , username=username , password=password)
-        if user is not None :
-            login(request , user)
-            return redirect('doctor:doctors_list')
-        else:
-            messages.warning(request, "Username or password is incorrect. please try again")
-    else:
-        form  = Login_Form()
-    return render(request , 'doctor/doctor_login.html' , context={'form':form})
+
 
 
 
@@ -67,6 +54,22 @@ def signup(request):
         
 
     return render(request , 'doctor/doctor-register.html' , context={'form':form})
+
+
+def doctor_login(request):
+    if request.method == 'POST':
+        form = Login_Form
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request , username=username , password=password)
+        if user is not None :
+            login(request , user)
+            return redirect('doctor:doctors_list')
+        else:
+            messages.warning(request, "Username or password is incorrect. please try again")
+    else:
+        form  = Login_Form()
+    return render(request , 'doctor/doctor_login.html' , context={'form':form})
 
 
 
