@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     "bootstrap4",
-    "taggit",
     "crispy_forms",
-    
+    "taggit",
+
     
     'doctor',
     'client',
@@ -164,4 +164,4 @@ TAGGIT_CASE_INSENSITIVE = True       #######
 
 
 
-LOGIN_URL = 'doctor:login'
+LOGIN_URL = 'doctor:login'          ######

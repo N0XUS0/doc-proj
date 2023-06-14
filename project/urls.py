@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', doctors_list, name="mainpage"),
     path('doctor/', include('doctor.urls' , namespace='doctor')),
+    path('client/', include('client.urls' , namespace='client')),
 ]
 
 

@@ -8,6 +8,8 @@ from django.utils import timezone
 from taggit.managers import TaggableManager
 from PIL import Image
 
+from client.models import Client_Profile
+
 
 
 
@@ -130,3 +132,14 @@ class DoctorReview(models.Model):
         
         
         
+
+
+class Schedule(models.Model):
+    doc = models.ForeignKey(Profile_Doctor, on_delete=models.CASCADE)
+    date = models.DateField()
+    start_time = models.TimeField()
+    taken = models.ForeignKey(Client_Profile, related_name='taken', on_delete=models.CASCADE, null=True, blank=True)
+    confirmed = models.BooleanField(default=False)
+    cancelled = models.ForeignKey(Client_Profile, related_name='cancelled', on_delete=models.CASCADE, null=True, blank=True)
+    def __str__(self):
+        return str(self.doc) +" "+ str(self.date)

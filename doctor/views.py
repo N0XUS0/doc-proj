@@ -1,14 +1,15 @@
 from django.shortcuts import render , redirect
 from django.urls import reverse
-from .models import Profile_Doctor , Doctor_Image
-from .forms import Login_Form , SignupForm , UserForm , ProfileDoctorForm , Doctor_Image_form
+from .models import Profile_Doctor , Doctor_Image , Schedule , Specialization
+from .forms import Login_Form , SignupForm , UserForm , ProfileDoctorForm 
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from datetime import date as dt, datetime
 
 
-
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 
@@ -24,17 +25,14 @@ def welcome(request):
     
 def doctors_list(request):
     doctors = User.objects.all()
-    return render(request , 'doctor/doctors_list.html' , context={'doctors':doctors,})
+    specializations = Specialization.objects.all()
+
+    return render(request , 'doctor/doctors_list.html' , context={'doctors':doctors,'specializations':specializations,})
 
 
 def doctors_detail(request , slug):
     doctors_detail = Profile_Doctor.objects.get(slug = slug)
     return render(request , 'doctor/doctor-profile.html' , context={'doctors_detail':doctors_detail,})
-
-
-
-
-
 
 
 
@@ -106,29 +104,84 @@ def myprofile(request,slug):
 
 
 
-    
-    
 
+def show_Specialization(request):
+    schedules = Schedule.objects.all()
+    doc = Profile_Doctor.objects.get(user=request.user)    
+    schedules = Schedule.objects.filter(doc=doc)
+    return render(request , 'doctor/slot.html' , context={'schedules':schedules})
+
+
+
+""" @login_required
+def delete_profile(request,id):
+    single = User.objects.get(id=request.user.id)
+    single.delete()
+    return redirect(reverse('accounts:doctors_list')) """
+
+""" def test(request):
+    return render(request , 'doctor/schedule-timings.html' , {}) """
+
+
+
+""" def show_slot(request):
+    schedules = Schedule.objects.all()
+    doc = Profile_Doctor.objects.get(user=request.user)    
+    schedules = Schedule.objects.filter(doc=doc)
+    return render(request , 'doctor/slot.html' , context={'schedules':schedules}) """
 
 
 
 @login_required
-def delete_profile(request,id):
-    single = User.objects.get(id=request.user.id)
-    single.delete()
-    return redirect(reverse('accounts:doctors_list'))
+def add_slot(request):
+    if request.method == 'POST':
+        doc = Profile_Doctor.objects.get(user=request.user)
+        date = request.POST.get('date')
+        start = request.POST.get('start')
+        no_hours = int(request.POST.get('no_hours'))
+        start =  str(datetime.strptime(str(int(start[:2])) +":"+ start[3:],"%H:%M"))[11:16]
+        sc = Schedule(doc=doc, date=date, start_time=start, taken=None)
+        sc.save()
+        for _ in range(no_hours-1):
+            start =  str(datetime.strptime(str(int(start[:2])+1) +":"+ start[3:],"%H:%M"))[11:16]
+            sc = Schedule(doc=doc, date=date, start_time=start, taken=None)
+            sc.save()
+    return render(request,'doctor/schedule-timings.html', context={})
 
 
 
 
 
+""" @login_required
+def doc_home_slot(request):
+    doc = Profile_Doctor.objects.get(user=request.user)    
+    schedule = Schedule.objects.filter(doc=doc)
+    for sc in schedule:
+        if sc.date < dt.today() :
+            sc.delete()
+    schedule = Schedule.objects.filter(doc=doc)
+    dates = sorted(set([sc.date for sc in schedule]))
+    slot = Schedule.objects.filter(doc=doc)
+    today = Schedule.objects.filter(doc=doc, date=dt.today())
+    t = str(dt.today())
+    return render(request,'doctor/schedule-timings.html', context={'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'today':today}) """
 
 
 
 
 
+def doc_home_slot(request, date):
+    doc = Profile_Doctor.objects.get(user=request.user)    
+    schedule = Schedule.objects.filter(doc=doc)
+    for sc in schedule:
+        if sc.date < dt.today() :
+            sc.delete()
+    schedule = Schedule.objects.filter(doc=doc)
+    dates = sorted(set([sc.date for sc in schedule]))
+    slot = Schedule.objects.filter(doc=doc, date=date)
+    today = Schedule.objects.filter(doc=doc, date=dt.today())
+    t = str(dt.today())
+    return render(request,'doctor/schedule-timings.html', context={'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'date':date, 'today':today})
 
 
 
-def test(request):
-    return render(request , 'doctor/doctor-profile-settings.html' , {})

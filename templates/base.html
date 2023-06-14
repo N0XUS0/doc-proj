@@ -23,6 +23,11 @@
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 
+	{% block schedule_head %}
+	<!-- Select2 CSS -->
+	<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}"> 
+	{% endblock schedule_head %}
+
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
@@ -69,12 +74,15 @@
 							<ul class="submenu">
 								<li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
 								<li><a href="appointments.html">Appointments</a></li>
-								<li><a href="schedule-timings.html">Schedule Timing</a></li>
-								<li><a href="my-patients.html">Patients List</a></li>
+{% comment %} 								<li><a href="{% url 'doctor:doc_home_slot' %}">Schedule Timing</a></li>
+ {% endcomment %}								<li><a href="my-patients.html">Patients List</a></li>
 								<li><a href="patient-profile.html">Patients Profile</a></li>
 								<li><a href="chat-doctor.html">Chat</a></li>
 								<li><a href="invoices.html">Invoices</a></li>
-								<li><a href="doctor-profile-settings.html">Profile Settings</a></li>
+								{% if user.is_authenticated %}
+
+								<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a></li>
+								{% endif %}
 								<li><a href="reviews.html">Reviews</a></li>
 								<li><a href="doctor-register.html">Doctor Register</a></li>
 							</ul>
@@ -126,17 +134,24 @@
 						</li>
 
 						{% if user.is_authenticated %}
-						<li class="has-submenu">
-							<a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">{{user}} <i class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">myprofile</a></li>
-								<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a></li>
-							</ul>
-						</li>
+							
+							{% if user.profile_doctor.specialization %}
+							<li class="has-submenu">
+								<a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">{{user}} <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+									<li><a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">myprofile</a></li>
+									<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a></li>
+								</ul>
+							</li>
+							{% else %}
+							هنا اعمل بروفايل لل	client
+							{% endif %}
 
-						
+							{% else %}
 
 						{% endif %}
+								
+
 
 
 
@@ -340,8 +355,21 @@
 	<!-- Slick JS -->
 	<script src="{% static 'assets/js/slick.js' %}"></script>
 
+	{% block schedule_footer %}
+	<!-- Sticky Sidebar JS -->
+	<script src="{% static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js' %}"></script>     
+	<script src="{% static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js' %}"></script> 
+	
+	<!-- Select2 JS -->
+	<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
+	sadkjaslkdjalskjdlkasjdlkasjdlkasjdlksajdlk
+	
+	{% endblock schedule_footer %}
+
 	<!-- Custom JS -->
 	<script src="{% static 'assets/js/script.js' %}"></script>
+
+
 
 </body>
 

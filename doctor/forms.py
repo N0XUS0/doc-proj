@@ -20,7 +20,7 @@ from .models import Profile_Doctor , Doctor_Image
 
 
 
-
+#doctor_signup
 class SignupForm(UserCreationForm):
     username = forms.CharField(label= 'username')
     first_name = forms.CharField(label='First name')
@@ -36,7 +36,7 @@ class SignupForm(UserCreationForm):
 
 
 
-
+#doctor_login
 class Login_Form(forms.ModelForm):
     username = forms.CharField(label = 'Username' )
     password = forms.CharField(label = 'Password' , widget=forms.PasswordInput())
@@ -47,7 +47,8 @@ class Login_Form(forms.ModelForm):
         
         
         
-
+        
+#update_doctor_profile
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -60,8 +61,8 @@ class ProfileDoctorForm(forms.ModelForm):
         exclude = ['user']        
         
         
-class Doctor_Image_form(forms.ModelForm):
+""" class Doctor_Image_form(forms.ModelForm):
     class Meta:
         model = Doctor_Image
-        exclude = ['doctor']        
+        exclude = ['doctor']  """       
     

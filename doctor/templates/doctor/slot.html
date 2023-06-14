@@ -1,0 +1,75 @@
+<form action="{% url 'doctor:add_slot' %}" method="post">
+    {% csrf_token %}
+    <input type="date" name="date" id="date" class="form-control" min="{{t}}">
+    <input type="time" name="start" id="time" class="form-control">
+    <input type="number" name="no_hours" id="" class="form-control" placeholder="Number of hours available"> <br>
+    <button type="submit">add</button>
+  </form>
+
+
+
+
+{% for schedule in schedules %}
+  <h2>{{schedule.date}}</h2>
+  <h2>{{schedule.start_time}}</h2>
+{% endfor %}
+{% for schedule in schedules %}
+  <h2>{{schedule.start_time}}</h2>
+{% endfor %}
+  
+
+====================================
+{% comment %} 
+return render(request,'doctor/slot.html', context={'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'today':today})
+{% endcomment %}
+
+{% for t in schedules %}
+  <h2>{{schedule.start_time}}</h2>
+{% endfor %}
+
+
+
+{% for ts in t %}
+{{t}}
+{% endfor %}
+==========
+{{doc}}
+========
+
+{% for date in dates %}
+  {{date}}
+{% endfor %}
+============
+
+{% for slot in slots %}
+<h1>{{slot}}</h1>
+{% endfor %}
+=============
+
+{% for todays in today %}
+<h1>{{today}}</h1>
+{% endfor %}
+
+{{today}}
+
+========================================
+{% for td in today %}{% if td.confirmed %}
+
+
+
+<a href="{% url 'doctor:doc_home_chat' td.taken.id %}">
+  <div class="card mb-2 text-dark">
+    <div class="row  p-3">
+      <div class="col-sm-2 text-center my-auto">
+        <i class="bi bi-person-circle fs-2"></i>
+      </div>
+      <div class="col-sm-9">
+        <b>{{td.taken.user.first_name}} {{td.taken.user.last_name}}</b><br>
+        {{td.start_time}}
+
+      </div>
+    </div>
+
+  </div>
+</a>{% endif %}
+{% endfor %}
