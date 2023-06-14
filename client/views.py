@@ -38,3 +38,17 @@ def client_login(request):
     else:
         form  = Login_Form()
     return render(request , 'cleint/client_login.html' , context={'form':form})
+
+
+
+
+
+
+
+
+
+
+def test(request , slug):
+    doctors_detail = Profile_Doctor.objects.get(slug = slug)
+
+    return render(request , 'client/booking.html' , {'doctors_detail':doctors_detail,})

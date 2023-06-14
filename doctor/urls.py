@@ -12,9 +12,13 @@ urlpatterns = [
     #path('show_slot/', views.show_slot,name='show_slot'),
 
     path('add_slot/', views.add_slot,name='add_slot'),
-    #path('doc_home_slot/', views.doc_home_slot,name='doc_home_slot'),
+    
+    path('doc_home/', views.doc_home,name='doc_home'),
+    
     #path('doc_home_slot/<str:date>/', views.doc_home_slot,name='doc_home_slot'),
     url(r'^doc_home_slot/(?P<date>\d{4}-\d{2}-\d{2})/$', views.doc_home_slot, name='doc_home_slot'),
+    url(r'^delete_slot/(?P<slot>\d+)$', views.delete_slot, name='delete_slot'),
+
 
 
     # path('app/' , views.app , name='app')

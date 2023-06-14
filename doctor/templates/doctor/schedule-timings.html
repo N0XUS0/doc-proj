@@ -54,6 +54,7 @@
 												<button class="btn btn-primary btn-block btn-lg login-btn"
 													type="submit">Add an appointment</button>
 
+													
 											</form>
 
 
@@ -63,19 +64,19 @@
 											<!-- Schedule Nav -->
 											<div class="schedule-nav">
 												<ul class="nav nav-tabs nav-justified">
-													
-													{% for data in dates %}
-														
-														
+													{% if date %} {{date}} {% else%} choose date to see schedules{% endif %}
+													{% for s in dates %}
 													<li class="nav-item">
-														<a class="nav-link" data-toggle="tab"
-															href="#slot_sunday">{{date}}</a>
+														<a class="nav-link" 
+															href="{% url 'doctor:doc_home_slot' s %}">{{ s|date:"SHORT_DATE_FORMAT" }}</a>
 													</li>
+													{% empty %}
+													No active schedules.
 													{% endfor %}
-
-
 												</ul>
 											</div>
+
+
 											<!-- /Schedule Nav -->
 
 
@@ -106,30 +107,17 @@
 
 													<!-- Slot List -->
 													<div class="doc-times">
+														{% for slot in slots %}
+
 														<div class="doc-slot-list">
-															8:00 pm - 11:30 pm
-															<a href="javascript:void(0)" class="delete_schedule">
+															{{slot.start_time}}
+															<a href="{% url 'doctor:delete_slot' slot.id %}" class="delete_schedule">
 																<i class="fa fa-times"></i>
 															</a>
 														</div>
-														<div class="doc-slot-list">
-															11:30 pm - 1:30 pm
-															<a href="javascript:void(0)" class="delete_schedule">
-																<i class="fa fa-times"></i>
-															</a>
-														</div>
-														<div class="doc-slot-list">
-															3:00 pm - 5:00 pm
-															<a href="javascript:void(0)" class="delete_schedule">
-																<i class="fa fa-times"></i>
-															</a>
-														</div>
-														<div class="doc-slot-list">
-															6:00 pm - 11:00 pm
-															<a href="javascript:void(0)" class="delete_schedule">
-																<i class="fa fa-times"></i>
-															</a>
-														</div>
+														{% endfor %}
+
+
 													</div>
 													<!-- /Slot List -->
 

@@ -74,8 +74,8 @@
 							<ul class="submenu">
 								<li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
 								<li><a href="appointments.html">Appointments</a></li>
-{% comment %} 								<li><a href="{% url 'doctor:doc_home_slot' %}">Schedule Timing</a></li>
- {% endcomment %}								<li><a href="my-patients.html">Patients List</a></li>
+								<li><a href="{% url 'doctor:doc_home' %}">Schedule Timing</a></li>
+								<li><a href="my-patients.html">Patients List</a></li>
 								<li><a href="patient-profile.html">Patients Profile</a></li>
 								<li><a href="chat-doctor.html">Chat</a></li>
 								<li><a href="invoices.html">Invoices</a></li>
@@ -361,9 +361,7 @@
 	<script src="{% static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js' %}"></script> 
 	
 	<!-- Select2 JS -->
-	<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
-	sadkjaslkdjalskjdlkasjdlkasjdlkasjdlksajdlk
-	
+	<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>	
 	{% endblock schedule_footer %}
 
 	<!-- Custom JS -->

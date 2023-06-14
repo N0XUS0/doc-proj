@@ -12,7 +12,6 @@ from datetime import date as dt, datetime
 from django.http import HttpResponseRedirect, HttpResponse
 
 
-
 # Create your views here.
 
 """ def doctors_list2(request):
@@ -35,6 +34,16 @@ def doctors_detail(request , slug):
     return render(request , 'doctor/doctor-profile.html' , context={'doctors_detail':doctors_detail,})
 
 
+@login_required
+def myprofile(request,slug):
+    return render(request , 'doctor/doctor-myprofile.html' , context={})
+
+
+def show_Specialization(request):
+    schedules = Schedule.objects.all()
+    doc = Profile_Doctor.objects.get(user=request.user)    
+    schedules = Schedule.objects.filter(doc=doc)
+    return render(request , 'doctor/slot.html' , context={'schedules':schedules})
 
 
 def signup(request):
@@ -98,18 +107,120 @@ def doctor_logout(request):
     return redirect(reverse('doctor:doctors_list'))
 
 
+
 @login_required
-def myprofile(request,slug):
-    return render(request , 'doctor/doctor-myprofile.html' , context={})
+def doc_home(request):
+    doc = Profile_Doctor.objects.get(user=request.user)
+    schedule = Schedule.objects.filter(doc=doc)
+    for sc in schedule:
+        if sc.date < dt.today() :
+            sc.delete()
+    schedule = Schedule.objects.filter(doc=doc)
+    dates = sorted(set([sc.date for sc in schedule]))
+    today = Schedule.objects.filter(doc=doc, date=dt.today())
+    return render(request,'doctor/schedule-timings.html', context={'doc':doc, 'dates':dates, 'today':today})
 
 
 
 
-def show_Specialization(request):
-    schedules = Schedule.objects.all()
+
+@login_required
+def add_slot(request):
+    if request.method == 'POST':
+        doc = Profile_Doctor.objects.get(user=request.user)
+        date = request.POST.get('date')
+        start = request.POST.get('start')
+        no_hours = int(request.POST.get('no_hours'))
+        start =  str(datetime.strptime(str(int(start[:2])) +":"+ start[3:],"%H:%M"))[11:16]
+        sc = Schedule(doc=doc, date=date, start_time=start, taken=None)
+        sc.save()
+        for _ in range(no_hours-1):
+            start =  str(datetime.strptime(str(int(start[:2])+1) +":"+ start[3:],"%H:%M"))[11:16]
+            sc = Schedule(doc=doc, date=date, start_time=start, taken=None)
+            sc.save()
+    return render(request,'doctor/schedule-timings.html', context={})
+    
+    
+
+@login_required
+def doc_home_slot(request, date):
     doc = Profile_Doctor.objects.get(user=request.user)    
-    schedules = Schedule.objects.filter(doc=doc)
-    return render(request , 'doctor/slot.html' , context={'schedules':schedules})
+    schedule = Schedule.objects.filter(doc=doc)
+    for sc in schedule:
+        if sc.date < dt.today() :
+            sc.delete()
+    schedule = Schedule.objects.filter(doc=doc)
+    dates = sorted(set([sc.date for sc in schedule]))
+    slot = Schedule.objects.filter(doc=doc, date=date)
+    today = Schedule.objects.filter(doc=doc, date=dt.today())
+    t = str(dt.today())
+    return render(request,'doctor/schedule-timings.html', context={'schedules':schedule,'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'date':date, 'today':today})
+
+
+@login_required
+def delete_slot(request, slot):
+    slot = Schedule.objects.get(id=slot)
+    date = slot.date
+    slot.delete()
+    return redirect(reverse('doctor:doc_home_slot', args=(date,)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""" @login_required
+def doc_home_slot(request):
+    doc = Profile_Doctor.objects.get(user=request.user)    
+    schedule = Schedule.objects.filter(doc=doc)
+    for sc in schedule:
+        if sc.date < dt.today() :
+            sc.delete()
+    schedule = Schedule.objects.filter(doc=doc)
+    dates = sorted(set([sc.date for sc in schedule]))
+    slot = Schedule.objects.filter(doc=doc)
+    today = Schedule.objects.filter(doc=doc, date=dt.today())
+    t = str(dt.today())
+    return render(request,'doctor/schedule-timings.html', context={'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'today':today}) """
 
 
 
@@ -132,56 +243,11 @@ def delete_profile(request,id):
 
 
 
-@login_required
-def add_slot(request):
-    if request.method == 'POST':
-        doc = Profile_Doctor.objects.get(user=request.user)
-        date = request.POST.get('date')
-        start = request.POST.get('start')
-        no_hours = int(request.POST.get('no_hours'))
-        start =  str(datetime.strptime(str(int(start[:2])) +":"+ start[3:],"%H:%M"))[11:16]
-        sc = Schedule(doc=doc, date=date, start_time=start, taken=None)
-        sc.save()
-        for _ in range(no_hours-1):
-            start =  str(datetime.strptime(str(int(start[:2])+1) +":"+ start[3:],"%H:%M"))[11:16]
-            sc = Schedule(doc=doc, date=date, start_time=start, taken=None)
-            sc.save()
-    return render(request,'doctor/schedule-timings.html', context={})
 
 
 
 
 
-""" @login_required
-def doc_home_slot(request):
-    doc = Profile_Doctor.objects.get(user=request.user)    
-    schedule = Schedule.objects.filter(doc=doc)
-    for sc in schedule:
-        if sc.date < dt.today() :
-            sc.delete()
-    schedule = Schedule.objects.filter(doc=doc)
-    dates = sorted(set([sc.date for sc in schedule]))
-    slot = Schedule.objects.filter(doc=doc)
-    today = Schedule.objects.filter(doc=doc, date=dt.today())
-    t = str(dt.today())
-    return render(request,'doctor/schedule-timings.html', context={'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'today':today}) """
-
-
-
-
-
-def doc_home_slot(request, date):
-    doc = Profile_Doctor.objects.get(user=request.user)    
-    schedule = Schedule.objects.filter(doc=doc)
-    for sc in schedule:
-        if sc.date < dt.today() :
-            sc.delete()
-    schedule = Schedule.objects.filter(doc=doc)
-    dates = sorted(set([sc.date for sc in schedule]))
-    slot = Schedule.objects.filter(doc=doc, date=date)
-    today = Schedule.objects.filter(doc=doc, date=dt.today())
-    t = str(dt.today())
-    return render(request,'doctor/schedule-timings.html', context={'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'date':date, 'today':today})
 
 
 
