@@ -54,20 +54,21 @@
 												<button class="btn btn-primary btn-block btn-lg login-btn"
 													type="submit">Add an appointment</button>
 
-													
+
 											</form>
 
 
 
-											===================================
+											<h1>===================================</h1>
 
 											<!-- Schedule Nav -->
 											<div class="schedule-nav">
 												<ul class="nav nav-tabs nav-justified">
-													{% if date %} {{date}} {% else%} choose date to see schedules{% endif %}
+													{% if date %} {{date}} {% else%} choose date to see
+													schedules{% endif %}
 													{% for s in dates %}
 													<li class="nav-item">
-														<a class="nav-link" 
+														<a class="nav-link"
 															href="{% url 'doctor:doc_home_slot' s %}">{{ s|date:"SHORT_DATE_FORMAT" }}</a>
 													</li>
 													{% empty %}
@@ -75,6 +76,7 @@
 													{% endfor %}
 												</ul>
 											</div>
+
 
 
 											<!-- /Schedule Nav -->
@@ -111,12 +113,103 @@
 
 														<div class="doc-slot-list">
 															{{slot.start_time}}
-															<a href="{% url 'doctor:delete_slot' slot.id %}" class="delete_schedule">
+															<a href="{% url 'doctor:delete_slot' slot.id %}"
+																class="delete_schedule">
 																<i class="fa fa-times"></i>
 															</a>
 														</div>
 														{% endfor %}
 
+
+														<h1>==================</h2>
+	
+
+													{% comment %} 	{% for slot in slots %} {% endcomment %}
+
+{% comment %} 														{% if slot.taken %}{% if slot.confirmed %}
+
+															<b>{{slot.start_time}} </b></li>
+														</a>
+														{% else %}<a data-bs-toggle="modal" data-bs-target="#confirm{{forloop.counter}}">
+														  <li class="list-group-item text-center" style="background-color: rgb(223, 247, 192);">
+															<b>{{slot.start_time}} &nbsp;<span class="badge rounded-pill text-bg-warning">Verify and
+																confirm</span></b></li>
+														</a>
+														{% endif %}{% else %}<li class="list-group-item text-center"
+														  style="background-color: rgb(192, 218, 247);"><b>{{slot.start_time}} &nbsp;<span
+															  class="badge rounded-pill text-bg-info">Empty</span></b>
+														  <a data-bs-toggle="modal" data-bs-target="#delete{{forloop.counter}}"><span
+															  class="badge bg-danger rounded-pill"><i class="bi bi-trash-fill"></i></span></a></li>
+														{% endif %} {% endcomment %}
+										  
+										  
+										  
+{% comment %} 														<!-- Modal - Delete slot-->
+														<div class="modal fade" id="delete{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+														  aria-hidden="true">
+														  <div class="modal-dialog">
+															<div class="modal-content">
+															  <div class="modal-header">
+																<h1 class="modal-title fs-5" id="exampleModalLabel">Confirm slot</h1>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															  </div>
+															  <div class="modal-body">
+																Date and time : {{slot.date}} - {{slot.start_time}} <br>
+																Confirm delete ?
+															  </div>
+															  <div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+																<a class="btn btn-primary" href="{% url 'doctor:delete_slot' slot.id %}">Confirm</a>
+															  </div>
+															</div>
+														  </div>
+														</div>
+										  
+														<!-- Modal - Details of slot-->
+														<div class="modal fade" id="taken{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+														  aria-hidden="true">
+														  <div class="modal-dialog">
+															<div class="modal-content">
+															  <div class="modal-header">
+																<h1 class="modal-title fs-5" id="exampleModalLabel">Confirm slot</h1>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															  </div>
+															  <div class="modal-body">
+																Date and time : {{slot.date}} - {{slot.start_time}} <br>
+																Name: {{slot.taken.user.first_name}} {{slot.taken.user.last_name}} <br>
+																Place: {{slot.taken.place}} <br>
+																Age: {{slot.taken.age}} <br>
+																Health history: {{slot.taken.health_history}}
+															  </div>
+															  <div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+															  </div>
+															</div>
+														  </div>
+														</div> {% endcomment %}
+										  
+														<!-- Modal - Confirm slot-->
+	{% comment %} 													Date and time : {{slot.date}} - {{slot.start_time}} <br>
+														Name: {{slot.taken.user.first_name}} {{slot.taken.user.last_name}} <br>
+
+														<br><br>
+														<b> Confirm booking?</b>
+													  </div>
+													  <div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+														<a class="btn btn-danger" href="{% url 'doctor:cancel_booking' slot.id %}">Cancel</a>
+														<a class="btn btn-primary" href="{% url 'doctor:confirm_booking' slot.id %}">Confirm</a>
+										  
+
+														
+														{% endfor %}
+													  </div> {% endcomment %}
+
+
+
+
+
+														<h1>==================</h2>
 
 													</div>
 													<!-- /Slot List -->

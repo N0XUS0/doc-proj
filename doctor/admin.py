@@ -12,6 +12,8 @@ class ProfileImageTabular(admin.TabularInline):
     
 class ProfileAdmin(admin.ModelAdmin):
     inlines = [ProfileImageTabular]
+    search_fields = ['name']
+    list_filter = ['gender' , 'active_doctor']
     
 
 

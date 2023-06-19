@@ -39,11 +39,17 @@ def myprofile(request,slug):
     return render(request , 'doctor/doctor-myprofile.html' , context={})
 
 
-def show_Specialization(request):
+""" def show_Specialization(request):
     schedules = Schedule.objects.all()
     doc = Profile_Doctor.objects.get(user=request.user)    
     schedules = Schedule.objects.filter(doc=doc)
     return render(request , 'doctor/slot.html' , context={'schedules':schedules})
+ """
+
+def show_Specialization_detail(request,id):
+    specializations = Specialization.objects.all()
+    doc_specialization = Profile_Doctor.objects.filter(specialization=id)    
+    return render(request , 'doctor/test.html' , context={'doc_specialization':doc_specialization , 'specializations':specializations,})
 
 
 def signup(request):
@@ -158,6 +164,24 @@ def doc_home_slot(request, date):
 
 
 @login_required
+def client_slot_list(request):
+    doc = Profile_Doctor.objects.get(user=request.user)    
+    schedule = Schedule.objects.filter(doc=doc)
+    for sc in schedule:
+        if sc.date < dt.today() :
+            sc.delete()
+    schedule = Schedule.objects.filter(doc=doc)
+    dates = sorted(set([sc.date for sc in schedule]))
+    slot = Schedule.objects.filter(doc=doc)
+    today = Schedule.objects.filter(doc=doc, date=dt.today())
+    t = str(dt.today())
+    return render(request,'doctor/appointments.html', context={'schedules':schedule,'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'today':today})
+
+
+
+
+
+@login_required
 def delete_slot(request, slot):
     slot = Schedule.objects.get(id=slot)
     date = slot.date
@@ -166,6 +190,30 @@ def delete_slot(request, slot):
 
 
 
+
+def confirm_booking(request, slot):
+    slot = Schedule.objects.get(id=slot)
+    slot.confirmed = True
+    slot.save()
+    return redirect(reverse('doctor:client_slot_list'))
+
+
+def cancel_booking(request, slot):
+    slot = Schedule.objects.get(id=slot)
+    slot.confirmed=False
+    slot.cancelled = slot.taken
+    slot.taken=None
+    slot.save()
+    return redirect(reverse('doctor:client_slot_list'))
+
+
+
+
+""" def delete_slot(request, slot):
+    slot = Schedule.objects.get(id=slot)
+    date = slot.date
+    slot.delete()
+    return HttpResponseRedirect(reverse('doctor:doc_home_slot', args=(date,))) """
 
 
 

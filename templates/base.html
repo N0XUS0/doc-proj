@@ -135,7 +135,7 @@
 
 						{% if user.is_authenticated %}
 							
-							{% if user.profile_doctor.specialization %}
+							{% if user.profile_doctor.active_doctor %}
 							<li class="has-submenu">
 								<a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">{{user}} <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">

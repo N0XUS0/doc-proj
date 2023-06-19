@@ -42,6 +42,9 @@ class Profile_Doctor(models.Model):
     join_us = models.DateTimeField(_("Join_Us"), auto_now=False, auto_now_add=True , null=True , blank=True)
     slug = models.SlugField(_("Slug") , null=True , blank=True)
     tags = TaggableManager(blank=True)
+    active_doctor = models.BooleanField(_("active_doctor") , default=False)
+    Syndicate = models.CharField(_("Syndicate"), max_length=50 )
+    
 
 
 
@@ -138,7 +141,7 @@ class Schedule(models.Model):
     doc = models.ForeignKey(Profile_Doctor, on_delete=models.CASCADE)
     date = models.DateField()
     start_time = models.TimeField()
-    taken = models.ForeignKey(Client_Profile, related_name='taken', on_delete=models.CASCADE, null=True, blank=True)
+    taken = models.ForeignKey(Client_Profile, related_name='taken_client', on_delete=models.CASCADE, null=True, blank=True)
     confirmed = models.BooleanField(default=False)
     cancelled = models.ForeignKey(Client_Profile, related_name='cancelled', on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):

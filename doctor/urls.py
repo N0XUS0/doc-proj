@@ -8,8 +8,9 @@ app_name  = 'doctor'
 
 
 urlpatterns = [
-    #path('test/' , views.test , name='update_profile'),
+    path('test/<int:id>' , views.show_Specialization_detail , name='show_Specialization_detail'),
     #path('show_slot/', views.show_slot,name='show_slot'),
+    #path('test/', views.test,name='test'),
 
     path('add_slot/', views.add_slot,name='add_slot'),
     
@@ -17,7 +18,12 @@ urlpatterns = [
     
     #path('doc_home_slot/<str:date>/', views.doc_home_slot,name='doc_home_slot'),
     url(r'^doc_home_slot/(?P<date>\d{4}-\d{2}-\d{2})/$', views.doc_home_slot, name='doc_home_slot'),
+    path('client_slot_list', views.client_slot_list, name='client_slot_list'),
+    
     url(r'^delete_slot/(?P<slot>\d+)$', views.delete_slot, name='delete_slot'),
+    url(r'^confirm_booking/(?P<slot>\d+)$', views.confirm_booking, name='confirm_booking'),
+
+    url(r'^cancel_booking/(?P<slot>\d+)$', views.cancel_booking, name='cancel_booking'),
 
 
 

@@ -1,0 +1,86 @@
+<h2>TEST PAGE</h2> 
+
+
+{% comment %} <div class="schedule-nav">
+    <ul class="nav nav-tabs nav-justified">
+        {% if date %} {{date}} {% else%} choose date to see schedules{% endif %}
+        {% for s in dates %}
+        <li class="nav-item">
+            <a class="nav-link" 
+                href="{% url 'doctor:doc_home_slot' s %}">{{ s|date:"SHORT_DATE_FORMAT" }}</a>
+        </li>
+        {% empty %}
+        No active schedules.
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+<div class="doc-times">
+    {% for slot in slots %}
+
+    <div class="doc-slot-list">
+        {{slot.start_time}}
+        <a href="{% url 'doctor:delete_slot' slot.id %}" class="delete_schedule">
+            <i class="fa fa-times"></i>
+        </a>
+    </div>
+    {% endfor %} {% endcomment %}
+
+{{client}}
+<h2>موعيد اللي يوزر حاجزها</h2>
+{% for bookeds in booked %}
+    <h2>{{bookeds.date|date:"SHORT_DATE_FORMAT"}}</h2>
+    <h2>{{bookeds.start_time}}</h2>
+{% endfor %}
+<h1>==========================</h1>
+
+{% for td in today %}
+   <h1> {{td}}</h1>
+{% endfor %}
+<h1>==========================</h1>
+<h1>مواعيد الدكتوؤ المحتاجه=</h1>
+{% for doc_schedules in doc_schedule %}
+   <h1> {{doc_schedules.start_time}}</h1>
+   <h1> {{doc_schedules.date|date:"SHORT_DATE_FORMAT"}}</h1>
+{% endfor %}
+<h1>==========================</h1>
+
+{% for bookeds in booked %}
+    {{bookeds.taken}}
+{% endfor %}
+    
+==============================================
+
+
+{% for slot in doc_schedule  %}
+{% if  slot.taken %}<li class="list-group-item text-center" style="background-color: rgb(235, 194, 194);">
+  {{slot.date}} - {{slot.start_time}} <span class="badge bg-danger rounded-pill">Taken</span>
+  {% else %}
+<li class="list-group-item text-center" style="background-color: rgb(210, 240, 192);">{{slot.date}} -
+  {{slot.start_time}} <a href="" data-bs-toggle="modal" data-bs-target="#Schedule{{ forloop.counter }}"><span
+      class="badge bg-success rounded-pill">BOOK NOW</span></a>
+  <!-- Button trigger modal -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="Schedule{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm slot</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Confirm booking of your slot with <b>Dr. {{slot.doc.user.first_name}}
+            {{slot.doc.user.last_name}}</b> on <b>{{slot.date}}</b> at <b>{{slot.start_time}}</b> ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="{% url 'client:book_slot' slot.id %}">Confirm</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}

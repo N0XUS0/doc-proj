@@ -58,7 +58,7 @@ class UserForm(forms.ModelForm):
 class ProfileDoctorForm(forms.ModelForm):
     class Meta:
         model = Profile_Doctor
-        exclude = ['user']        
+        exclude = ['user' , 'active_doctor' , 'Syndicate']        
         
         
 """ class Doctor_Image_form(forms.ModelForm):

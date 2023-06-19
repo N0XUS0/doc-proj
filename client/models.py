@@ -48,6 +48,7 @@ class Client_Profile(models.Model):
             self.slug = slugify(self.user.username)
             
         super(Client_Profile, self).save(*args, **kwargs)
+        
 
 
     def __str__(self):
