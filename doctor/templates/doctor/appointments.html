@@ -2,109 +2,101 @@
 {% load static %}
 {% block body %}
 
-		<!-- Breadcrumb -->
-		<div class="breadcrumb-bar">
-			<div class="container-fluid">
-				<div class="row align-items-center">
-					<div class="col-md-12 col-12">
-						<nav aria-label="breadcrumb" class="page-breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">Appointments</li>
-							</ol>
-						</nav>
-						<h2 class="breadcrumb-title">Appointments</h2>
-					</div>
-				</div>
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-12 col-12">
+				<nav aria-label="breadcrumb" class="page-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'doctor:doctors_list' %}">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Appointments</li>
+					</ol>
+				</nav>
+				<h2 class="breadcrumb-title">Appointments</h2>
 			</div>
 		</div>
-		<!-- /Breadcrumb -->
+	</div>
+</div>
+<!-- /Breadcrumb -->
 
-		<!-- Page Content -->
-		<div class="content">
-			<div class="container-fluid">
+<!-- Page Content -->
+<div class="content">
+	<div class="container-fluid">
 
-				<div class="row">
-					{% include 'doctor/Profile_Sidebar.html' %}
+		<div class="row">
+			{% include 'doctor/Profile_Sidebar.html' %}
 
+			<div class="col-md-7 col-lg-8 col-xl-9">
+				<div class="appointments">
+					<!-- Appointment List -->
+					{% for slot in slots %}
+					{% if slot.taken %}
+					<div class="appointment-list">
+						<div class="profile-info-widget">
+							<a href="patient-profile.html" class="booking-doc-img">
+								{% if slot.taken.image %}
+								<img src="{{slot.taken.image.url}}" alt="User Image">
+								{% else %}
+								<img src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}"
+									alt="User Image">
+								{% endif %}
+							</a>
+							<div class="profile-det-info">
+								<h3><a href="patient-profile.html">{{slot.taken.user.first_name}}
+										{{slot.taken.user.last_name}}
+										{% if not slot.confirmed %}
+										<a class="btn btn-outline-warning active btn btn-sm">
+											waiting
+										</a>
+										{% else %}
+										{% endif %}
 
-					<div class="col-md-7 col-lg-8 col-xl-9">
-						<div class="appointments">
-							
-								
-						
-								
-							{% for slot in slots %}
-								
-								
-							<!-- Appointment List -->
-							
-							{% if slot.taken %}
-								
-								
-							<div class="appointment-list">
-								<div class="profile-info-widget">
-									<a href="patient-profile.html" class="booking-doc-img">
-										<img src="assets/img/patients/patient.jpg" alt="User Image">
-									</a>
-									<div class="profile-det-info">
-										<h3><a href="patient-profile.html">{{slot.taken.user.first_name}} {{slot.taken.user.last_name}}</a></h3>
-										<div class="patient-details">
-											<h5><i class="far fa-clock"></i> {{slot.date}} - {{slot.start_time}}</h5>
-											<h5><i class="fas fa-map-marker-alt"></i> Newyork, United States</h5>
-											<h5><i class="fas fa-envelope"></i> richard@example.com</h5>
-											<h5 class="mb-0"><i class="fas fa-phone"></i> +1 923 782 4575</h5>
-										</div>
-									</div>
-								</div>
-								<div class="appointment-action">
-									<a href="#" class="btn btn-sm bg-info-light" data-toggle="modal"
-										data-target="#appt_details">
-										<i class="far fa-eye"></i> View
-									</a>
-									<a href="{% url 'doctor:confirm_booking' slot.id %}" class="btn btn-sm bg-success-light">
-										<i class="fas fa-check"></i> Accept
-									</a>
-									<a href="{% url 'doctor:cancel_booking' slot.id %}" class="btn btn-sm bg-danger-light">
-										<i class="fas fa-times"></i> Cancel
-									</a>
+									</a></h3>
+								<div class="patient-details">
+									<h5><i class="far fa-clock"></i> {{slot.date}} - {{slot.start_time}}</h5>
+									<h5><i class="fas fa-map-marker-alt"></i> {{slot.taken.address_detail}},
+										{{slot.taken.address}}</h5>
+									<h5><i class="fas fa-envelope"></i> {{slot.taken.user.email}}</h5>
+									<h5 class="mb-0"><i class="fas fa-phone"></i> {{slot.taken.number_phone}}</h5>
 								</div>
 							</div>
+						</div>
+
+						<div class="appointment-action">
+							{% comment %} {% if not slot.confirmed %}
+							<a class="btn btn-outline-warning active btn btn-sm">
+								waiting
+							</a>
+							{% else %}
+							{% endif %} {% endcomment %}
+
+							<a href="#" class="btn btn-sm bg-info-light" data-toggle="modal"
+								data-target="#appt_details">
+								<i class="far fa-eye"></i> View
+							</a>
+							<a href="{% url 'doctor:confirm_booking' slot.id %}" class="btn btn-sm bg-success-light">
+								<i class="fas fa-check"></i> Accept
+							</a>
+
+							{% if not slot.confirmed %}
+							<a href="{% url 'doctor:cancel_booking' slot.id %}" class="btn btn-sm bg-danger-light">
+								<i class="fas fa-times"></i> Cancel
+							</a>
+							{% else %}
+
 							{% endif %}
-
-							<!-- /Appointment List -->
-							
-							{% endfor %}
-	
-{% comment %} ===============================
-{% for slot in slots %}
-Date and time : {{slot.date}} - {{slot.start_time}} <br>
-Name: {{slot.taken.user.first_name}}
-{{slot.taken.user.last_name}} <br>
-<br><br>
-<b> Confirm booking?</b>
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary"
-data-bs-dismiss="modal">Close</button>
-<a class="btn btn-danger"
-href="{% url 'doctor:cancel_booking' slot.id %}">Cancel</a>
-<a class="btn btn-primary"
-href="{% url 'doctor:confirm_booking' slot.id %}">Confirm</a>
-asd;asdk;as
-{% endfor %}
-
-
-
-
-=================== {% endcomment %}
-
 						</div>
 					</div>
+					{% endif %}
+					<!-- /Appointment List -->
+					{% endfor %}
+
+
 				</div>
-
 			</div>
-
 		</div>
-		<!-- /Page Content -->
+	</div>
+</div>
+<!-- /Page Content -->
 {% endblock body %}

@@ -7,7 +7,7 @@ from django.contrib import messages
 
 from doctor.models import Profile_Doctor , Schedule , Specialization
 from .models import Client_Profile
-from .forms import Login_Form
+from .forms import Login_Form , ClientSignupForm , ClienProfileForm , UserForm
 from datetime import date as dt, datetime
 from doctor.views import doc_home
 
@@ -41,6 +41,24 @@ def client_login(request):
     return render(request , 'cleint/client_login.html' , context={'form':form})
 
 
+def client_signup(request):
+    if request.method == 'POST':
+        form = ClientSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username , password = password)
+            login(request , user)
+            return redirect('doctor:doctors_list')
+    else:
+        form = ClientSignupForm()
+        
+
+    return render(request , 'client/client-register.html' , context={'form':form})
+
+
+
 
 def test(request , slug):
     doctors_detail = Profile_Doctor.objects.get(slug = slug)
@@ -48,12 +66,16 @@ def test(request , slug):
     return render(request , 'client/test.html' , {'doctors_detail':doctors_detail,})
 
 
+@login_required
+def my_appointments(request):
+    client = Client_Profile.objects.get(user=request.user)
+    today = Schedule.objects.filter(taken=client, date = dt.today())
+    booked = Schedule.objects.filter(taken=client)
+    cancelled = Schedule.objects.filter(cancelled=client)
+    spec = Specialization.objects.all()
+    return render(request,'client/my_appointments.html', context={'client': client, 'booked':booked,'cancelled':cancelled, 'spec':spec, 'today': today})
 
-
-
-
-
-
+@login_required
 def client_home_doc(request , slug):
     docs = Profile_Doctor.objects.get(slug = slug)
     client = Client_Profile.objects.get(user=request.user)
@@ -84,7 +106,7 @@ def booking_success(request , slug):
     return render(request, template_name=['client/booking-success.html'] , context={ 'client': client, 'booked':booked, 'cancelled':cancelled, 'doc_schedule':doc_schedule, 'doctor':doctor,  'today': today})
 
 
-
+@login_required
 def book_slot(request, slot):
     user= User.objects.get(id = request.user.id)
     slot= Schedule.objects.get(id = slot)
@@ -94,6 +116,8 @@ def book_slot(request, slot):
     slot.save()
     return redirect(reverse('doctor:doctors_list')) 
 
+
+@login_required
 def delete_slot(request, slot):
     slot = Schedule.objects.get(id=slot)
     slot.delete()
@@ -106,15 +130,20 @@ def delete_slot(request, slot):
 
 
 
-
-
-
-
-
-def client_home(request):
-    client = Client_Profile.objects.get(user=request.user)
-    today = Schedule.objects.filter(taken=client, date = dt.today())
-    booked = Schedule.objects.filter(taken=client)
-    cancelled = Schedule.objects.filter(cancelled=client)
-    spec = Specialization.objects.all()
-    return render(request,'client/patient-dashboard.html', context={'client': client, 'booked':booked,'cancelled':cancelled, 'spec':spec, 'today': today})
+@login_required
+def update_client_profile(request ,  slug):
+    client_profile = Client_Profile.objects.get(user = request.user)
+    
+    if request.method=='POST':
+        userform = UserForm(request.POST , instance=request.user)
+        client_profileform = ClienProfileForm(request.POST , request.FILES , instance=client_profile)
+        if userform.is_valid() and client_profileform.is_valid():
+            userform.save()
+            myclient_profileform = client_profileform.save(commit=False)
+            myclient_profileform.user = request.user
+            myclient_profileform.save()
+            return redirect(reverse('client:update_client_profile' , kwargs={'slug': client_profile.slug}))
+    else:
+        userform = UserForm(instance=request.user)
+        client_profileform = ClienProfileForm(instance=client_profile)
+    return render(request , 'client/client-profile-settings.html' , {'userform':userform ,'ClienProfileForm':client_profileform })

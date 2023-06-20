@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% block body %}
+{% block chedule_head %}
+
+
+{% endblock chedule_head %}
+
+
+<form action="{% url 'doctor:add_slot' %}" method="post">
+
+	<!-- Breadcrumb -->
+	<div class="breadcrumb-bar">
+		<div class="container-fluid">
+			<div class="row align-items-center">
+				<div class="col-md-12 col-12">
+					<nav aria-label="breadcrumb" class="page-breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Schedule Timings</li>
+						</ol>
+					</nav>
+					<h2 class="breadcrumb-title">Schedule Timings</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- /Breadcrumb -->
+
+	<!-- Page Content -->
+	<div class="content">
+		<div class="container-fluid">
+
+			<div class="row">
+				{% include 'doctor/Profile_Sidebar.html' %}
+
+
+				<div class="col-md-7 col-lg-8 col-xl-9">
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Schedule Timings</h4>
+									<div class="profile-box">
+										<div class="row">
+											<form action="{% url 'doctor:add_slot' %}" method="post">
+												{% csrf_token %}
+												<input type="date" name="date" id="date" class="form-control"
+													min="{{t}}">
+												<input type="time" name="start" id="time" class="form-control">
+												<input type="number" name="no_hours" id="" class="form-control"
+													placeholder="Number of hours available"> <br>
+												<button class="btn btn-primary btn-block btn-lg login-btn"
+													type="submit">Add an appointment</button>
+											</form>
+
+
+
+											<h1>===================================</h1>
+
+											<!-- Schedule Nav -->
+											<div class="schedule-nav">
+												<ul class="nav nav-tabs nav-justified">
+													{% if date %} {{date}} {% else%} choose date to see
+													schedules{% endif %}
+													{% for s in dates %}
+													<li class="nav-item">
+														<a class="nav-link"
+															href="{% url 'doctor:doc_home_slot' s %}">{{ s|date:"SHORT_DATE_FORMAT" }}</a>
+													</li>
+													{% empty %}
+													No active schedules.
+													{% endfor %}
+												</ul>
+											</div>
+											<!-- /Schedule Nav -->
+
+
+
+											<!-- Schedule Content -->
+											<div class="tab-content schedule-cont">
+
+												<!-- Sunday Slot -->
+												<div id="slot_sunday" class="tab-pane fade">
+													<h4 class="card-title d-flex justify-content-between">
+														<span>Time Slots</span>
+														<a class="edit-link" data-toggle="modal"
+															href="#add_time_slot"><i class="fa fa-plus-circle"></i> Add
+															Slot</a>
+													</h4>
+													<p class="text-muted mb-0">Not Available</p>
+												</div>
+												<!-- /Sunday Slot -->
+
+												<!-- Monday Slot -->
+												<div id="slot_monday" class="tab-pane fade show active">
+													<h4 class="card-title d-flex justify-content-between">
+														<span>Time Slots</span>
+														<a class="edit-link" data-toggle="modal"
+															href="#edit_time_slot"><i
+																class="fa fa-edit mr-1"></i>Edit</a>
+													</h4>
+
+													<!-- Slot List -->
+													<div class="doc-times">
+														{% for slot in slots %}
+
+														<div class="doc-slot-list">
+															{{slot.start_time}}
+															<a href="{% url 'doctor:delete_slot' slot.id %}"
+																class="delete_schedule">
+																<i class="fa fa-times"></i>
+															</a>
+														</div>
+														{% endfor %}
+
+
+														<h1>==================</h2>
+	
+
+													{% comment %} 	{% for slot in slots %} {% endcomment %}
+
+{% comment %} 														{% if slot.taken %}{% if slot.confirmed %}
+
+															<b>{{slot.start_time}} </b></li>
+														</a>
+														{% else %}<a data-bs-toggle="modal" data-bs-target="#confirm{{forloop.counter}}">
+														  <li class="list-group-item text-center" style="background-color: rgb(223, 247, 192);">
+															<b>{{slot.start_time}} &nbsp;<span class="badge rounded-pill text-bg-warning">Verify and
+																confirm</span></b></li>
+														</a>
+														{% endif %}{% else %}<li class="list-group-item text-center"
+														  style="background-color: rgb(192, 218, 247);"><b>{{slot.start_time}} &nbsp;<span
+															  class="badge rounded-pill text-bg-info">Empty</span></b>
+														  <a data-bs-toggle="modal" data-bs-target="#delete{{forloop.counter}}"><span
+															  class="badge bg-danger rounded-pill"><i class="bi bi-trash-fill"></i></span></a></li>
+														{% endif %} {% endcomment %}
+										  
+										  
+										  
+{% comment %} 														<!-- Modal - Delete slot-->
+														<div class="modal fade" id="delete{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+														  aria-hidden="true">
+														  <div class="modal-dialog">
+															<div class="modal-content">
+															  <div class="modal-header">
+																<h1 class="modal-title fs-5" id="exampleModalLabel">Confirm slot</h1>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															  </div>
+															  <div class="modal-body">
+																Date and time : {{slot.date}} - {{slot.start_time}} <br>
+																Confirm delete ?
+															  </div>
+															  <div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+																<a class="btn btn-primary" href="{% url 'doctor:delete_slot' slot.id %}">Confirm</a>
+															  </div>
+															</div>
+														  </div>
+														</div>
+										  
+														<!-- Modal - Details of slot-->
+														<div class="modal fade" id="taken{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+														  aria-hidden="true">
+														  <div class="modal-dialog">
+															<div class="modal-content">
+															  <div class="modal-header">
+																<h1 class="modal-title fs-5" id="exampleModalLabel">Confirm slot</h1>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															  </div>
+															  <div class="modal-body">
+																Date and time : {{slot.date}} - {{slot.start_time}} <br>
+																Name: {{slot.taken.user.first_name}} {{slot.taken.user.last_name}} <br>
+																Place: {{slot.taken.place}} <br>
+																Age: {{slot.taken.age}} <br>
+																Health history: {{slot.taken.health_history}}
+															  </div>
+															  <div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+															  </div>
+															</div>
+														  </div>
+														</div> {% endcomment %}
+										  
+														<!-- Modal - Confirm slot-->
+	{% comment %} 													Date and time : {{slot.date}} - {{slot.start_time}} <br>
+														Name: {{slot.taken.user.first_name}} {{slot.taken.user.last_name}} <br>
+
+														<br><br>
+														<b> Confirm booking?</b>
+													  </div>
+													  <div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+														<a class="btn btn-danger" href="{% url 'doctor:cancel_booking' slot.id %}">Cancel</a>
+														<a class="btn btn-primary" href="{% url 'doctor:confirm_booking' slot.id %}">Confirm</a>
+										  
+
+														
+														{% endfor %}
+													  </div> {% endcomment %}
+
+
+
+
+
+														<h1>==================</h2>
+
+													</div>
+													<!-- /Slot List -->
+
+												</div>
+												<!-- /Monday Slot -->
+
+												<!-- Tuesday Slot -->
+												<div id="slot_tuesday" class="tab-pane fade">
+													<h4 class="card-title d-flex justify-content-between">
+														<span>Time Slots</span>
+														<a class="edit-link" data-toggle="modal"
+															href="#add_time_slot"><i class="fa fa-plus-circle"></i> Add
+															Slot</a>
+													</h4>
+													<p class="text-muted mb-0">Not Available</p>
+												</div>
+												<!-- /Tuesday Slot -->
+
+												<!-- Wednesday Slot -->
+												<div id="slot_wednesday" class="tab-pane fade">
+													<h4 class="card-title d-flex justify-content-between">
+														<span>Time Slots</span>
+														<a class="edit-link" data-toggle="modal"
+															href="#add_time_slot"><i class="fa fa-plus-circle"></i> Add
+															Slot</a>
+													</h4>
+													<p class="text-muted mb-0">Not Available</p>
+												</div>
+												<!-- /Wednesday Slot -->
+
+												<!-- Thursday Slot -->
+												<div id="slot_thursday" class="tab-pane fade">
+													<h4 class="card-title d-flex justify-content-between">
+														<span>Time Slots</span>
+														<a class="edit-link" data-toggle="modal"
+															href="#add_time_slot"><i class="fa fa-plus-circle"></i> Add
+															Slot</a>
+													</h4>
+													<p class="text-muted mb-0">Not Available</p>
+												</div>
+												<!-- /Thursday Slot -->
+
+												<!-- Friday Slot -->
+												<div id="slot_friday" class="tab-pane fade">
+													<h4 class="card-title d-flex justify-content-between">
+														<span>Time Slots</span>
+														<a class="edit-link" data-toggle="modal"
+															href="#add_time_slot"><i class="fa fa-plus-circle"></i> Add
+															Slot</a>
+													</h4>
+													<p class="text-muted mb-0">Not Available</p>
+												</div>
+												<!-- /Friday Slot -->
+
+												<!-- Saturday Slot -->
+												<div id="slot_saturday" class="tab-pane fade">
+													<h4 class="card-title d-flex justify-content-between">
+														<span>Time Slots</span>
+														<a class="edit-link" data-toggle="modal"
+															href="#add_time_slot"><i class="fa fa-plus-circle"></i> Add
+															Slot</a>
+													</h4>
+													<p class="text-muted mb-0">Not Available</p>
+												</div>
+												<!-- /Saturday Slot -->
+
+											</div>
+											<!-- /Schedule Content -->
+
+
+
+
+
+
+
+											====================================
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<!-- /Page Content -->
+
+
+
+
+
+	{% block schedule_footer %}
+
+	{% endblock schedule_footer %}
+	{% endblock body %}

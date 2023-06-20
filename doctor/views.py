@@ -52,7 +52,7 @@ def show_Specialization_detail(request,id):
     return render(request , 'doctor/test.html' , context={'doc_specialization':doc_specialization , 'specializations':specializations,})
 
 
-def signup(request):
+def doctor_signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -190,7 +190,7 @@ def delete_slot(request, slot):
 
 
 
-
+@login_required
 def confirm_booking(request, slot):
     slot = Schedule.objects.get(id=slot)
     slot.confirmed = True
@@ -198,6 +198,7 @@ def confirm_booking(request, slot):
     return redirect(reverse('doctor:client_slot_list'))
 
 
+@login_required
 def cancel_booking(request, slot):
     slot = Schedule.objects.get(id=slot)
     slot.confirmed=False

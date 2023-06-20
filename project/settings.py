@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     'client',
     'settings',
     
-
+    
+    
+    "crispy_bootstrap4",
+    
 ]
 
 MIDDLEWARE = [
@@ -63,8 +66,13 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'project.urls'
 
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'   #####
+#!CRISPY_TEMPLATE_PACK = 'bootstrap4'   #####
 #CRISPY_TEMPLATE_PACK = 'uni_form'
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 
