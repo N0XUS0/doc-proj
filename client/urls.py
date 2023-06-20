@@ -14,6 +14,7 @@ urlpatterns = [
     path('client_signup/' , views.client_signup , name='client_signup'),
     url(r'book_slot/(?P<slot>\d+)$', views.book_slot, name='book_slot'),
 
+
     path('booking/<slug:slug>/' , views.client_home_doc , name='booking'),
     path('update_client_profile/<slug:slug>/' , views.update_client_profile , name='update_client_profile'),
 
