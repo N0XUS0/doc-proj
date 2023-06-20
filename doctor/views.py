@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import date as dt, datetime
+from .filters import DoctorFilter
 
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -27,6 +28,17 @@ def doctors_list(request):
     specializations = Specialization.objects.all()
 
     return render(request , 'doctor/doctors_list.html' , context={'doctors':doctors,'specializations':specializations,})
+
+
+
+def doctor_search(request):
+    doctors = Profile_Doctor.objects.all()
+    myfilter = DoctorFilter(request.GET,queryset=doctors)
+    doctors = myfilter.qs
+
+    return render(request , 'doctor/search.html' , context={'doctors':doctors , 'myfilter':myfilter,})
+
+
 
 
 def doctors_detail(request , slug):

@@ -40,16 +40,18 @@ INSTALLED_APPS = [
     
     "bootstrap4",
     "crispy_forms",
+    "crispy_bootstrap4",
+    
+    
     "taggit",
-
+    'django_filters',
     
     'doctor',
     'client',
     'settings',
     
     
-    
-    "crispy_bootstrap4",
+
     
 ]
 
