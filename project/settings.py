@@ -42,16 +42,16 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
     
-    
     "taggit",
     'django_filters',
+    
     
     'doctor',
     'client',
     'settings',
     
     
-
+    'social_django',     #FACEBOOK
     
 ]
 
@@ -63,17 +63,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    
+    'social_django.middleware.SocialAuthExceptionMiddleware',   #FACEBOOK
 ]
 
 ROOT_URLCONF = 'project.urls'
 
 
-#!CRISPY_TEMPLATE_PACK = 'bootstrap4'   #####
-#CRISPY_TEMPLATE_PACK = 'uni_form'
-
-
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
-
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
@@ -89,6 +87,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
+                
+                'social_django.context_processors.backends',             #FACEBOOK
+                'social_django.context_processors.login_redirect',       #FACEBOOK
             ],
         },
     },
@@ -170,8 +172,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-TAGGIT_CASE_INSENSITIVE = True       #######
+TAGGIT_CASE_INSENSITIVE = True                  #######
 
 
 
-LOGIN_URL = 'doctor:login'          ######
+LOGIN_URL = 'doctor:login'                      #######
+LOGOUT_URL = 'logout'                           #######
+LOGIN_REDIRECT_URL = 'doctor:doctors_list'      #######
+
+
+
+
+AUTHENTICATION_BACKENDS = (                               #FACEBOOK
+    'social_core.backends.facebook.FacebookOAuth2',       #FACEBOOK
+    'social_core.backends.twitter.TwitterOAuth',          #FACEBOOK
+    'social_core.backends.github.GithubOAuth2',           #FACEBOOK
+    'django.contrib.auth.backends.ModelBackend',          #FACEBOOK
+)
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1716371672167554'  # App ID   #FACEBOOK
+SOCIAL_AUTH_FACEBOOK_SECRET = '94238b0fdd3dec057fd8a36823d52d75'  # App Secret    #FACEBOOK

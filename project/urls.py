@@ -25,6 +25,8 @@ urlpatterns = [
     path('', doctors_list, name="mainpage"),
     path('doctor/', include('doctor.urls' , namespace='doctor')),
     path('client/', include('client.urls' , namespace='client')),
+    
+    path('oauth/', include('social_django.urls', namespace='social')),        #FACEBOOK
 ]
 
 
