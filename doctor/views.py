@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect
 from django.urls import reverse
 from .models import Profile_Doctor , Doctor_Image , Schedule , Specialization
-from .forms import Login_Form , SignupForm , UserForm , ProfileDoctorForm 
+from .forms import Login_Form , SignupForm , UserForm , ProfileDoctorForm  , Complate_DocDate_Form
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -10,7 +10,7 @@ from datetime import date as dt, datetime
 from .filters import DoctorFilter
 
 
-from django.http import HttpResponseRedirect, HttpResponse
+#from django.http import HttpResponseRedirect, HttpResponse
 
 
 # Create your views here.
@@ -73,7 +73,8 @@ def doctor_signup(request):
             password = form.cleaned_data['password1']
             user = authenticate(username=username , password = password)
             login(request , user)
-            return redirect('doctor:doctors_list')
+            doctor_profile = Profile_Doctor.objects.get(user = request.user)
+            return redirect(reverse('doctor:complate_doc_date' , kwargs={'slug': doctor_profile.slug}))
     else:
         form = SignupForm()
         
@@ -231,22 +232,26 @@ def cancel_booking(request, slot):
 
 
 
+def complate_doc_date(request ,  slug):
+    doctor_profile = Profile_Doctor.objects.get(user = request.user)
+    
+    if request.method=='POST':
+        docform = Complate_DocDate_Form(request.POST , instance=doctor_profile)
+        if docform.is_valid():
+            mydocform = docform.save(commit=False)
+            mydocform.user = request.user
+            mydocform.save()
+            return redirect(reverse('doctor:compete_success'))
+    else:
+        mydocform = Complate_DocDate_Form(instance=doctor_profile)
+    return render(request , 'doctor/complate_doc.html' , {'mydocform':mydocform })
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+def compete_success(request):
+    
+    return render(request , 'doctor/compete_success.html' , {})
 
 
 

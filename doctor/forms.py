@@ -28,12 +28,16 @@ class SignupForm(UserCreationForm):
     email = forms.EmailField(label='Email')
     password1 = forms.CharField(label='password' , widget=forms.PasswordInput(),min_length=8)
     password2 = forms.CharField(label='Password confirmation' , widget=forms.PasswordInput(),min_length=8)
-    
     class Meta:
         model = User
         fields = ('username' , 'first_name' , 'last_name' , 'email' , 'password1' , 'password2')
 
 
+
+class Complate_DocDate_Form(forms.ModelForm):
+    class Meta:
+        model = Profile_Doctor
+        fields = ['name' , 'specialization', 'Syndicate']  
 
 
 #doctor_login

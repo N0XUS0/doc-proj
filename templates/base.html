@@ -142,7 +142,13 @@
 							</ul>
 						</li>
 						{% endif %} {% endcomment %}
-
+						{% if user.is_authenticated %}
+						{% if not user.profile_doctor.active_doctor %}
+						<li class="has-submenu">
+							<a href="{% url 'doctor:complate_doc_date' user.client_profile.slug %}">هل أنت طبيب ؟<i class="fas fa-chevron-down"></i></a>
+						</li>
+						{% endif %}
+						{% endif %}
 
 
 
