@@ -25,7 +25,7 @@
 
 	{% block schedule_head %}
 	<!-- Select2 CSS -->
-	<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}"> 
+	<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
 	{% endblock schedule_head %}
 
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -81,7 +81,8 @@
 								<li><a href="invoices.html">Invoices</a></li>
 								{% if user.is_authenticated %}
 
-								<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a></li>
+								<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile
+										Settings</a></li>
 								{% endif %}
 								<li><a href="reviews.html">Reviews</a></li>
 								<li><a href="doctor-register.html">Doctor Register</a></li>
@@ -99,7 +100,7 @@
 								<li><a href="favourites.html">Favourites</a></li>
 								<li><a href="chat.html">Chat</a></li>
 								<li><a href="profile-settings.html">Profile Settings</a></li>
-								<li><a href="change-password.html">Change Password</a></li>
+								<li><a href="{% url 'password_change' %}">Change Password</a></li>
 							</ul>
 						</li>
 						<li class="has-submenu">
@@ -129,7 +130,9 @@
 						<li class="login-link">
 							<a href="login.html">Login / Signup</a>
 						</li>
-	
+
+						{% comment %}
+						{% if not user.is_authenticated %}
 						<li class="has-submenu">
 							<a href="#">Register <i class="fas fa-chevron-down"></i></a>
 							<ul class="submenu">
@@ -138,39 +141,39 @@
 
 							</ul>
 						</li>
+						{% endif %} {% endcomment %}
 
 
 
 
-						{% if user.is_authenticated %}
-							
-							{% if user.profile_doctor.active_doctor %}
-							<li class="has-submenu">
-								<a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">{{user}} <i class="fas fa-chevron-down"></i></a>
-								<ul class="submenu">
-									<li><a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">myprofile</a></li>
-									<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a></li>
-								</ul>
-							</li>
-							{% else %}
-							هنا اعمل بروفايل لل	client
-							<li class="has-submenu">
-								<a href="{% url 'client:update_client_profile' user.client_profile.slug %}">{{user}} <i class="fas fa-chevron-down"></i></a>
-								<ul class="submenu">
-									<li><a href="{% url 'client:update_client_profile' user.client_profile.slug %}">myprofile</a></li>
-									<li><a href="{% url 'client:update_client_profile' user.client_profile.slug %}">Profile Settings</a></li>
-								</ul>
-							</li>
-							{% endif %}
+						{% comment %} {% if user.is_authenticated %}
 
-
-							{% else %}
-
+						{% if user.profile_doctor.active_doctor %}
+						<li class="has-submenu">
+							<a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">{{user}} <i
+									class="fas fa-chevron-down"></i></a>
+							<ul class="submenu">
+								<li><a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">myprofile</a></li>
+								<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile
+										Settings</a></li>
+							</ul>
+						</li>
+						{% else %}
+						هنا اعمل بروفايل لل client
+						<li class="has-submenu">
+							<a href="{% url 'client:update_client_profile' user.client_profile.slug %}">{{user}} <i
+									class="fas fa-chevron-down"></i></a>
+							<ul class="submenu">
+								<li><a
+										href="{% url 'client:update_client_profile' user.client_profile.slug %}">myprofile</a>
+								</li>
+								<li><a href="{% url 'client:update_client_profile' user.client_profile.slug %}">Profile
+										Settings</a></li>
+							</ul>
+						</li>
 						{% endif %}
-								
-
-
-
+						{% else %}
+						{% endif %} {% endcomment %}
 
 					</ul>
 				</div>
@@ -184,14 +187,83 @@
 							<p class="contact-info-header"> +1 315 369 5943</p>
 						</div>
 					</li>
-					{% if user.is_authenticated %}
 
-					<li class="nav-item">
-						<a class="nav-link header-login" href="{% url 'doctor:logout' %}">logout</a>
+					{% if user.is_authenticated %}
+					<li class="nav-item dropdown has-arrow logged-item">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img">
+								{% if user.profile_doctor.active_doctor %}
+								{% if user.profile_doctor.image %}
+								<img class="rounded-circle" src="{{user.profile_doctor.image.url}}" width="31"
+									alt="Darren Elder">
+								{% else %}
+								<img class="rounded-circle"
+									src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}" width="31"
+									alt="Darren Elder">
+								{% endif %}
+
+								{% else %}
+								{% if user.client_profile.image %}
+								<img class="rounded-circle" src="{{user.client_profile.image.url}}" width="31"
+									alt="Darren Elder">
+								{% else %}
+								<img class="rounded-circle"
+									src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}" width="31"
+									alt="Darren Elder">
+								{% endif %}
+								{% endif %}
+							</span>
+						</a>
+
+						<div class="dropdown-menu dropdown-menu-right">
+							<div class="user-header">
+								<div class="avatar avatar-sm">
+									{% if user.profile_doctor.active_doctor %}
+									{% if user.profile_doctor.image %}
+									<img src="{{user.profile_doctor.image.url}}" alt="User Image"
+										class="avatar-img rounded-circle">
+									{% else %}
+									<img class="rounded-circle"
+										src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}" width="31"
+										alt="Darren Elder">
+									{% endif %}
+
+									{% else %}
+									{% if user.client_profile.image %}
+									<img src="{{user.client_profile.image.url}}" alt="User Image"
+										class="avatar-img rounded-circle">
+									{% else %}
+									<img src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}"
+										alt="User Image" class="avatar-img rounded-circle">
+									{% endif %}
+									{% endif %}
+								</div>
+								<div class="user-text">
+									<h6>{{user.first_name}} {{user.last_name}}</h6>
+									{% if user.profile_doctor.active_doctor %}
+									<p class="text-muted mb-0">Doctor</p>
+									{% else %}
+									<p class="text-muted mb-0">Patients</p>
+									{% endif %}
+								</div>
+							</div>
+							<a class="dropdown-item" href="doctor-dashboard.html">Dashboard</a>
+							{% if user.profile_doctor.active_doctor %}
+							<a class="dropdown-item"
+								href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a>
+							{% else %}
+							<a class="dropdown-item"
+								href="{% url 'client:update_client_profile' user.client_profile.slug %}">Profile
+								Settings</a>
+							{% endif %}
+
+							<a class="dropdown-item" href="{% url 'doctor:logout' %}">Logout</a>
+						</div>
 					</li>
+
 					{% else %}
 					<li class="nav-item">
-						<a class="nav-link header-login" href="{% url 'doctor:login' %}">login / Signup </a>
+						<a class="nav-link header-login" href="{% url 'login' %}">login / Signup </a>
 					</li>
 					{% endif %}
 				</ul>
@@ -199,14 +271,7 @@
 		</header>
 		<!-- /Header -->
 
-
-
-
-
-
-
 		{% block body %}
-
 
 
 		{% endblock body %}
@@ -374,11 +439,11 @@
 
 	{% block schedule_footer %}
 	<!-- Sticky Sidebar JS -->
-	<script src="{% static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js' %}"></script>     
-	<script src="{% static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js' %}"></script> 
-	
+	<script src="{% static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js' %}"></script>
+	<script src="{% static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js' %}"></script>
+
 	<!-- Select2 JS -->
-	<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>	
+	<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
 	{% endblock schedule_footer %}
 
 	<!-- Custom JS -->

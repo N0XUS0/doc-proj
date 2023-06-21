@@ -11,7 +11,7 @@
 
                     {% else %}
                     <img class="img-fluid" alt="User Image"
-                        src="{% static 'assets/img/doctors/doctor-01.jpg' %}">
+                        src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}">
 
                     {% endif %}
                 </a>
@@ -45,16 +45,10 @@
                             <span>My Patients</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li >  {% comment %}  class="active" {% endcomment %}
                         <a href="{% url 'doctor:doc_home' %}">
                             <i class="fas fa-hourglass-start"></i>
                             <span>Schedule Timings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="invoices.html">
-                            <i class="fas fa-file-invoice"></i>
-                            <span>Invoices</span>
                         </a>
                     </li>
                     <li>
@@ -63,13 +57,7 @@
                             <span>Reviews</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="chat-doctor.html">
-                            <i class="fas fa-comments"></i>
-                            <span>Message</span>
-                            <small class="unread-msg">23</small>
-                        </a>
-                    </li>
+
                     <li>
                         <a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">
                             
@@ -84,7 +72,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="doctor-change-password.html">
+                        <a href="{% url 'password_change' %}">
                             <i class="fas fa-lock"></i>
                             <span>Change Password</span>
                         </a>

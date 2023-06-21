@@ -17,7 +17,7 @@
 								</div>
 								<div class="col-md-12 col-lg-6 login-right">
 									<div class="login-header">
-										<h3>Doctor Register <a href="register.html">Not a Doctor?</a></h3>
+										<h3>Doctor Register <a href="{% url 'client:client_signup' %}">Not a Doctor?</a></h3>
 									</div>
 
 									<!-- Register Form -->
@@ -26,7 +26,7 @@
 										{% bootstrap_form form %}
 
 										<div class="text-right">
-											<a class="forgot-link" href="login.html">Already have an account?</a>
+											<a class="forgot-link" href="{% url 'login' %}">Already have an account?</a>
 										</div>
 										<button class="btn btn-primary btn-block btn-lg login-btn"
 											type="submit">Signup</button>

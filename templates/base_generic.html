@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+
+
+{% block body %}
+<!-- Page Content -->
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				{% block content %}
+
+
+				{% endblock content %}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Content -->
+{% endblock body %}
