@@ -1,4 +1,6 @@
 {% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,10 +10,10 @@
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-	<title>Doccure</title>
+	<title>modernlabs</title>
 
 	<!-- Favicons -->
-	<link type="image/x-icon" href="{% static 'assets/img/favicon.png' %}" rel="icon">
+	<link type="image/x-icon" href="{% static 'assets/img/logo.png' %}" rel="icon">
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
@@ -20,8 +22,14 @@
 	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
 	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
 
+
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+
+
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
 
 	{% block schedule_head %}
 	<!-- Select2 CSS -->
@@ -53,133 +61,62 @@
 						</span>
 					</a>
 					<a href="{% url 'doctor:doctors_list' %}" class="navbar-brand logo">
-						<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+						<img src="{% static 'assets/img/modernlabs.jpg' %}" class="img-logo img-fluid" alt="Logo">
 					</a>
 				</div>
 				<div class="main-menu-wrapper">
 					<div class="menu-header">
-						<a href="index-2.html" class="menu-logo">
-							<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+						<a href="index.html" class="menu-logo">
+							<img src="{% static 'assets/img/modernlabs.jpg' %}" class="img-logo img-fluid" alt="Logo">
 						</a>
 						<a id="menu_close" class="menu-close" href="javascript:void(0);">
 							<i class="fas fa-times"></i>
 						</a>
 					</div>
+
 					<ul class="main-nav">
 						<li class="active">
-							<a href="{% url 'doctor:doctors_list' %}">Home</a>
+							<a href="{% url 'doctor:doctors_list' %}" data-i18n="Home">Home</a>
 						</li>
-						<li class="has-submenu">
-							<a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
-								<li><a href="appointments.html">Appointments</a></li>
-								<li><a href="{% url 'doctor:doc_home' %}">Schedule Timing</a></li>
-								<li><a href="my-patients.html">Patients List</a></li>
-								<li><a href="patient-profile.html">Patients Profile</a></li>
-								<li><a href="chat-doctor.html">Chat</a></li>
-								<li><a href="invoices.html">Invoices</a></li>
-								{% if user.is_authenticated %}
+						{% if user.is_authenticated %}
+							{% if user.profile_doctor.active_doctor %}
 
-								<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile
-										Settings</a></li>
-								{% endif %}
-								<li><a href="reviews.html">Reviews</a></li>
-								<li><a href="doctor-register.html">Doctor Register</a></li>
-							</ul>
-						</li>
-						<li class="has-submenu">
-							<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a href="{% url 'doctor:search' %}">Search Doctor</a></li>
-								<li><a href="doctor-profile.html">Doctor Profile</a></li>
-								<li><a href="booking.html">Booking</a></li>
-								<li><a href="checkout.html">Checkout</a></li>
-								<li><a href="booking-success.html">Booking Success</a></li>
-								<li><a href="{% url 'client:my-appointments' %}">My Appointments</a></li>
-								<li><a href="favourites.html">Favourites</a></li>
-								<li><a href="chat.html">Chat</a></li>
-								<li><a href="profile-settings.html">Profile Settings</a></li>
-								<li><a href="{% url 'password_change' %}">Change Password</a></li>
-							</ul>
-						</li>
-						<li class="has-submenu">
-							<a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a href="voice-call.html">Voice Call</a></li>
-								<li><a href="video-call.html">Video Call</a></li>
-								<li><a href="search.html">Search Doctors</a></li>
-								<li><a href="calendar.html">Calendar</a></li>
-								<li><a href="components.html">Components</a></li>
 								<li class="has-submenu">
-									<a href="invoices.html">Invoices</a>
+									<a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
 									<ul class="submenu">
-										<li><a href="invoices.html">Invoices</a></li>
-										<li><a href="invoice-view.html">Invoice View</a></li>
+										<li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+										<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a></li>
 									</ul>
 								</li>
-								<li><a href="blank-page.html">Starter Page</a></li>
-								<li><a href="login.html">Login</a></li>
-								<li><a href="register.html">Register</a></li>
-								<li><a href="forgot-password.html">Forgot Password</a></li>
+							
+								{% else %}
+								<li class="has-submenu">
+									<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
+									<ul class="submenu">
+										<li><a href="{% url 'client:my-appointments' %}">My Appointments</a></li>
+										<li><a href="{% url 'doctor:search' %}">Search Doctor</a></li>
+										<li><a href="laboratory.html">Search laboratory</a></li>
+										<li><a href="patient-dashboard.html">Patient Dashboard</a></li>
+										<li><a href="{% url 'client:update_client_profile' user.client_profile.slug %}">Profile Settings</a></li>
+									</ul>
+								</li>
+							{% endif %}
+						{% endif %}
+
+
+
+
+						<li class="has-submenu">
+							<a href="#">laboratory <i class="fas fa-chevron-down"></i></a>
+							<ul class="submenu">
+								<li><a href="laboratory.html">search laboratary</a></li>
 							</ul>
 						</li>
-						<li>
-							<a href="admin/index.html" target="_blank">Admin</a>
-						</li>
+
+						
 						<li class="login-link">
 							<a href="login.html">Login / Signup</a>
 						</li>
-
-						{% comment %}
-						{% if not user.is_authenticated %}
-						<li class="has-submenu">
-							<a href="#">Register <i class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a href="{% url 'doctor:doctor_signup' %}">join us</a></li>
-								<li><a href="{% url 'client:client_signup' %}">client_signup</a></li>
-
-							</ul>
-						</li>
-						{% endif %} {% endcomment %}
-						{% if user.is_authenticated %}
-						{% if not user.profile_doctor.active_doctor %}
-						<li class="has-submenu">
-							<a href="{% url 'doctor:complate_doc_date' user.client_profile.slug %}">هل أنت طبيب ؟<i class="fas fa-chevron-down"></i></a>
-						</li>
-						{% endif %}
-						{% endif %}
-
-
-
-						{% comment %} {% if user.is_authenticated %}
-
-						{% if user.profile_doctor.active_doctor %}
-						<li class="has-submenu">
-							<a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">{{user}} <i
-									class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a href="{% url 'doctor:myprofile' user.profile_doctor.slug %}">myprofile</a></li>
-								<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile
-										Settings</a></li>
-							</ul>
-						</li>
-						{% else %}
-						هنا اعمل بروفايل لل client
-						<li class="has-submenu">
-							<a href="{% url 'client:update_client_profile' user.client_profile.slug %}">{{user}} <i
-									class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a
-										href="{% url 'client:update_client_profile' user.client_profile.slug %}">myprofile</a>
-								</li>
-								<li><a href="{% url 'client:update_client_profile' user.client_profile.slug %}">Profile
-										Settings</a></li>
-							</ul>
-						</li>
-						{% endif %}
-						{% else %}
-						{% endif %} {% endcomment %}
 
 					</ul>
 				</div>
@@ -190,7 +127,7 @@
 						</div>
 						<div class="header-contact-detail">
 							<p class="contact-header">Contact</p>
-							<p class="contact-info-header"> +1 315 369 5943</p>
+							<p class="contact-info-header"> +20 01091518340</p>
 						</div>
 					</li>
 
@@ -253,7 +190,11 @@
 									{% endif %}
 								</div>
 							</div>
-							<a class="dropdown-item" href="doctor-dashboard.html">Dashboard</a>
+							{% if user.profile_doctor.active_doctor %}
+								<a class="dropdown-item" href="{% url 'doctor:client_slot_list' %}">Dashboard</a>
+								{% else %}
+								<a class="dropdown-item" href="{% url 'client:my-appointments' %}">Dashboard</a>
+							{% endif %}
 							{% if user.profile_doctor.active_doctor %}
 							<a class="dropdown-item"
 								href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a>
@@ -263,7 +204,7 @@
 								Settings</a>
 							{% endif %}
 
-							<a class="dropdown-item" href="{% url 'doctor:logout' %}">Logout</a>
+							<a class="dropdown-item" href="{% url 'doctor:logout' %}">تسجيل الخروج</a>
 						</div>
 					</li>
 
@@ -272,16 +213,19 @@
 						<a class="nav-link header-login" href="{% url 'login' %}">login / Signup </a>
 					</li>
 					{% endif %}
+
+
 				</ul>
 			</nav>
 		</header>
 		<!-- /Header -->
 
+		
 		{% block body %}
-
-
+			
+		
 		{% endblock body %}
-
+			
 
 		<!-- Footer -->
 		<footer class="footer">
@@ -289,18 +233,21 @@
 			<!-- Footer Top -->
 			<div class="footer-top">
 				<div class="container-fluid">
-					<div class="row">
+					<div class="row" style="flex-direction: row-reverse;">
 						<div class="col-lg-3 col-md-6">
 
 							<!-- Footer Widget -->
-							<div class="footer-widget footer-about">
+							<div class="footer-widget footer-about  " dir="rtl">
 								<div class="footer-logo">
-									<img src="assets/img/footer-logo.png" alt="logo">
+									<img style="width: 100px; display: flex;" src="{% static 'assets/img/logo-removebg.png' %}"
+										alt="logo" />
 								</div>
 								<div class="footer-about-content">
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-										incididunt ut labore et dolore magna aliqua. </p>
-									<div class="social-icon">
+									<p>تساعدك مودرن لاب في العثور على أفضل العيادات والمختبرات الطبية لك للحصول على
+										رعاية صحية لحياة أفضل
+
+									</p>
+									<div class="social-icon" style="display: flex;" dir="ltr">
 										<ul>
 											<li>
 												<a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
@@ -329,20 +276,21 @@
 
 							<!-- Footer Widget -->
 							<div class="footer-widget footer-menu">
-								<h2 class="footer-title">For Patients</h2>
+								<h2 class="footer-title">خدمات المرضى</h2>
 								<ul>
-									<li><a href="search.html"><i class="fas fa-angle-double-right"></i> Search for
-											Doctors</a></li>
-									<li><a href="login.html"><i class="fas fa-angle-double-right"></i> Login</a></li>
-									<li><a href="register.html"><i class="fas fa-angle-double-right"></i> Register</a>
+									<li><a href="search.html"><i class="fas fa-angle-double-right"></i> البحث عن
+											طبيب</a></li>
+									<li><a href="login.html"><i class="fas fa-angle-double-right"></i> تسجيل الدخول</a>
 									</li>
-									<li><a href="booking.html"><i class="fas fa-angle-double-right"></i> Booking</a>
+									<li><a href="booking.html"><i class="fas fa-angle-double-right"></i> حجز موعد</a>
 									</li>
-									<li><a href="patient-dashboard.html"><i class="fas fa-angle-double-right"></i>
-											Patient Dashboard</a></li>
+									<li><a href="patient-dashboard.html"><i class="fas fa-angle-double-right"></i> فحص
+											تحليل</a></li>
 								</ul>
 							</div>
 							<!-- /Footer Widget -->
+
+
 
 						</div>
 
@@ -350,16 +298,15 @@
 
 							<!-- Footer Widget -->
 							<div class="footer-widget footer-menu">
-								<h2 class="footer-title">For Doctors</h2>
+								<h2 class="footer-title">خدمات الاطباء</h2>
 								<ul>
-									<li><a href="appointments.html"><i class="fas fa-angle-double-right"></i>
-											Appointments</a></li>
-									<li><a href="chat.html"><i class="fas fa-angle-double-right"></i> Chat</a></li>
-									<li><a href="login.html"><i class="fas fa-angle-double-right"></i> Login</a></li>
+									<li><a href="appointments.html"><i class="fas fa-angle-double-right"></i> جدول
+											المواعيد</a></li>
+									<li><a href="chat.html"><i class="fas fa-angle-double-right"></i>المحادثات</a></li>
+									<li><a href="login.html"><i class="fas fa-angle-double-right"></i> تسجيل الدخول</a>
+									</li>
 									<li><a href="doctor-register.html"><i class="fas fa-angle-double-right"></i>
-											Register</a></li>
-									<li><a href="doctor-dashboard.html"><i class="fas fa-angle-double-right"></i> Doctor
-											Dashboard</a></li>
+											الانضمام الينا</a></li>
 								</ul>
 							</div>
 							<!-- /Footer Widget -->
@@ -370,19 +317,19 @@
 
 							<!-- Footer Widget -->
 							<div class="footer-widget footer-contact">
-								<h2 class="footer-title">Contact Us</h2>
+								<h2 class="footer-title">تواصل معنا</h2>
 								<div class="footer-contact-info">
 									<div class="footer-address">
 										<span><i class="fas fa-map-marker-alt"></i></span>
-										<p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+										<p> المنصورة حي الجامعة </p>
 									</div>
 									<p>
 										<i class="fas fa-phone-alt"></i>
-										+1 315 369 5943
+										+20 01091518340
 									</p>
 									<p class="mb-0">
 										<i class="fas fa-envelope"></i>
-										doccure@example.com
+										modernlabs@gmail.com
 									</p>
 								</div>
 							</div>
@@ -443,6 +390,9 @@
 	<!-- Slick JS -->
 	<script src="{% static 'assets/js/slick.js' %}"></script>
 
+	<!-- Custom JS -->
+	<script src="{% static 'assets/js/script.js' %}"></script>
+
 	{% block schedule_footer %}
 	<!-- Sticky Sidebar JS -->
 	<script src="{% static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js' %}"></script>
@@ -452,9 +402,16 @@
 	<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
 	{% endblock schedule_footer %}
 
-	<!-- Custom JS -->
-	<script src="{% static 'assets/js/script.js' %}"></script>
-
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+	<script>
+	  $( function() {      
+		$( "#profile_doctor" ).autocomplete({
+		  source: '{% url 'doctor:outocomplete' %}'
+		});
+	  } );
+	  </script>
 
 
 </body>

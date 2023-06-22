@@ -37,7 +37,7 @@ class SignupForm(UserCreationForm):
 class Complate_DocDate_Form(forms.ModelForm):
     class Meta:
         model = Profile_Doctor
-        fields = ['name' , 'specialization', 'Syndicate']  
+        fields = ['name' , 'number_phone', 'specialization' ,'Syndicate']  
 
 
 #doctor_login

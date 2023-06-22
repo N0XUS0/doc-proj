@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render , redirect
 from django.urls import reverse
 from .models import Profile_Doctor , Doctor_Image , Schedule , Specialization
@@ -248,7 +249,6 @@ def complate_doc_date(request ,  slug):
 
 
 
-
 def compete_success(request):
     
     return render(request , 'doctor/compete_success.html' , {})
@@ -257,7 +257,15 @@ def compete_success(request):
 
 
 
-
+def outocomplete(request):
+    if 'term' in request.GET:
+        qs = Profile_Doctor.objects.filter(name__icontains=request.GET.get('term'))
+        names = list()
+        for profile_doctor in qs:
+            names.append(profile_doctor.name)
+        return JsonResponse(names , safe=False)
+            
+    return render(request , 'doctor/doctors_list.html')
 
 
 

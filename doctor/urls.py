@@ -41,6 +41,9 @@ urlpatterns = [
     #path('<int:id>/myprofile/delete/' , views.delete_profile , name='profile_delete'),
     path('<slug:slug>/myprofile/' , views.myprofile , name='myprofile'),
     path('<slug:slug>/update_profile/' , views.update_profile , name='update_profile'),
+    
+    path('outocomplete',views.outocomplete,name='outocomplete'),
+
     path('<slug:slug>/' , views.doctors_detail , name='doctor_detail'),
 
 ]

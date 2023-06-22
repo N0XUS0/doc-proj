@@ -31,7 +31,7 @@
 						</a>
 					</li>
 
-					<li class="active">
+					<li >{% comment %} lass="active" {% endcomment %}
 						<a href="{% url 'client:update_client_profile' user.client_profile.slug %}">
 							<i class="fas fa-user-cog"></i>
 							<span>Profile Settings</span>

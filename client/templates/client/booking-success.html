@@ -31,13 +31,16 @@
 								<div class="success-cont">
 									<i class="fas fa-check"></i>
 					
-									<h3>Appointment booked Successfully!</h3>
-									<p>Appointment booked with <strong>Dr. {{doctor.name}}</strong><br> on 
+{% comment %} 									<h3>Appointment booked Successfully!</h3>
+									<p>Appointment booked with <strong>Dr. {{doc_schedule}}</strong><br> on 
 										{% for bookeds in booked %}<strong>{{bookeds.date|date:'j M'}}
 											{{bookeds.date|date:'Y'}} {{bookeds.start_time}}</strong></p>
 											{% endfor %}
+											{{last_slog}} {% endcomment %}
+									<h3>Appointment booked Successfully!</h3>
+									
 
-									<a href="{% url 'doctor:doctors_list' %}" class="btn btn-primary view-inv-btn">View Invoice خليه يروح لصفحه الحجوزات بتاعته</a>
+									<a href="{% url 'client:my-appointments' %}" class="btn btn-primary view-inv-btn mt-5">View My Appointments</a>
 								</div>
 							</div>
 						</div>

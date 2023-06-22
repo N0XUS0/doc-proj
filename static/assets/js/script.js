@@ -358,3 +358,7 @@ Version      : 1.0
 	$(window).scroll(animateElements);
 	
 })(jQuery);
+
+
+/* new */
+

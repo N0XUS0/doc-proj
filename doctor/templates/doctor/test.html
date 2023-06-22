@@ -1,11 +1,11 @@
 
 
 
-{% for specialization in specializations %}
+{% comment %} {% for specialization in specializations %}
     <a href="{% url 'doctor:show_Specialization_detail' specialization.id %} "> <h1>   {{specialization}}</h1>
     </a>
 {% endfor %}
-    
+     {% endcomment %}
 
 {% for doc_specializations in doc_specialization %}
     <a href="{% url 'doctor:doctor_detail' doc_specializations.slug %}"><p>{{doc_specializations.name}}</p></a>

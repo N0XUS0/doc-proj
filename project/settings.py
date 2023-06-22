@@ -179,7 +179,7 @@ TAGGIT_CASE_INSENSITIVE = True                  #######
 
 
 
-LOGIN_URL = 'doctor:login'                      #######
+LOGIN_URL = 'login'                      #######
 LOGOUT_URL = 'logout'                           #######
 LOGIN_REDIRECT_URL = 'doctor:doctors_list'      #######
 

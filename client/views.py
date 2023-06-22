@@ -127,7 +127,8 @@ def booking_success(request , slug):
         if sc.date < dt.today() :
             sc.delete()
     doc_schedule = Schedule.objects.filter(doc=doctor)
-    return render(request, template_name=['client/booking-success.html'] , context={ 'client': client, 'booked':booked, 'cancelled':cancelled, 'doc_schedule':doc_schedule, 'doctor':doctor,  'today': today})
+    last_slog = Schedule.objects.last()
+    return render(request, template_name=['client/booking-success.html'] , context={'docs':docs, 'last_slog':last_slog ,'client': client, 'booked':booked, 'cancelled':cancelled, 'doc_schedule':doc_schedule, 'doctor':doctor,  'today': today})
 
 
 @login_required
@@ -138,7 +139,10 @@ def book_slot(request, slot):
     slot.taken = client
     slot.confirmed = False
     slot.save()
-    return redirect(reverse('doctor:doctors_list')) 
+    last_slog = Schedule.objects.last()
+
+    #return redirect(reverse('doctor:doctors_list'))
+    return render(request, 'client/checkout.html' , context={'last_slog':last_slog , 'slot':slot}) 
 
 
 @login_required
