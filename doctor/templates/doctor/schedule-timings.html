@@ -12,7 +12,6 @@
 						<li class="breadcrumb-item active" aria-current="page">Schedule Timings</li>
 					</ol>
 				</nav>
-				<h2 class="breadcrumb-title">Schedule Timings</h2>
 			</div>
 		</div>
 	</div>
@@ -23,7 +22,7 @@
 <div class="content">
 	<div class="container-fluid">
 
-		<div class="row">
+		<div class="row" style="flex-direction: row-reverse;">
 			{% include 'doctor/Profile_Sidebar.html' %}
 
 
@@ -33,7 +32,7 @@
 					<div class="col-sm-12">
 						<div class="card">
 							<div class="card-body">
-								<h4 class="card-title">Schedule Timings</h4>
+								<h4 class="card-title">جدول المواعيد</h4>
 								<div class="profile-box">
 									<form action="{% url 'doctor:add_slot' %}" method="post">
 										{% csrf_token %}
@@ -41,8 +40,7 @@
 										<input type="time" name="start" id="time" class="form-control">
 										<input type="number" name="no_hours" id="" class="form-control"
 											placeholder="Number of hours available"> <br>
-										<button class="btn btn-primary btn-block btn-lg login-btn" type="submit">Add an
-											appointment</button>
+										<button class="btn btn-primary btn-block btn-lg login-btn" type="submit">اضافه موعد</button>
 									</form>
 									<div class="row">
 										<div class="col-md-12">
@@ -72,7 +70,7 @@
 												<!-- Monday Slot -->
 												<div id="slot_monday" class="tab-pane fade show active">
 													<h4 class="card-title d-flex justify-content-between">
-														<span>Time Slots</span>
+														<span>موعد الحجز</span>
 													</h4>
 
 													<div class="tab-content schedule-cont">

@@ -5981,6 +5981,7 @@ html.menu-opened body {
 		display: none;
 	}
 	.main-menu-wrapper {
+		flex: 1 1 50px;
 		order: 3;
 		width: 260px;
 		position: fixed;

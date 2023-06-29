@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block body %}
+
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-12 col-12">
+				<nav aria-label="breadcrumb" class="page-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'doctor:doctors_list' %}">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Profile Settings</li>
+					</ol>
+				</nav>
+				<h2 class="breadcrumb-title">Profile Settings</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+	<div class="container-fluid">
+
+		<div class="row">
+			{% include 'doctor/Profile_Sidebar.html' %}
+
+			<div class="col-md-7 col-lg-8 col-xl-9">
+
+
+				<!-- Basic Information -->
+				<div class="card">
+					<div class="card-body">
+						<h4 class="card-title">Basic Information</h4>
+						<div class="row form-row">
+
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<form form method="POST" enctype="multipart/form-data">
+										{% csrf_token %}
+										{% bootstrap_form userform %}
+										{% bootstrap_form doctor_profileform %}
+
+										<div class="submit-section submit-btn-bottom">
+											<button type="submit" class="btn btn-primary submit-btn">Save
+												Changes</button>
+										</div>
+									</form>
+									{% comment %} <label>Username <span class="text-danger">*</span></label>
+									<input type="text" class="form-control" readonly> {% endcomment %}
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- /Basic Information -->
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+<!-- /Page Content -->
+
+
+
+
+{% endblock body %}

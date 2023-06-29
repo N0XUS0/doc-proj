@@ -15,8 +15,8 @@
 				<div class="profile-det-info">
 					<h3>{{user.first_name}} {{user.last_name}}</h3>
 					<div class="patient-details">
-						<h5><i class="fas fa-birthday-cake"></i> {{user.client_profile.date_of_birth|date:'j M Y'}}, 38 years</h5>
-						<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{user.client_profile.address_detail}}, {{user.client_profile.address}}</h5>
+						<h5><i class="fas fa-birthday-cake"></i> {{user.client_profile.date_of_birth|date:'j M Y'}}</h5>
+						<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i>{{user.client_profile.address}} : {{user.client_profile.address_detail}}</h5>
 					</div>
 				</div>
 			</div>
@@ -27,26 +27,26 @@
 					<li>
 						<a href="{% url 'client:my-appointments' %}">
 							<i class="fas fa-columns"></i>
-							<span>Dashboard</span>
+							<span>لوحه التحكم</span>
 						</a>
 					</li>
 
 					<li >{% comment %} lass="active" {% endcomment %}
 						<a href="{% url 'client:update_client_profile' user.client_profile.slug %}">
 							<i class="fas fa-user-cog"></i>
-							<span>Profile Settings</span>
+							<span>اعدادات الملف الشخصي</span>
 						</a>
 					</li>
 					<li>
 						<a href="{% url 'password_change' %}">
 							<i class="fas fa-lock"></i>
-							<span>Change Password</span>
+							<span>تغيير كلمه المرور</span>
 						</a>
 					</li>
 					<li>
 						<a href="{% url 'doctor:logout' %}">
 							<i class="fas fa-sign-out-alt"></i>
-							<span>Logout</span>
+							<span>تسجيل الخروج</span>
 						</a>
 					</li>
 				</ul>

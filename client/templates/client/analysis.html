@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+	
+		<!-- Breadcrumb -->
+		<div class="breadcrumb-bar">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-md-12 col-12">
+						<nav aria-label="breadcrumb" class="page-breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">report analysis</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Breadcrumb -->
+		<div class="content">
+			<div class="container-fluid">
+
+				<div class="row" style="flex-direction: row-reverse;">
+
+					
+					<!-- Profile Sidebar -->
+					{% include 'client/Profile_Sidebar_client.html' %}
+
+					<!-- / Profile Sidebar -->
+					
+
+					<div class="analysis"
+						style="display: flex; justify-content:space-between; 	margin-right: 200px;	max-height: 600px; border-radius: 10px; background-color: white;"
+						dir="rtl">
+
+
+
+
+						<div class="p-4 m-4"
+							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;">اسم التحليل </h4>
+							{% for x in newkey %}
+							<span> {{x}}</span>
+							
+							{% endfor %}
+						</div>
+						
+						<div class="p-4 m-4"
+							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;"> النتيجة </h4>
+							{% for y in newvalue %}
+							<span>{{y}}</span>
+							{% endfor %}
+
+
+						</div>
+
+
+
+
+						<div class="p-4 m-4"
+							style="display: grid;  border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;"> التخصص </h4>
+							<span>Cardiology</span>
+							<span>Cardiology</span>
+							<span>Cardiology</span>
+							<span>Cardiology</span>
+							<span>Cardiology</span>
+							<span>Cardiology</span>
+							<span>Cardiology</span>
+						</div>
+
+
+						<div class="p-4 m-4"
+							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;"> الاقتراحات </h4>
+							<span></span>
+							<a href="{% url 'doctor:search' %}" class="btn btn view-inv-btn">عرض الدكاتره المقترحه</a>
+
+							<span></span>
+						</div>
+
+					</div>
+
+					<!-- Tab Content -->
+
+
+
+				</div>
+				
+			</div>
+
+		</div>
+
+
+
+
+{% endblock body %}

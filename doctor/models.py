@@ -14,8 +14,8 @@ from client.models import Client_Profile
 
 
 GENDER_OPTION=(
-    ('M','Male'),
-    ('F','Female'),
+    ('M','ذكر'),
+    ('F','انثي'),
 )
 
 # Create your models here.
@@ -23,27 +23,30 @@ GENDER_OPTION=(
 
 class Profile_Doctor(models.Model):
     user = models.OneToOneField(User, verbose_name=_("User") ,on_delete=models.CASCADE)
-    name = models.CharField(_("Name"), max_length=50)
-    subtitle = models.CharField(_("Subtitle"), max_length=100, null=True , blank=True)
-    address = models.CharField(_("Address"), max_length=50 , null=True , blank=True)
-    address_detail = models.CharField(_("Address_Detail"), max_length=500, null=True , blank=True)
-    number_phone = models.CharField(_("Number"), max_length=11 , null=True , blank=True)
-    working_hours = models.IntegerField(_("Working_Hours"), null=True , blank=True)
-    waiting_time = models.IntegerField(_("Waiting_Time"), null=True , blank=True)
-    gender = models.CharField(_("Gender"), max_length=10 , choices=GENDER_OPTION , null=True , blank=True)
-    who_i = models.CharField(_("Who_i"), max_length=250 , null=True , blank=True)
-    price  = models.IntegerField(_("Price") , null=True , blank=True)
-    image = models.ImageField(_("Image"), upload_to='doctor/profile/',null=True,blank=True)
-    specialist_doctor = models.CharField(_("specialist_doctor"), max_length=150 , null=True ,blank=True)
-    fb_link = models.URLField(_("Facebook"), max_length=250 , null=True , blank=True)
-    twit_link = models.URLField(_("Twitter_link"), max_length=200 , null=True , blank=True)
-    google_link = models.URLField(_("Google_link"), max_length=200 , null=True , blank=True)
-    specialization = models.ForeignKey('Specialization', related_name='profile_specialization' , on_delete=models.CASCADE , null=True , blank=True)
+    name = models.CharField(_("الاسم رباعي"), max_length=50)
+    address = models.CharField(_("العنوان"), max_length=50 , null=True , blank=True)
+    address_detail = models.CharField(_("العنوان بالتفصيل"), max_length=500, null=True , blank=True)
+    subtitle = models.CharField(_("وصف مختصر"), max_length=100, null=True , blank=True)
+    specialization = models.ForeignKey('Specialization',verbose_name='التخصص', related_name='profile_specialization' , on_delete=models.CASCADE , null=True , blank=True)
+    specialist_doctor = models.CharField(_("متخصص في"), max_length=150 , null=True ,blank=True)
+    price  = models.IntegerField(_("سعر الكشف") , null=True , blank=True)
+    working_hours = models.IntegerField(_("ساعات العمل"), null=True , blank=True)
+    waiting_time = models.IntegerField(_("وقت الانتظار"), null=True , blank=True)
+    number_phone = models.CharField(_("رقم الهاتف"), max_length=11 , null=True , blank=True)
+
+    gender = models.CharField(_("الجنس"), max_length=10 , choices=GENDER_OPTION , null=True , blank=True)
+    who_i = models.CharField(_("من انا"), max_length=250 , null=True , blank=True)
+    image = models.ImageField(_("الصوره"), upload_to='doctor/profile/',null=True,blank=True)
     join_us = models.DateTimeField(_("Join_Us"), auto_now=False, auto_now_add=True , null=True , blank=True)
-    slug = models.SlugField(_("Slug") , null=True , blank=True)
+    slug = models.SlugField(_("الاسم التعريفي") , null=True , blank=True)
     tags = TaggableManager(blank=True)
     active_doctor = models.BooleanField(_("active_doctor") , default=False)
-    Syndicate = models.CharField(_("Syndicate"), max_length=50 )
+    Syndicate = models.CharField(_("رقم التسجيل في النقابه"), max_length=50 )
+    title = models.TextField(_("الوصف"), max_length=500, null=True , blank=True)
+
+    fb_link = models.URLField(_("Facebook"), max_length=250 , null=True , blank=True)
+    twit_link = models.URLField(_("Twitter"), max_length=200 , null=True , blank=True)
+    google_link = models.URLField(_("Googlek"), max_length=200 , null=True , blank=True)
     
 
 
@@ -86,8 +89,8 @@ post_save.connect(create_profile,sender=User)
     
     
 class Specialization(models.Model):
-    spec = models.CharField(max_length=200)
-    image = models.ImageField(_("Image"), upload_to='specialization_image/',null=True,blank=True)
+    spec = models.CharField(_("تخصص2"),max_length=200)
+    image = models.ImageField(_("الصوره"), upload_to='specialization_image/',null=True,blank=True)
     
     
     def __str__(self):
@@ -111,9 +114,7 @@ class Doctor_Image(models.Model):
         verbose_name = 'Doctor_Image'
         verbose_name_plural = 'Doctor_Images'
         
-        
-        
-    
+
     
 class DoctorReview(models.Model):
     user = models.ForeignKey(User,related_name='user_review',on_delete=models.CASCADE)
@@ -131,11 +132,6 @@ class DoctorReview(models.Model):
         verbose_name_plural = 'DoctorReviews'
         
         
-        
-        
-        
-        
-
 
 class Schedule(models.Model):
     doc = models.ForeignKey(Profile_Doctor, on_delete=models.CASCADE)

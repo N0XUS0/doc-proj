@@ -1,0 +1,102 @@
+{% comment %} {{valuenew}}
+{{keynew}}
+
+
+ {% endcomment %}
+
+{% comment %} {{listnew}}
+ {% endcomment %}    
+
+{% comment %} 
+{% for patient_result in patient_results %}
+{{keynews}}
+
+{{listnewkeys}}
+
+
+{% endfor %}
+    
+{% for listnewnalues in listnewnalue %}
+
+
+{{listnewnalues}}
+
+
+{% endfor %} {% endcomment %}
+    
+
+{% comment %} {% for number in numbers %}
+    {{number}}
+{% endfor %}
+    
+{{numbers}} {% endcomment %}
+
+
+    
+<{% comment %} h1>{{newkey}}</h1>
+<h1>{{newvalue}}</h1>
+<h1>{{new.key}}</h1> {% endcomment %}
+
+
+
+{% for x in newkey %}
+   <h1> {{x}} <h1>
+{% endfor %}
+
+{% for y in newvalue %}
+   <h1> {{y}} <h1>
+{% endfor %}
+
+
+    
+
+
+<h1>===================</h1>
+
+<h1>Sorry, but you have a problem in 'hgb' with result 12.6</h1>
+<h1>Sorry, but you have a problem in 'hct' with result 54.3</h1>
+<h1>Sorry, but you have a problem in 'mchc' with result 31.5</h1>
+<h1>Sorry, but you have a problem in 'rdw' with result 11.3</h1>
+<h1>Sorry, but you have a problem in 'pct' with result 0.3</h1>
+<h1>Sorry, but you have a problem in 'mpv' with result 0.8</h1>
+<h1>Sorry, but you have a problem in 'neutrophil' with result 34.4</h1>
+<h1>Sorry, but you have a problem in 'monocytes' with result 10.6</h1>
+
+
+
+
+
+
+<h1>===========================</h1>
+<!DOCTYPE html>
+<html>
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+<body>
+
+<h2>TH elements define table headers</h2>
+
+<table style="width:100%">
+
+  <tr>
+    {% for x in newkey %}
+    <td>{{x}}</td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    {% for y in newvalue %}
+    <td>{{y}}</td>
+    {% endfor %}
+  </tr>
+
+</table>
+
+
+</body>
+</html>
+
+

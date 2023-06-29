@@ -1,20 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load bootstrap4 %}
-
-<!DOCTYPE html>
-<html lang="en">
 {% block body %}
-<!-- doccure/doctor-profile-settings.html  30 Nov 2019 04:12:14 GMT -->
-<!-- Select2 CSS -->
-<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="{% static 'assets/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css' %}">
-
-
-<link rel="stylesheet" href="{% static 'assets/plugins/dropzone/dropzone.min.css' %}">
-
 
 
 <!-- Breadcrumb -->
@@ -24,11 +11,10 @@
 			<div class="col-md-12 col-12">
 				<nav aria-label="breadcrumb" class="page-breadcrumb">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="{% url 'doctor:doctors_list' %}">Home</a></li>
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
 						<li class="breadcrumb-item active" aria-current="page">Profile Settings</li>
 					</ol>
 				</nav>
-				<h2 class="breadcrumb-title">Profile Settings</h2>
 			</div>
 		</div>
 	</div>
@@ -39,20 +25,22 @@
 <div class="content">
 	<div class="container-fluid">
 
-		<div class="row">
-			{% include 'doctor/Profile_Sidebar.html' %}
+		<div class="row" style="flex-direction: row-reverse;">
+
+				<!-- Profile Sidebar -->
+				{% include 'doctor/Profile_Sidebar.html' %}
+
+				<!-- /Profile Sidebar -->
 
 			<div class="col-md-7 col-lg-8 col-xl-9">
 
-
 				<!-- Basic Information -->
-				<div class="card">
+				<div class="card" dir="rtl">
 					<div class="card-body">
-						<h4 class="card-title">Basic Information</h4>
 						<div class="row form-row">
 
 
-							<div class="col-12 col-md-6">
+							<div class="col-md-6">
 								<div class="form-group">
 									<form form method="POST" enctype="multipart/form-data">
 										{% csrf_token %}
@@ -60,12 +48,10 @@
 										{% bootstrap_form doctor_profileform %}
 
 										<div class="submit-section submit-btn-bottom">
-											<button type="submit" class="btn btn-primary submit-btn">Save
-												Changes</button>
+											<button type="submit" class="btn btn-primary submit-btn">حفظ
+												التغيير</button>
 										</div>
 									</form>
-									{% comment %} <label>Username <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" readonly> {% endcomment %}
 								</div>
 							</div>
 
@@ -81,28 +67,4 @@
 
 </div>
 <!-- /Page Content -->
-
-
-
-
-<script src="{% static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js' %}"></script>
-<script src="{% static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js' %}"></script>
-
-<!-- Select2 JS -->
-<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
-
-<!-- Dropzone JS -->
-<script src="{% static 'assets/plugins/dropzone/dropzone.min.js' %}"></script>
-
-<!-- Bootstrap Tagsinput JS -->
-<script src="{% static 'assets/plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.js' %}"></script>
-
-<!-- Profile Settings JS -->
-<script src="{% static 'assets/js/profile-settings.js' %}"></script>
-
-
-
-
-
-
 {% endblock body %}

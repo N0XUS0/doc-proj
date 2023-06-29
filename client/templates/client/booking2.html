@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+	
+	
+		<!-- Breadcrumb -->
+		<div class="breadcrumb-bar">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-md-12 col-12">
+						<nav aria-label="breadcrumb" class="page-breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">report analysis</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Breadcrumb -->
+		<div class="content">
+			<div class="container-fluid">
+
+				<div class="row" style="flex-direction: row-reverse;">
+
+
+
+					<div class="analysis"
+						style="display: flex; justify-content:space-between; 	margin-right: 200px;	max-height: 600px; border-radius: 10px; background-color: white;"
+						dir="rtl">
+						<div class="p-4 m-4"
+							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;">اسم التحليل </h4>
+							<span>تحليل دم</span>
+							<span>تحليل دم</span>
+							<span>تحليل دم</span>
+							<span>تحليل دم</span>
+						</div>
+						<div class="p-4 m-4"
+							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;"> النتيجة </h4>
+							<span>9.2</span>
+							<span>12.5</span>
+							<span>7.5</span>
+							<span>13.1</span>
+
+
+						</div>
+						<div class="p-4 m-4"
+							style="display: grid;  border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;"> التخصص </h4>
+							<span> امراض الدم</span>
+							<span> امراض الدم</span>
+							<span> امراض الدم</span>
+							<span> امراض الدم</span>
+
+
+						</div>
+						<div class="p-4 m-4"
+							style="display: grid;  border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;"> الحالة </h4>
+							<span>غير جيدة</span>
+							<span>جيدة</span>
+							<span> غير جيدة</span>
+							<span>جيدة</span>
+
+
+						</div>
+						<div class="p-4 m-4"
+							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
+							<h4 style="color: #0de4fe;font-weight: bold;"> الاقتراحات </h4>
+							<span> اقتراح طبيب </span>
+							<span> </span>
+							<span> اقتراح طبيب</span>
+							<span> </span>
+						</div>
+					</div>
+
+
+					<!-- Tab Content -->
+
+
+
+				</div>
+			</div>
+
+		</div>
+
+
+		{% endblock body %}

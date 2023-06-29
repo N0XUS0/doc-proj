@@ -36,7 +36,40 @@
 </section>
 <!-- /Home Banner -->
 
+<!-- Clinic and Specialities -->
+<section class="section section-specialities">
+	<div class="container-fluid">
+		<div class="section-header text-center">
+			<h2>العيادات والتخصص</h2>
+			<p class="sub-title">اكتشف أفضل الأطباء والعيادات والمستشفيات في المدينة الأقرب إليك.
 
+			</p>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-md-9">
+				<!-- Slider -->
+				<div class="specialities-slider slider">
+
+					{% for specialization in specializations %}
+					<!-- Slider Item -->
+					<div class="speicality-item text-center">
+						<div class="speicality-img">
+							<a href="{% url 'doctor:show_Specialization_detail' specialization.id %}"> <img src="{{specialization.image.url}}" class="img-fluid" alt="Speciality">
+								<span><i class="fa fa-circle" aria-hidden="true"></i></span>
+						</div>
+						<p>{{specialization.spec}}</p> </a>
+					</div>
+					<!-- /Slider Item -->
+
+					{% endfor %}
+				</div>
+				<!-- /Slider -->
+
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Clinic and Specialities -->
 
 <!-- Popular Section -->
 <section class="section section-doctor">
@@ -68,17 +101,13 @@
 					<div class="profile-widget">
 						<div class="doc-img">
 							<a href="{% url 'doctor:doctor_detail' d.profile_doctor.slug %}">
-
 								{% if d.profile_doctor.image %}
 								<img class="img-fluid" alt="User Image" src="{{d.profile_doctor.image.url}}">
 								{% else %}
 								<img class="img-fluid" alt="User Image"
 									src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}">
 								{% endif %}
-
-
 							</a>
-
 							<a href="javascript:void(0)" class="fav-btn">
 								<i class="far fa-bookmark"></i>
 							</a>
@@ -115,9 +144,11 @@
 								<div class="col-6">
 									<a href="{% url 'doctor:doctor_detail' d.profile_doctor.slug %}" class="btn view-btn">عرض الصفحة </a>
 								</div>
+								{% if not user.profile_doctor.active_doctor %}
 								<div class="col-6">
 									<a href="{% url 'client:booking' d.profile_doctor.slug %}" class="btn book-btn">حجز الان </a>
 								</div>
+								{% endif %}
 							</div>
 						</div>
 					</div>
@@ -161,7 +192,7 @@
 					<div class="profile-widget">
 						<div class="doc-img">
 							<a href="doctor-profile.html">
-								<img class="img-fluid" alt="User Image" src="assets/img/logo (1).png">
+								<img class="img-fluid" alt="User Image" src="{% static 'assets/img/logo (1).png' %}">
 							</a>
 							<a href="javascript:void(0)" class="fav-btn">
 								<i class="far fa-bookmark"></i>
@@ -212,7 +243,7 @@
 					<div class="profile-widget">
 						<div class="doc-img">
 							<a href="doctor-profile.html">
-								<img class="img-fluid" alt="User Image" src="assets/img/logo (1).png">
+								<img class="img-fluid" alt="User Image" src="{% static 'assets/img/logo (1).png' %}">
 							</a>
 							<a href="javascript:void(0)" class="fav-btn">
 								<i class="far fa-bookmark"></i>
@@ -262,7 +293,7 @@
 					<div class="profile-widget">
 						<div class="doc-img">
 							<a href="doctor-profile.html">
-								<img class="img-fluid" alt="User Image" src="assets/img/download.jpg">
+								<img class="img-fluid" alt="User Image" src="{% static 'assets/img/download.jpg' %}">
 							</a>
 							<a href="javascript:void(0)" class="fav-btn">
 								<i class="far fa-bookmark"></i>
@@ -310,7 +341,7 @@
 					<div class="profile-widget">
 						<div class="doc-img">
 							<a href="doctor-profile.html">
-								<img class="img-fluid" alt="User Image" src="assets/img/download2.png">
+								<img class="img-fluid" alt="User Image" src="{% static 'assets/img/download2.png' %}">
 							</a>
 							<a href="javascript:void(0)" class="fav-btn">
 								<i class="far fa-bookmark"></i>
@@ -360,40 +391,7 @@
 	</div>
 </section>
 
-<!-- Clinic and Specialities -->
-<section class="section section-specialities">
-	<div class="container-fluid">
-		<div class="section-header text-center">
-			<h2>العيادات والتخصص</h2>
-			<p class="sub-title">اكتشف أفضل الأطباء والعيادات والمستشفيات في المدينة الأقرب إليك.
 
-			</p>
-		</div>
-		<div class="row justify-content-center">
-			<div class="col-md-9">
-				<!-- Slider -->
-				<div class="specialities-slider slider">
-
-					{% for specialization in specializations %}
-					<!-- Slider Item -->
-					<div class="speicality-item text-center">
-						<div class="speicality-img">
-							<a href="{% url 'doctor:show_Specialization_detail' specialization.id %}"> <img src="{{specialization.image.url}}" class="img-fluid" alt="Speciality">
-								<span><i class="fa fa-circle" aria-hidden="true"></i></span>
-						</div>
-						<p>{{specialization.spec}}</p> </a>
-					</div>
-					<!-- /Slider Item -->
-
-					{% endfor %}
-				</div>
-				<!-- /Slider -->
-
-			</div>
-		</div>
-	</div>
-</section>
-<!-- Clinic and Specialities -->
 
 <!-- Availabe Features -->
 <section class="section section-features">
@@ -418,35 +416,35 @@
 
 					<!-- Slider Item -->
 					<div class="feature-item text-center">
-						<img src="assets/img/features/feature-02.jpg" class="img-fluid" alt="Feature">
+						<img src="{% static 'assets/img/features/feature-02.jpg' %}" class="img-fluid" alt="Feature">
 						<p>اشعة</p>
 					</div>
 					<!-- /Slider Item -->
 
 					<!-- Slider Item -->
 					<div class="feature-item text-center">
-						<img src="assets/img/features/feature-03.jpg" class="img-fluid" alt="Feature">
+						<img src="{% static 'assets/img/features/feature-03.jpg' %}" class="img-fluid" alt="Feature">
 						<p>مستشفي</p>
 					</div>
 					<!-- /Slider Item -->
 
 					<!-- Slider Item -->
 					<div class="feature-item text-center">
-						<img src="assets/img/features/feature-04.jpg" class="img-fluid" alt="Feature">
+						<img src="{% static 'assets/img/features/feature-04.jpg' %}" class="img-fluid" alt="Feature">
 						<p>معمل طبي</p>
 					</div>
 					<!-- /Slider Item -->
 
 					<!-- Slider Item -->
 					<div class="feature-item text-center">
-						<img src="assets/img/features/feature-05.jpg" class="img-fluid" alt="Feature">
+						<img src="{% static 'assets/img/features/feature-05.jpg' %}" class="img-fluid" alt="Feature">
 						<p>عيادة</p>
 					</div>
 					<!-- /Slider Item -->
 
 					<!-- Slider Item -->
 					<div class="feature-item text-center">
-						<img src="assets/img/features/feature-06.jpg" class="img-fluid" alt="Feature">
+						<img src="{% static 'assets/img/features/feature-06.jpg' %}" class="img-fluid" alt="Feature">
 						<p>صيدلية</p>
 					</div>
 					<!-- /Slider Item -->

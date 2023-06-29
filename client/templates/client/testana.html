@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Results</title>
+</head>
+
+<body>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="file">Upload PDF file:</label>
+        <input type="file" name="file" id="file" required>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+</body>
+
+
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
+</style>
+
+
+    <h2>results</h2>
+
+    <table style="width:100%">
+
+
+
+        <tr>
+            {% for x in newkey %}
+            <td>{{x}}</td>
+            {% endfor %}
+
+        </tr>
+
+
+
+        <tr>
+            {% for y in newvalue %}
+
+            <td>{{y}}</td>
+            {% endfor %}
+
+        </tr>
+
+
+
+    </table>
+
+
+
+
+    
+{% endblock body %}
+    

@@ -13,8 +13,8 @@ from taggit.managers import TaggableManager
 
 
 GENDER_OPTION=(
-    ('M','Male'),
-    ('F','Female'),
+    ('M','ذكر'),
+    ('F','انتي'),
 )
 
 BLOOD_GROUP_OPTION = (
@@ -30,16 +30,16 @@ BLOOD_GROUP_OPTION = (
 
 class Client_Profile(models.Model):
     user = models.OneToOneField(User, verbose_name=_("User") ,on_delete=models.CASCADE)
-    name = models.CharField(_("Name"), max_length=50)
-    image = models.ImageField(_("Image"), upload_to='client/profile/',null=True,blank=True)
-    address = models.CharField(_("Address"), max_length=50 , null=True , blank=True)
-    address_detail = models.CharField(_("Address_Detail"), max_length=500 , null=True , blank=True)
-    number_phone = models.CharField(_("Number"), max_length=11 )
-    gender = models.CharField(_("Gender"), max_length=10 , choices=GENDER_OPTION)
-    blood_group  = models.CharField(_("Blood Group "), max_length=5 , choices=BLOOD_GROUP_OPTION)
-    date_of_birth = models.DateField(_("Date of Birth"), auto_now=False, auto_now_add=False , null=True , blank=True) 
+    name = models.CharField(_("الاسم"), max_length=50)
+    image = models.ImageField(_("الصوره الشخصيه"), upload_to='client/profile/',null=True,blank=True)
+    address = models.CharField(_("العنوان"), max_length=50 , null=True , blank=True)
+    address_detail = models.CharField(_("تفاصيل العنوان"), max_length=500 , null=True , blank=True)
+    number_phone = models.CharField(_("رقم الهاتف"), max_length=11 )
+    gender = models.CharField(_("الجنس"), max_length=10 , choices=GENDER_OPTION)
+    blood_group  = models.CharField(_("فصيله الدم "), max_length=5 , choices=BLOOD_GROUP_OPTION)
+    date_of_birth = models.DateField(_("تاريخ الميلاد"), auto_now=False, auto_now_add=False , null=True , blank=True) 
     zip_code = models.IntegerField(_("Zip Code"), max_length=11 , null=True , blank=True)
-    slug = models.SlugField(_("Slug") , null=True , blank=True)
+    slug = models.SlugField(_("الاسم التعريفي") , null=True , blank=True)
 
 
 

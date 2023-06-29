@@ -10,6 +10,7 @@ from django.contrib import messages
 from datetime import date as dt, datetime
 from .filters import DoctorFilter
 
+from django.db.models.aggregates import Max , Min , Avg , Count , Sum
 
 #from django.http import HttpResponseRedirect, HttpResponse
 
@@ -39,6 +40,12 @@ def doctor_search(request):
 
     return render(request , 'doctor/search.html' , context={'doctors':doctors , 'myfilter':myfilter,})
 
+def doctor_patients(request,slug):
+    doc = Profile_Doctor.objects.get(user=request.user)    
+
+    schedule = Schedule.objects.filter(doc=doc)
+
+    return render(request,'doctor/my-patients.html', context={ 'schedules':schedule,'doc':doc,})
 
 
 
@@ -62,7 +69,7 @@ def myprofile(request,slug):
 def show_Specialization_detail(request,id):
     specializations = Specialization.objects.all()
     doc_specialization = Profile_Doctor.objects.filter(specialization=id)    
-    return render(request , 'doctor/test.html' , context={'doc_specialization':doc_specialization , 'specializations':specializations,})
+    return render(request , 'doctor/favourites.html' , context={'doc_specialization':doc_specialization , 'specializations':specializations,})
 
 
 def doctor_signup(request):
@@ -113,7 +120,7 @@ def update_profile(request ,  slug):
             mydoctor_profileform = doctor_profileform.save(commit=False)
             mydoctor_profileform.user = request.user
             mydoctor_profileform.save()
-            return redirect(reverse('doctor:myprofile' , kwargs={'slug': doctor_profile.slug}))
+            return redirect(reverse('doctor:update_profile' , kwargs={'slug': doctor_profile.slug}))
     else:
         userform = UserForm(instance=request.user)
         doctor_profileform = ProfileDoctorForm(instance=doctor_profile)
@@ -190,6 +197,24 @@ def client_slot_list(request):
     today = Schedule.objects.filter(doc=doc, date=dt.today())
     t = str(dt.today())
     return render(request,'doctor/appointments.html', context={'schedules':schedule,'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'today':today})
+
+@login_required
+def doctor_dashboard(request):
+    doc = Profile_Doctor.objects.get(user=request.user)    
+    schedule = Schedule.objects.filter(doc=doc)
+    for sc in schedule:
+        if sc.date < dt.today() :
+            sc.delete()
+    schedule = Schedule.objects.filter(doc=doc)
+    dates = sorted(set([sc.date for sc in schedule]))
+    slot = Schedule.objects.filter(doc=doc)
+    today = Schedule.objects.filter(doc=doc, date=dt.today())
+    t = str(dt.today())
+    
+    slot_today_count= Schedule.objects.filter(doc=doc, date=dt.today()).count
+    client_today_slot_count= Schedule.objects.filter(doc=doc ,confirmed=True , date=dt.today()).count
+    client_all_slot_count= Schedule.objects.filter(doc=doc  ,confirmed=True).count
+    return render(request,'doctor/doctor-dashboard.html', context={'client_all_slot_count':client_all_slot_count ,'client_today_slot_count':client_today_slot_count,'slot_today_count':slot_today_count, 'schedules':schedule,'t':t, 'doc':doc, 'dates':dates, 'slots':slot, 'today':today})
 
 
 
@@ -304,8 +329,8 @@ def delete_profile(request,id):
     single.delete()
     return redirect(reverse('accounts:doctors_list')) """
 
-""" def test(request):
-    return render(request , 'doctor/schedule-timings.html' , {}) """
+def test(request):
+    return render(request , 'doctor/doctor.html' , {})
 
 
 

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-12 col-12">
+				<nav aria-label="breadcrumb" class="page-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">الصفحه الرئيسيه</a></li>
+						<li class="breadcrumb-item active" aria-current="page">التخصص</li>
+					</ol>
+				</nav>
+				<h2 class="breadcrumb-title">Favourites</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+	<div class="container-fluid">
+		<div class="row" style="justify-Content: center">
+
+			<div class="col-md-7 col-lg-8 col-xl-9">
+				<div class="row row-grid">
+
+					{% for doc_specializations in doc_specialization %}
+					{% if doc_specializations.name and doc_specializations.active_doctor and doc_specializations.address and doc_specializations.address_detail and doc_specializations.price %}
+
+					<div class="col-md-6 col-lg-4 col-xl-3">
+						<div class="profile-widget">
+							<div class="doc-img">
+								<a href="doctor-profile.html">
+
+									{% if doc_specializations.image %}
+									<img class="img-fluid" alt="User Image" src="{{doc_specializations.image.url}}">
+									{% else %}
+									<img class="img-fluid" alt="User Image"
+										src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}">
+									{% endif %}
+
+
+
+								</a>
+								<a href="javascript:void(0)" class="fav-btn">
+									<i class="far fa-bookmark"></i>
+								</a>
+							</div>
+							<div class="pro-content">
+								<h3 class="title">
+									<a href="doctor-profile.html">{{doc_specializations.user.first_name}} {{doc_specializations.user.last_name}}</a>
+									<i class="fas fa-check-circle verified"></i>
+								</h3>
+								<p class="speciality">{{doc_specializations.specialist_doctor}}</p>
+								<div class="rating">
+									<i class="fas fa-star filled"></i>
+									<i class="fas fa-star filled"></i>
+									<i class="fas fa-star filled"></i>
+									<i class="fas fa-star filled"></i>
+									<i class="fas fa-star filled"></i>
+									<span class="d-inline-block average-rating">(17)</span>
+								</div>
+								<ul class="available-info">
+									<li>
+										<i class="fas fa-map-marker-alt"></i> {{doc_specializations.address}} : {{doc_specializations.address_detail}}
+									</li>
+
+									<li>
+										<i class="far fa-money-bill-alt"></i> السعر :{{doc_specializations.price}}ج <i class="fas fa-info-circle"
+											data-toggle="tooltip" title="Lorem Ipsum"></i>
+									</li>
+								</ul>
+								<div class="row row-sm">
+									<div class="col-6">
+										<a href="{% url 'doctor:doctor_detail' doc_specializations.slug %}" class="btn view-btn">عرض الصفحة</a>
+									</div>
+									<div class="col-6">
+										<a href="{% url 'client:booking' doc_specializations.slug %}" class="btn book-btn">حجز الان</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{% endif %}
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- /Page Content -->
+{% endblock body %}

@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-12 col-12">
+				<nav aria-label="breadcrumb" class="page-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'doctor:doctors_list' %}">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+	<div class="container-fluid">
+
+		<div class="row" style="flex-direction: row-reverse;">
+			{% include 'doctor/Profile_Sidebar.html' %}
+
+
+			<div class="col-md-7 col-lg-8 col-xl-9">
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card dash-card">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-12 col-lg-4">
+										<div class="dash-widget dct-border-rht">
+											<div class="circle-bar circle-bar1">
+												<div class="circle-graph1" data-percent="75">
+													<img src="assets/img/icon-01.png" class="img-fluid" alt="patient">
+												</div>
+											</div>
+											<div class="dash-widget-info">
+												<h6>عدد المرضي</h6>
+												<h3>{{client_all_slot_count}}</h3>
+												<p class="text-muted"> الي اليوم </p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12 col-lg-4">
+										<div class="dash-widget dct-border-rht">
+											<div class="circle-bar circle-bar2">
+												<div class="circle-graph2" data-percent="65">
+													<img src="{% static 'assets/img/icon-02.png' %}" class="img-fluid"
+														alt="Patient">
+												</div>
+											</div>
+											<div class="dash-widget-info">
+												<h6>مرضا اليوم</h6>
+												<h3>{{client_today_slot_count}}</h3>
+												<p class="text-muted">{{t}}</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12 col-lg-4">
+										<div class="dash-widget">
+											<div class="circle-bar circle-bar3">
+												<div class="circle-graph3" data-percent="50">
+													<img src="assets/img/icon-03.png" class="img-fluid" alt="Patient">
+												</div>
+											</div>
+											<div class="dash-widget-info">
+												<h6>مواعيد اليوم</h6>
+												<h3>{{slot_today_count}}</h3>
+												<h3></h3>
+												<p class="text-muted">{{t}}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<h4 class="mb-4" style="text-align: end;">مواعيد المرضي</h4>
+						<div class="appointment-tab">
+
+							<!-- Appointment Tab -->
+							<ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded"
+								style="text-align: end; display: flow-root;">
+								<li class="nav-item">
+									<a class="nav-link active" href="#upcoming-appointments"
+										data-toggle="tab">القادمة</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#today-appointments" data-toggle="tab">اليوم</a>
+								</li>
+							</ul>
+							<!-- /Appointment Tab -->
+
+							<div class="tab-content">
+
+								<!-- Upcoming Appointment Tab -->
+								<div class="tab-pane show active" id="upcoming-appointments">
+									<div class="card card-table mb-0">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-hover table-center mb-0">
+													<thead>
+														<tr>
+															<th></th>
+															<th>حاله الحجز</th>
+															<th class="text-center">رقم الحجز</th>
+															<th class="text-center">المبلغ المدفوع</th>
+															<th>الغرض</th>
+															<th>تاريخ الكشف</th>
+															<th>اسم المريض</th>
+
+														</tr>
+													</thead>
+													<tbody>
+
+														{% for slot in slots %}
+														{% if slot.taken %}
+														<tr>
+															<td>
+																{% if slot.confirmed %}
+																<span class="badge-pill bg-success-light">تم التاكيد</span>
+																{% else %}
+																<span class="badge-pill bg-warning-light">انتظار</span> 
+
+																{% endif %}
+															</td>
+															<td class="text-right">
+																<div class="table-action">
+																	<td class="text-center"> {{slot.id}}#</td>
+																</div>
+															</td>
+															
+															<td class="text-center"> {{slot.doc.price}}ج</td>
+															<td>كشف جديد</td>
+															<td>{{slot.date}}<span class="d-block text-info">{{slot.start_time}}</span></td>
+															<td>
+																<h2 class="table-avatar">
+
+																	<a href="#"
+																		class="avatar avatar-sm mr-2">
+																		{% if slot.taken.image %}
+																		<img class="avatar-img rounded-circle"
+																			src="{{slot.taken.image.url}}"
+																			alt="User Image">
+																			{% else %}
+																			<img class="avatar-img rounded-circle"
+																			src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}"
+																			alt="User Image">
+																			{% endif %}
+																	</a>
+																	
+																	<a href="#"> {{slot.taken.user.first_name}}
+																		{{slot.taken.user.last_name}}
+																		<span>#{{slot.taken.id}}</span></a>
+																</h2>
+															</td>
+														</tr>
+														{% endif %}
+														{% endfor %}
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Upcoming Appointment Tab -->
+
+								<!-- Today Appointment Tab -->
+								<div class="tab-pane" id="today-appointments">
+									<div class="card card-table mb-0">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-hover table-center mb-0">
+													<thead>
+														<tr>
+															<th></th>
+															<th>حاله الحجز</th>
+															<th class="text-center">رقم الحجز</th>
+															<th class="text-center">المبلغ المدفوع</th>
+															<th>الغرض</th>
+															<th>تاريخ الكشف</th>
+															<th>اسم المريض</th>
+
+														</tr>
+													</thead>
+													<tbody>
+
+														{% for slot in today %}
+														{% if slot.taken %}
+														{% if today %}
+														
+														<tr>
+															<td>
+																{% if slot.confirmed %}
+																<span class="badge-pill bg-success-light">تم التاكيد</span>
+																{% else %}
+																<span class="badge-pill bg-warning-light">انتظار</span> 
+
+																{% endif %}
+															</td>
+
+															<td class="text-right">
+																<div class="table-action">
+																	<td class="text-center"> {{slot.id}}#</td>
+																</div>
+															</td>
+															
+															<td class="text-center"> {{slot.doc.price}}ج</td>
+															<td>كشف جديد</td>
+															<td>{{slot.date}}<span class="d-block text-info">{{slot.start_time}}</span></td>
+															<td>
+																<h2 class="table-avatar">
+
+																	<a href="#"
+																		class="avatar avatar-sm mr-2">
+																		{% if slot.taken.image %}
+																		<img class="avatar-img rounded-circle"
+																			src="{{slot.taken.image.url}}"
+																			alt="User Image">
+																			{% else %}
+																			<img class="avatar-img rounded-circle"
+																			src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}"
+																			alt="User Image">
+																			{% endif %}
+																	</a>
+																	
+																	<a href="#"> {{slot.taken.user.first_name}}
+																		{{slot.taken.user.last_name}}
+																		<span>#{{slot.taken.id}}</span></a>
+																</h2>
+															</td>
+														</tr>
+														{% endif %}
+														{% endif %}
+														{% endfor %}
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Today Appointment Tab -->
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+<!-- /Page Content -->
+{% endblock body %}

@@ -13,7 +13,6 @@
 								<li class="breadcrumb-item active" aria-current="page">Profile Settings</li>
 							</ol>
 						</nav>
-						<h2 class="breadcrumb-title">Profile Settings</h2>
 					</div>
 				</div>
 			</div>
@@ -23,7 +22,7 @@
 		<!-- Page Content -->
 		<div class="content">
 			<div class="container-fluid">
-				<div class="row">
+				<div class="row" style="flex-direction: row-reverse;">
 
 					{% include 'client/Profile_Sidebar_client.html' %}
 
@@ -143,8 +142,7 @@
 									{% bootstrap_form ClienProfileForm %}
 
 									<div class="submit-section submit-btn-bottom">
-										<button type="submit" class="btn btn-primary submit-btn">Save
-											Changes</button>
+										<button type="submit" class="btn btn-primary submit-btn">حفظ التغيير</button>
 									</div>
 								</form>
 

@@ -11,7 +11,10 @@ from .forms import Login_Form , ClientSignupForm , ClienProfileForm , UserForm
 from datetime import date as dt, datetime
 from doctor.views import doc_home
 
-
+import PyPDF2
+import pandas as pd
+import numpy as np
+import re
 # Create your views here.
 
 
@@ -78,10 +81,15 @@ def update_client_profile(request ,  slug):
 
 
 
-def test(request , slug):
+""" def test(request , slug):
     doctors_detail = Profile_Doctor.objects.get(slug = slug)
 
-    return render(request , 'client/test.html' , {'doctors_detail':doctors_detail,})
+    return render(request , 'client/test.html' , {'doctors_detail':doctors_detail,}) """
+
+
+def booking2(request):
+
+    return render(request , 'client/booking2.html' , {})
 
 
 
@@ -92,7 +100,7 @@ def my_appointments(request):
     booked = Schedule.objects.filter(taken=client)
     cancelled = Schedule.objects.filter(cancelled=client)
     spec = Specialization.objects.all()
-    return render(request,'client/my_appointments.html', context={'client': client, 'booked':booked,'cancelled':cancelled, 'spec':spec, 'today': today})
+    return render(request,'client/patient-dashboard.html', context={'client': client, 'booked':booked,'cancelled':cancelled, 'spec':spec, 'today': today})
 
 @login_required
 def client_home_doc(request , slug ):
@@ -145,16 +153,113 @@ def book_slot(request, slot):
     return render(request, 'client/checkout.html' , context={'last_slog':last_slog , 'slot':slot}) 
 
 
+
+
 @login_required
 def delete_slot(request, slot):
     slot = Schedule.objects.get(id=slot)
     slot.delete()
-    return redirect(reverse('client:client_home'))
+    return redirect(reverse('client:my-appointments'))
 
 
 
 """ def test2(request):
+    
     return render(request , 'client/patient-dashboard.html' , {}) """
 
 
+ 
+ 
+ 
+@login_required
+def test_ana(request):
+    normal_results = {
+        #Blood Picture
+        'hgb': np.arange(13.5,17.6,0.1),
+        'rbc': np.arange(4.3,6.2,0.1),
+        'hct': np.arange(39,52,0.1),
+        'mcv': np.arange(80,101,0.1),
+        'mch': np.arange(27,35,0.1),
+        'mchc':np.arange(32,38,0.1),
+        'rdw': np.arange(11.5,14.6,0.1),
+        'pct': np.arange(0.1,.06,0.01),
+        'mpv': np.arange(6.0,12.1,0.1),
+        'wbc': np.arange(4.0,11.1,0.1),
+        'neutrophil': np.arange(35,81.1,0.1),
+        'lymphocytes': np.arange(18.0,44.1,0.1),
+        'monocytes': np.arange(0,10.0,0.1),
+        'eosinophils': np.arange(0,4.1,0.1),
+        'basophils': np.arange(0,1.1,0.1),
+        #Stool Examination
+        #Physical Examination
+        'odor': ['offensive'],
+        'color': ["brownish"],
+        'reaction': ['variable'],
+        'mucus': ['absent'],
+        'consistency': ['formed'],
+        'food particles': ['absent'],
+        #Microscopic Examination
+        'trophozoite': ['absent'],
+        'cysts': ['absent'],
+        'ova': ['not detected'],
+        'larva': ['absent'],
+        'flagellates': ['absent'],
+        'ciliate': ['absent'],
+        'undigested food': ['absent'],
+        'parasitology artifacts': ['absent']
+    }
 
+    if request.method == 'POST':
+        file = request.FILES['file']
+        pdf_reader = PyPDF2.PdfReader(file)
+
+        page_text = ''
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            page_text += page.extract_text()
+
+        lines = page_text.split('\n')
+        new_lines = []
+        for line in lines:
+            if ":" in line:
+                new_lines.append(line)
+
+        keys_in_text=[]
+        for key in normal_results:
+            if key in page_text:
+                keys_in_text.append(key)
+
+        numbers = []
+        for my_string in new_lines:
+            try:
+                number_string = my_string.split(":")[1].strip()
+                number = float(number_string)
+                numbers.append(number)
+            except ValueError:
+                numbers.append(number_string)
+
+        patient_results = dict(zip(keys_in_text, numbers))
+
+        newkey = []
+        newvalue = []
+
+        for key, value in patient_results.items():
+            if isinstance(value, float):
+                isB = np.isclose(normal_results[key], patient_results[key]).any()
+                if not isB:
+                    isB_str = str(normal_results[key]) == str(patient_results[key])
+                    newkey.append(key)
+                    newvalue.append(value)
+                    if not isB_str:
+                        numbers = [str(normal_results[key]), str(patient_results[key])]
+                        print(f"Sorry, but you have a problem in '{key}' with result {value}")
+            elif isinstance(value, str):
+                isB_str = normal_results[key] == patient_results[key]
+                if not isB_str:
+                    print(f"Sorry, but you have a problem in '{key}' with result {value}") 
+    
+
+        return render(request, 'client/analysis.html', context={'newkey': newkey, 'newvalue': newvalue})
+
+    # return an empty form
+    return render(request, 'client/Analysis results.html')

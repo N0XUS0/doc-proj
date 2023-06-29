@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+	
+	
+		<!-- Breadcrumb -->
+		<div class="breadcrumb-bar">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-md-12 col-12">
+						<nav aria-label="breadcrumb" class="page-breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">My Patients</li>
+							</ol>
+						</nav>
+						<h2 class="breadcrumb-title">My Patients</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Breadcrumb -->
+
+		<!-- Page Content -->
+		<div class="content">
+			<div class="container-fluid">
+
+				<div class="row" style="flex-direction: row-reverse;">
+
+					{% include 'doctor/Profile_Sidebar.html' %}
+
+					<div class="col-md-7 col-lg-8 col-xl-9" dir="rtl">
+
+						<div class="row row-grid">
+
+							{% for schedule in schedules %}
+							{% if schedule.taken %}
+							
+							<div class="col-md-6 col-lg-4 col-xl-3">
+								<div class="card widget-profile pat-widget-profile">
+									<div class="card-body">
+										<div class="pro-widget-content">
+											<div class="profile-info-widget">
+												<a href="patient-profile.html" class="booking-doc-img">
+													{% if schedule.taken.image %}
+													<img src="{{schedule.taken.image.url}}" alt="User Image">
+
+													{% else %}
+
+													<img src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}" alt="User Image">
+
+													{% endif %}
+												</a>
+												<div class="profile-det-info">
+													<h3><a href="patient-profile.html">{{schedule.taken.user.first_name}} {{schedule.taken.user.last_name}}</a></h3>
+
+													<div class="patient-details">
+														<h5><b>رقم المريض :</b> {{schedule.taken.id}}</h5>
+														<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{schedule.taken.address}} : 
+															{{schedule.taken.address_detail}}</h5>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="patient-info">
+											<ul>
+												<li><span>{{schedule.taken.number_phone}}</span>الهاتف</li>
+												<li>العمر <span>{{schedule.taken.date_of_birth|date:'M Y'}}, {{schedule.taken.gender}}</span></li>
+												<li>فصيله الدم <span>{{schedule.taken.blood_group}}</span></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<!-- /Page Content -->
+
+{% endblock body %}

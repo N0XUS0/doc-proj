@@ -34,13 +34,13 @@
 								{% if doctor.image %}
 								<img src="{{doctor.image.url}}" alt="User Image">
 								{% else %}
-								<img alt="User Image" src="{% static 'assets/img/doctors/doctor-01.jpg' %}">
+								<img alt="User Image" src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}">
 								{% endif %}
 
 
 							</a>
 							<div class="booking-info">
-								<h4><a href="doctor-profile.html">Dr. {{doctor.name}}</a></h4>
+								<h4><a href="doctor-profile.html">Dr. {{doctor.user.first_name}} {{doctor.user.last_name}}</a></h4>
 								<div class="rating">
 									<i class="fas fa-star filled"></i>
 									<i class="fas fa-star filled"></i>
@@ -50,7 +50,7 @@
 									<span class="d-inline-block average-rating">35</span>
 								</div>
 								<p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i>
-									{{doctor.address_detail}}, {{docdoctortors_detail.address}}
+									{{doctor.address}} : {{doctor.address_detail}}
 								</p>
 							</div>
 						</div>
@@ -114,12 +114,20 @@
 									{% if not doc_schedules.confirmed %}
 									<ul class="clearfix">
 										<li>
-											<a class="timing" href="{% url 'client:book_slot' doc_schedules.id %} ">
+											<a class="timing btn btn-sm bg-success-light" href="{% url 'client:book_slot' doc_schedules.id %}  ">
 												<span>{{doc_schedules.start_time}}</span>
 											</a>
 										</li>
-									{% endif %}
 									</ul>
+										{% else %}
+										<ul class="clearfix">
+											<li>
+												<a class="timing " >
+													<span>{{doc_schedules.start_time}}</span>
+												</a>
+											</li>
+										</ul>
+									{% endif %}
 								{% endfor %}
 								</div>
 								<!-- /Time Slot -->
@@ -132,12 +140,6 @@
 				</div>
 				<!-- /Schedule Widget -->
 
-				<!-- Submit Section -->
-				<div class="submit-section proceed-btn text-right">
-					<a href="{% url 'client:booking_success' doctor.slug %}" class="btn btn-primary submit-btn">Booking
-						Confirmation</a>
-				</div>
-				<!-- /Submit Section -->
 
 			</div>
 		</div>
@@ -145,4 +147,7 @@
 
 </div>
 <!-- /Page Content -->
+
+
+
 {% endblock body %}

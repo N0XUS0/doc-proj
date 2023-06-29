@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-12 col-12">
+				<nav aria-label="breadcrumb" class="page-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+	<div class="container-fluid">
+
+		<div class="row" style="flex-direction: row-reverse;">
+
+			<!-- Profile Sidebar -->
+			{% include 'client/Profile_Sidebar_client.html' %}
+
+			<!-- / Profile Sidebar -->
+
+			<div class="col-md-7 col-lg-8 col-xl-9">
+				<div class="card">
+					<div class="card-body pt-0">
+
+						<!-- Tab Menu -->
+						<nav class="user-tabs mb-4">
+							<ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+								<li class="nav-item">
+									<a class="nav-link active" href="#pat_appointments" data-toggle="tab">المواعيد</a>
+								</li>
+
+								<li class="nav-item">
+									<a class="nav-link" href="#pat_medical_records" data-toggle="tab"><span
+											class="med-records">التسجيلات الطبية</span></a>
+								</li>
+							</ul>
+						</nav>
+						<!-- /Tab Menu -->
+
+						<!-- Tab Content -->
+						<div class="tab-content pt-0">
+
+							<!-- Appointment Tab -->
+							<div id="pat_appointments" class="tab-pane fade show active">
+								<div class="card card-table mb-0">
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table table-hover table-center mb-0">
+												<thead>
+													<tr>
+														<th>الدكتور</th>
+														<th>التاريخ</th>
+														<th>تاريخ الحجز</th>
+														<th>السعر</th>
+														<th>الحالة</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody>
+
+
+													{% for bookeds in booked %}
+
+													<tr>
+														<td>
+															<h2 class="table-avatar">
+																<a href="{% url 'doctor:doctor_detail' bookeds.doc.slug %}"
+																	class="avatar avatar-sm mr-2">
+																	{% if bookeds.doc.image %}
+																	<img class="avatar-img rounded-circle"
+																		src="{{bookeds.doc.image.url}}"
+																		alt="User Image">
+																	{% else %}
+
+																	<img class="avatar-img rounded-circle"
+																		src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}"
+																		alt="User Image">
+																	{% endif %}
+																</a>
+																<a href="{% url 'doctor:doctor_detail' bookeds.doc.slug %}">Dr.
+																	{{bookeds.doc.user.first_name}}
+																	{{bookeds.doc.user.last_name}}
+																	<span>{{bookeds.doc.specialization}}</span></a>
+															</h2>
+														</td>
+														<td>{{bookeds.date|date:"j M Y"}}<span
+																class="d-block text-info">{{bookeds.start_time|date:"f A"}}</span>
+														</td>
+														<td>{{bookeds.date|date:"j M Y"}}</td>
+														<td>{{bookeds.doc.price}}ج</td>
+
+
+														<td>
+															{% if bookeds.confirmed %}
+
+															{% if bookeds in today%}
+															<span class="badge badge-pill bg-success-light">اليوم</span>
+															{% else %}
+															<span class="badge badge-pill bg-success-light">تاكيد</span>
+															{% endif %}
+															{% elif bookeds.taken %}
+															<span
+																class="badge badge-pill bg-warning-light">انتظار</span>
+															{% elif bookeds not in booked %}
+															<span class="badge badge-pill bg-danger-light">الغاء</span>
+															{% endif %}
+														</td>
+
+														<td class="text-right">
+															<div class="table-action">
+																<a href="{% url 'client:delete_slot' bookeds.id %}"
+																	class="btn btn-sm bg-danger-light">
+																	<i class="fas fa-times"></i> الغاء
+																</a>
+
+															</div>
+														</td>
+													</tr>
+
+													{% endfor %}
+
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Appointment Tab -->
+
+
+
+							<!-- Medical Records Tab -->
+							<div id="pat_medical_records" class="tab-pane fade">
+								<div class="card card-table mb-0">
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="table table-hover table-center mb-0">
+												<thead>
+													<tr>
+														<th>ID</th>
+														<th>التاريخ </th>
+														<th>المعمل</th>
+														<th>الملفات</th>
+														<th style="text-align: center; font-size: 20px;">
+															+
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+{% comment %} 													<tr>
+														<td><a href="javascript:void(0);">#221</a></td>
+														<td>28/6/2023</td>
+														<td>معمل الفا</td>
+														<td><a href="#">blood.pdf</a></td>
+
+														<td class="text-right">
+															<div class="table-action">
+																<button class="btn"
+																	style="background-color:#122958;color: white;"><a
+																		href="analysis.html" style="color: white;">تحليل
+																		النتيجة</a>
+																</button>
+															</div>
+														</td>
+													</tr>
+
+													<tr>
+
+														<td><a href="javascript:void(0);">#221</a></td>
+														<td>28/6/2023</td>
+														<td>معمل الفا</td>
+														<td><a href="#">blood.pdf</a></td>
+
+														<td class="text-right">
+															<div class="table-action">
+																<button class="btn"
+																	style="background-color:#122958;color: white;">تحليل
+																	النتيجة</button>
+															</div>
+														</td>
+													</tr> {% endcomment %}
+
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Medical Records Tab -->
+
+						</div>
+						<!-- Tab Content -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+<!-- /Page Content -->
+
+{% endblock body %}

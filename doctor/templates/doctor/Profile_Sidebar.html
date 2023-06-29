@@ -7,16 +7,13 @@
             <div class="profile-info-widget">
                 <a href="#" class="booking-doc-img">
                     {% if user.profile_doctor.image %}
-                    <img class="img-fluid" alt="User Image" src="{{user.profile_doctor.image.url}}">
-
+                    <img src="{{user.profile_doctor.image.url}}" alt="User Image">
                     {% else %}
-                    <img class="img-fluid" alt="User Image"
-                        src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}">
-
+                    <img src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}" alt="User Image">
                     {% endif %}
                 </a>
                 <div class="profile-det-info">
-                    <h3>Dr. {{user.profile_doctor.name}}</h3>
+                    <h3>Dr. {{user.profile_doctor.user.first_name}} {{user.profile_doctor.user.last_name}}</h3>
 
                     <div class="patient-details">
                         <h5 class="mb-0">{{user.profile_doctor.specialist_doctor}}</h5>
@@ -24,63 +21,59 @@
                 </div>
             </div>
         </div>
+
+
         <div class="dashboard-widget">
             <nav class="dashboard-menu">
                 <ul>
                     <li>
-                        <a href="doctor-dashboard.html">
+                        <a href="{% url 'doctor:doctor-dashboard' %}">
                             <i class="fas fa-columns"></i>
-                            <span>Dashboard</span>
+                            <span>لوحه التحكم</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'doctor:client_slot_list' %}">
                             <i class="fas fa-calendar-check"></i>
-                            <span>Appointments</span>
+                            <span>جدول المواعيد</span>
                         </a>
                     </li>
                     <li>
-                        <a href="my-patients.html">
+                        <a href="{% url 'doctor:my-patients' user.profile_doctor.slug %}">
                             <i class="fas fa-user-injured"></i>
-                            <span>My Patients</span>
+                            <span>المرضي</span>
                         </a>
                     </li>
-                    <li >  {% comment %}  class="active" {% endcomment %}
+                    <li>
                         <a href="{% url 'doctor:doc_home' %}">
                             <i class="fas fa-hourglass-start"></i>
-                            <span>Schedule Timings</span>
+                            <span> المواعيد المتاحة</span>
                         </a>
                     </li>
-                    <li>
+{% comment %}                     <li>
                         <a href="reviews.html">
                             <i class="fas fa-star"></i>
-                            <span>Reviews</span>
+                            <span>اراء</span>
                         </a>
-                    </li>
+                    </li> {% endcomment %}
 
                     <li>
                         <a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">
-                            
                             <i class="fas fa-user-cog"></i>
-                            <span>Profile Settings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="social-media.html">
-                            <i class="fas fa-share-alt"></i>
-                            <span>Social Media</span>
+                            <span>اعدادات الملف الشخصي</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'password_change' %}">
                             <i class="fas fa-lock"></i>
-                            <span>Change Password</span>
+                            <span>تغيير كلمه المرور</span>
                         </a>
                     </li>
+
                     <li>
                         <a href="{% url 'doctor:logout' %}">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
+                            <span>تسجيل الخروج</span>
                         </a>
                     </li>
                 </ul>
@@ -88,5 +81,4 @@
         </div>
     </div>
     <!-- /Profile Sidebar -->
-
 </div>

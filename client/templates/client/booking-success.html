@@ -24,28 +24,17 @@
 
 				<div class="row justify-content-center">
 					<div class="col-lg-6">
-
 						<!-- Success Card -->
 						<div class="card success-card">
 							<div class="card-body">
 								<div class="success-cont">
 									<i class="fas fa-check"></i>
-					
-{% comment %} 									<h3>Appointment booked Successfully!</h3>
-									<p>Appointment booked with <strong>Dr. {{doc_schedule}}</strong><br> on 
-										{% for bookeds in booked %}<strong>{{bookeds.date|date:'j M'}}
-											{{bookeds.date|date:'Y'}} {{bookeds.start_time}}</strong></p>
-											{% endfor %}
-											{{last_slog}} {% endcomment %}
-									<h3>Appointment booked Successfully!</h3>
-									
-
-									<a href="{% url 'client:my-appointments' %}" class="btn btn-primary view-inv-btn mt-5">View My Appointments</a>
+									<h3> ! تم حجز الموعد بنجاح </h3>
+									<a href="{% url 'client:my-appointments' %}" class="btn btn-primary view-inv-btn mt-5">عرض مواعيدي</a>
 								</div>
 							</div>
 						</div>
 						<!-- /Success Card -->
-
 					</div>
 				</div>
 
