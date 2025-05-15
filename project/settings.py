@@ -113,14 +113,12 @@ ASGI_APPLICATION = 'project.asgi.application'
     }
 } """
 
+import os
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'main-project-test',
-        'USER': 'root',
-        'PASSWORD': 'admin1911',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
