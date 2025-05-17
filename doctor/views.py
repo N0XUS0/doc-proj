@@ -20,6 +20,11 @@ from django.db.models.aggregates import Max , Min , Avg , Count , Sum
 """ def doctors_list2(request):
     doctors = User.objects.all()
     return render(request , 'users/index.html.html' , context={'doctors':doctors,})  """  
+# doctor/views.py
+from django.shortcuts import render
+
+def index(request):
+    return render(request, 'doctor/index.html')
 
 def welcome(request):
     return render(request,'doctor/doctors_list.html', context={})

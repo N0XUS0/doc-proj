@@ -4,6 +4,8 @@ from . import views
 app_name = 'client'
 
 urlpatterns = [
+    path('doctor/<slug:slug>/', views.client_home_doc, name='client_home_doc'),
+
     path('booking2/', views.booking2, name='booking2'),
     path('test-ana/', views.test_ana, name='test-ana'),
     path('my-appointments/', views.my_appointments, name='my-appointments'),

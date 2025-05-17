@@ -1,478 +1,525 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- doccure/  30 Nov 2019 04:11:34 GMT -->
-
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>ModernLabs - Medical Services</title>
 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-	<title>modernlabs</title>
+    <!-- Favicons -->
+    <link type="image/x-icon" href="{% static 'assets/img/logo.png' %}" rel="icon">
 
-	<!-- Favicons -->
-	<link type="image/x-icon" href="{% static 'assets/img/logo.png' %}" rel="icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-	<!-- Fontawesome CSS -->
-	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
-	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #1a6fc9;
+            --secondary-color: #20c997;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #a7d0f7;
+            color: var(--dark-color);
+			color: #ffffff;
+        }
 
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
+        .navbar-brand img {
+            height: 40px;
+        }
 
+        .main-nav {
+            display: flex;
+            align-items: center;
+        }
 
-	<!-- Main CSS -->
-	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        .main-nav li {
+            margin: 0 10px;
+            position: relative;
+        }
 
+        .main-nav a {
+            color: var(--dark-color);
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
 
-	{% block schedule_head %}
-	<!-- Select2 CSS -->
-	<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
-	{% endblock schedule_head %}
+        .main-nav a:hover {
+            color: var(--primary-color);
+            background-color: rgba(26, 111, 201, 0.1);
+        }
 
-	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
+        .has-submenu:hover .submenu {
+            display: block;
+        }
 
+        .submenu {
+            display: none;
+            position: absolute;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 100;
+        }
+
+        .submenu li {
+            margin: 0;
+        }
+
+        .submenu a {
+            display: block;
+            padding: 8px 20px;
+        }
+
+        .submenu a:hover {
+            background-color: rgba(26, 111, 201, 0.1);
+        }
+
+        /* User Profile Dropdown */
+        .logged-item .dropdown-menu {
+            border: none;
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+            border-radius: var(--border-radius);
+        }
+
+        .user-header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .avatar-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+
+        .dropdown-item {
+            padding: 8px 20px;
+            transition: var(--transition);
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(26, 111, 201, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: var(--dark-color);
+            color: var(--white);
+            padding-top: 50px;
+        }
+
+        .footer-title {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary-color);
+        }
+
+        .footer-widget ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-widget ul li a {
+            color: #bdc3c7;
+            transition: var(--transition);
+        }
+
+        .footer-widget ul li a:hover {
+            color: var(--secondary-color);
+            padding-left: 5px;
+        }
+
+        .footer-widget ul li i {
+            margin-left: 5px;
+            color: var(--secondary-color);
+        }
+
+        .footer-contact-info p {
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+
+        .footer-contact-info i {
+            color: var(--secondary-color);
+            margin-left: 10px;
+        }
+
+        .social-icon ul {
+            display: flex;
+            padding: 0;
+        }
+
+        .social-icon ul li {
+            margin: 0 5px;
+        }
+
+        .social-icon ul li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .social-icon ul li a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+        }
+
+        .copyright-text p {
+            color: #bdc3c7;
+            margin: 0;
+        }
+
+        .policy-menu li {
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .policy-menu li a {
+            color: #bdc3c7;
+        }
+
+        /* Contact Item in Header */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .header-contact-img {
+            background: rgba(32, 201, 151, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+
+        .header-contact-img i {
+            color: var(--secondary-color);
+        }
+
+        .contact-header {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin: 0;
+        }
+
+        .contact-info-header {
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Login/Signup Button */
+        .header-login {
+            background: var(--primary-color);
+            color: var(--white) !important;
+            border-radius: var(--border-radius);
+            padding: 8px 20px !important;
+            transition: var(--transition);
+        }
+
+        .header-login:hover {
+            background: #155a9e;
+            color: var(--white) !important;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                background: var(--white);
+                padding: 20px;
+                box-shadow: var(--shadow);
+                margin-top: 10px;
+                border-radius: var(--border-radius);
+            }
+            
+            .main-nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .main-nav li {
+                margin: 5px 0;
+                width: 100%;
+            }
+            
+            .main-nav a {
+                display: block;
+                width: 100%;
+            }
+            
+            .submenu {
+                position: static;
+                box-shadow: none;
+                padding-left: 20px;
+            }
+            
+            .header-navbar-rht {
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #eee;
+            }
+        }
+    </style>
+
+    {% block schedule_head %}
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
+    {% endblock schedule_head %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.min.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
-
-	<!-- Main Wrapper -->
-	<div class="main-wrapper">
-
-		<!-- Header -->
-		<header class="header" dir="rtl">
-			<nav class="navbar navbar-expand-lg header-nav">
-				<div class="navbar-header">
-					<a id="mobile_btn" href="javascript:void(0);">
-						<span class="bar-icon">
-							<span></span>
-							<span></span>
-							<span></span>
-						</span>
-					</a>
-					<a href="{% url 'doctor:doctors_list' %}" class="navbar-brand logo">
-						<img src="{% static 'assets/img/modernlabs.jpg' %}" class="img-logo img-fluid" alt="Logo">
-					</a>
-				</div>
-				<div class="main-menu-wrapper" style="flex:1 1 50px">
-					<div class="menu-header">
-						<a href="index.html" class="menu-logo">
-							<img src="{% static 'assets/img/modernlabs.jpg' %}" class="img-logo img-fluid" alt="Logo">
-						</a>
-						<a id="menu_close" class="menu-close" href="javascript:void(0);">
-							<i class="fas fa-times"></i>
-						</a>
-					</div>
-
-					<ul class="main-nav">
-						{% comment %} <li class="active">
-							<a href="{% url 'doctor:doctors_list' %}" data-i18n="Home">Home</a>
-						</li> {% endcomment %}
-						{% if user.is_authenticated %}
-						{% if user.profile_doctor.active_doctor %}
-
-						<li class="has-submenu">
-							<a href="#">Dr.{{user.first_name}} {{user.last_name}} </a> {% comment %} <i
-								class="fas fa-chevron-down"></i> {% endcomment %}
-							<ul class="submenu">
-								<li><a href="{% url 'doctor:doctor-dashboard' %}">لوحه النحكم</a></li>
-								<li><a href="{% url 'doctor:client_slot_list' %}">جدول المواعيد</a></li>
-								<li><a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">اعدادات الملف
-										الشخصي</a></li>
-							</ul>
-						</li>
-
-						<li>
-							<a href="{% url 'doctor:doctor-dashboard' %}">لوحه النحكم</a></i></a>
-						</li>
-						<li>
-							<a href="{% url 'doctor:client_slot_list' %}">جدول المواعيد</a></i></a>
-						</li>
-						<li>
-							<a href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">اعدادات الملف
-								الشخصي</a></i></a>
-						</li>
-
-						{% else %}
-
-						<li class="has-submenu">
-							<a href="#"> {{user.first_name}} {{user.last_name}} </a> {% comment %} <i
-								class="fas fa-chevron-down"></i> {% endcomment %}
-							{% comment %} <ul class="submenu">
-								<li><a href="{% url 'client:my-appointments' %}">مواعيدي</a></li>
-								<li><a href="laboratory.html">البحث عن معمل تحاليل</a></li>
-								<li><a href="{% url 'client:my-appointments' %}">لوحه التحكم</a></li>
-								<li><a href="{% url 'client:update_client_profile' user.client_profile.slug %}">اعدادات
-										الملف الشخصي</a></li>
-							</ul> {% endcomment %}
-						</li>
-						
-						<li>
-							<a href="{% url 'client:my-appointments' %}">مواعيدي</a></i></a>
-						</li>
-
-
-
-						{% endif %}
-						{% endif %}
-
-
-						{% comment %} {% if not user.is_authenticated %}
-
-
-						<li class="has-submenu">
-							<a href="#">معامل التحاليل <i class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a href="laboratory.html">البحث عن معمل تحاليل</a></li>
-							</ul>
-						</li>
-						{% endif %} {% endcomment %}
-
-
-
-						{% if not user.profile_doctor.active_doctor %}
-
-						<li class="has-submenu">
-							<a href="{% url 'doctor:search' %}">البحث عن معمل تحاليل</a>
-
-						</li>
-
-						<li class="has-submenu">
-							<a href="{% url 'doctor:search' %}">البحث عن دكتور</a>
-						</li>
-
-						<li class="has-submenu">
-
-							<a href="{% url 'client:test-ana' %}"> طلب فحص تحليل</a>
-
-
-						</li>
-
-						{% endif %}
-
-
-
-						<li class="login-link">
-							<a href="login.html">Login / Signup</a>
-						</li>
-
-					</ul>
-				</div>
-				<ul class="nav header-navbar-rht">
-					<li class="nav-item contact-item">
-						<div class="header-contact-img">
-							<i class="far fa-hospital"></i>
-						</div>
-						<div class="header-contact-detail">
-							<p class="contact-header">تواصل معنا</p>
-							<p class="contact-info-header"> +20 1091518340</p>
-						</div>
-					</li>
-
-					{% if user.is_authenticated %}
-					<li class="nav-item dropdown has-arrow logged-item">
-						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-							<span class="user-img">
-								{% if user.profile_doctor.active_doctor %}
-								{% if user.profile_doctor.image %}
-								<img class="rounded-circle" src="{{user.profile_doctor.image.url}}" width="31"
-									alt="Darren Elder">
-								{% else %}
-								<img class="rounded-circle"
-									src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}" width="31"
-									alt="Darren Elder">
-								{% endif %}
-
-								{% else %}
-								{% if user.client_profile.image %}
-								<img class="rounded-circle" src="{{user.client_profile.image.url}}" width="31"
-									alt="Darren Elder">
-								{% else %}
-								<img class="rounded-circle"
-									src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}" width="31"
-									alt="Darren Elder">
-								{% endif %}
-								{% endif %}
-							</span>
-						</a>
-
-						<div class="dropdown-menu dropdown-menu-right" style="margin-right:-135px" >
-							<div class="user-header">
-								<div class="avatar avatar-sm">
-									{% if user.profile_doctor.active_doctor %}
-									{% if user.profile_doctor.image %}
-									<img src="{{user.profile_doctor.image.url}}" alt="User Image"
-										class="avatar-img rounded-circle">
-									{% else %}
-									<img class="rounded-circle"
-										src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}" width="31"
-										alt="Darren Elder">
-									{% endif %}
-
-									{% else %}
-									{% if user.client_profile.image %}
-									<img src="{{user.client_profile.image.url}}" alt="User Image"
-										class="avatar-img rounded-circle">
-									{% else %}
-									<img src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}"
-										alt="User Image" class="avatar-img rounded-circle">
-									{% endif %}
-									{% endif %}
-								</div>
-								<div class="user-text">
-									<h6>{{user.first_name}} {{user.last_name}}</h6>
-									{% if user.profile_doctor.active_doctor %}
-									<p class="text-muted mb-0" style="display:flex">دكتور</p>
-									{% else %}
-									<p class="text-muted mb-0" style="display:flex">مستخدم</p>
-									{% endif %}
-								</div>
-							</div>
-							{% if user.profile_doctor.active_doctor %}
-							<a class="dropdown-item" href="{% url 'doctor:doctor-dashboard' %}">لوحه التحكم</a>
-							{% else %}
-							<a class="dropdown-item" href="{% url 'client:my-appointments' %}">لوحه التحكم</a>
-							{% endif %}
-							{% if user.profile_doctor.active_doctor %}
-							<a class="dropdown-item"
-								href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">اعدادات الملف
-								الشخصي</a>
-							{% else %}
-
-							<a class="dropdown-item"
-								href="{% url 'client:update_client_profile' user.client_profile.slug %}">اعدادات الملف
-								الشخصي</a>
-
-							{% endif %}
-
-							<a class="dropdown-item" href="{% url 'doctor:logout' %}">تسجيل الخروج</a>
-						</div>
-					</li>
-
-					{% else %}
-					<li class="nav-item">
-						<a class="nav-link header-login" href="{% url 'login' %}">دخول / تسجيل </a>
-					</li>
-					{% endif %}
-
-
-				</ul>
-			</nav>
-		</header>
-		<!-- /Header -->
-
-
-		{% block body %}
-
-
-		{% endblock body %}
-
-
-		<!-- Footer -->
-		<footer class="footer">
-
-			<!-- Footer Top -->
-			<div class="footer-top">
-				<div class="container-fluid">
-					<div class="row" style="flex-direction: row-reverse;">
-						<div class="col-lg-3 col-md-6">
-
-							<!-- Footer Widget -->
-							<div class="footer-widget footer-about  " dir="rtl">
-								<div class="footer-logo">
-									<img style="width: 100px; display: flex;"
-										src="{% static 'assets/img/logo-removebg.png' %}" alt="logo" />
-								</div>
-								<div class="footer-about-content">
-									<p>تساعدك مودرن لاب في العثور على أفضل العيادات والمختبرات الطبية لك للحصول على
-										رعاية صحية لحياة أفضل
-
-									</p>
-									<div class="social-icon" style="display: flex;" dir="ltr">
-										<ul>
-											<li>
-												<a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
-											</li>
-											<li>
-												<a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
-											</li>
-											<li>
-												<a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-											</li>
-											<li>
-												<a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-											</li>
-											<li>
-												<a href="#" target="_blank"><i class="fab fa-dribbble"></i> </a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- /Footer Widget -->
-
-						</div>
-
-						<div class="col-lg-3 col-md-6">
-
-							<!-- Footer Widget -->
-							<div class="footer-widget footer-menu">
-								<h2 class="footer-title">خدمات المرضى</h2>
-								<ul>
-									<li><a href="{% url 'doctor:search' %}"><i class="fas fa-angle-double-right"></i> البحث عن
-											طبيب</a></li>
-									<li><a href="login.html"><i class="fas fa-angle-double-right"></i> تسجيل الدخول</a>
-									</li>
-									<li><a href="booking.html"><i class="fas fa-angle-double-right"></i> حجز موعد</a>
-									</li>
-									<li><a href="patient-dashboard.html"><i class="fas fa-angle-double-right"></i> فحص
-											تحليل</a></li>
-								</ul>
-							</div>
-							<!-- /Footer Widget -->
-
-
-
-						</div>
-
-						<div class="col-lg-3 col-md-6">
-
-							<!-- Footer Widget -->
-							<div class="footer-widget footer-menu">
-								<h2 class="footer-title">خدمات الاطباء</h2>
-								<ul>
-									<li><a href="appointments.html"><i class="fas fa-angle-double-right"></i> جدول
-											المواعيد</a></li>
-									<li><a href="chat.html"><i class="fas fa-angle-double-right"></i>المحادثات</a></li>
-									<li><a href="login.html"><i class="fas fa-angle-double-right"></i> تسجيل الدخول</a>
-									</li>
-									{% if user.is_authenticated %}
-
-									{% if not user.profile_doctor.active_doctor %}
-									<li><a href="{% url 'doctor:complate_doc_date' user.client_profile.slug %}"><i class="fas fa-angle-double-right"></i>
-											الانضمام الينا</a></li>
-											{% endif %}
-											{% endif %}
-								</ul>
-							</div>
-							<!-- /Footer Widget -->
-
-						</div>
-
-						<div class="col-lg-3 col-md-6">
-
-							<!-- Footer Widget -->
-							<div class="footer-widget footer-contact">
-								<h2 class="footer-title">تواصل معنا</h2>
-								<div class="footer-contact-info">
-									<div class="footer-address">
-										<span><i class="fas fa-map-marker-alt"></i></span>
-										<p> المنصورة حي الجامعة </p>
-									</div>
-									<p>
-										<i class="fas fa-phone-alt"></i>
-										+20 1091518340
-									</p>
-									<p class="mb-0">
-										<i class="fas fa-envelope"></i>
-										modernlabs@gmail.com
-									</p>
-								</div>
-							</div>
-							<!-- /Footer Widget -->
-
-						</div>
-
-					</div>
-				</div>
-			</div>
-			<!-- /Footer Top -->
-
-			<!-- Footer Bottom -->
-			<div class="footer-bottom">
-				<div class="container-fluid">
-
-					<!-- Copyright -->
-					<div class="copyright">
-						<div class="row">
-							<div class="col-md-6 col-lg-6">
-								<div class="copyright-text">
-									<p class="mb-0"><a href="templateshub.net">Templates Hub</a></p>
-								</div>
-							</div>
-							<div class="col-md-6 col-lg-6">
-
-								<!-- Copyright Menu -->
-								<div class="copyright-menu">
-									<ul class="policy-menu">
-										<li><a href="term-condition.html">Terms and Conditions</a></li>
-										<li><a href="privacy-policy.html">Policy</a></li>
-									</ul>
-								</div>
-								<!-- /Copyright Menu -->
-
-							</div>
-						</div>
-					</div>
-					<!-- /Copyright -->
-
-				</div>
-			</div>
-			<!-- /Footer Bottom -->
-
-		</footer>
-		<!-- /Footer -->
-
-	</div>
-	<!-- /Main Wrapper -->
-
-	<!-- jQuery -->
-	<script src="{% static 'assets/js/jquery.min.js' %}"></script>
-
-	<!-- Bootstrap Core JS -->
-	<script src="{% static 'assets/js/popper.min.js' %}"></script>
-	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-
-	<!-- Slick JS -->
-	<script src="{% static 'assets/js/slick.js' %}"></script>
-
-	<!-- Custom JS -->
-	<script src="{% static 'assets/js/script.js' %}"></script>
-
-	{% block schedule_footer %}
-	<!-- Sticky Sidebar JS -->
-	<script src="{% static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js' %}"></script>
-	<script src="{% static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js' %}"></script>
-
-	<!-- Select2 JS -->
-	<script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
-	{% endblock schedule_footer %}
-
-
-	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-	<script>
-		$(function () {
-			$("#profile_doctor").autocomplete({
-				source: '{% url '
-				doctor: outocomplete ' %}'
-			});
-		});
-	</script>
-
-
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'doctor:doctors_list' %}">
+                        <img src="{% static 'assets/img/modernlabs.jpg' %}" class="img-logo img-fluid" alt="Logo">
+                    </a>
+                    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    
+                    <div class="collapse navbar-collapse" id="navbarContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 main-nav">
+                            {% if user.is_authenticated %}
+                                {% if user.profile_doctor.active_doctor %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'doctor:doctor-dashboard' %}">Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'doctor:client_slot_list' %}">Appointments</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'client:my-appointments' %}">My Appointments</a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                            
+                            {% if not user.profile_doctor.active_doctor %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'doctor:search' %}">Find Labs</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'doctor:search' %}">Find Doctors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'client:test-ana' %}">Request Test</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% if not user.is_authenticated %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'login' %}">Login / Signup</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        
+                        <ul class="navbar-nav header-navbar-rht">
+                            <li class="nav-item contact-item">
+                                <div class="header-contact-img">
+                                    <i class="far fa-hospital"></i>
+                                </div>
+                                <div class="header-contact-detail">
+                                </div>
+                            </li>
+                            
+                            {% if user.is_authenticated %}
+                            <li class="nav-item dropdown logged-item">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                    <span class="user-img">
+                                        {% if user.profile_doctor.active_doctor %}
+                                            {% if user.profile_doctor.image %}
+                                                <img class="rounded-circle" src="{{user.profile_doctor.image.url}}" width="31" alt="Profile">
+                                            {% else %}
+                                                <img class="rounded-circle" src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}" width="31" alt="Profile">
+                                            {% endif %}
+                                        {% else %}
+                                            {% if user.client_profile.image %}
+                                                <img class="rounded-circle" src="{{user.client_profile.image.url}}" width="31" alt="Profile">
+                                            {% else %}
+                                                <img class="rounded-circle" src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}" width="31" alt="Profile">
+                                            {% endif %}
+                                        {% endif %}
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <div class="user-header">
+                                        <div class="avatar avatar-sm">
+                                            {% if user.profile_doctor.active_doctor %}
+                                                {% if user.profile_doctor.image %}
+                                                    <img src="{{user.profile_doctor.image.url}}" alt="User Image" class="avatar-img rounded-circle">
+                                                {% else %}
+                                                    <img class="rounded-circle" src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}" width="31" alt="Profile">
+                                                {% endif %}
+                                            {% else %}
+                                                {% if user.client_profile.image %}
+                                                    <img src="{{user.client_profile.image.url}}" alt="User Image" class="avatar-img rounded-circle">
+                                                {% else %}
+                                                    <img src="{% static 'assets/img/patients/Default-Profile-client.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                        <div class="user-text">
+                                            <h6>{{user.first_name}} {{user.last_name}}</h6>
+                                            <p class="text-muted mb-0">
+                                                {% if user.profile_doctor.active_doctor %}Doctor{% else %}User{% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% if user.profile_doctor.active_doctor %}
+                                        <a class="dropdown-item" href="{% url 'doctor:doctor-dashboard' %}">Dashboard</a>
+                                    {% else %}
+                                        <a class="dropdown-item" href="{% url 'client:my-appointments' %}">Dashboard</a>
+                                    {% endif %}
+                                    
+                                    {% if user.profile_doctor.active_doctor %}
+                                        <a class="dropdown-item" href="{% url 'doctor:update_profile' user.profile_doctor.slug %}">Profile Settings</a>
+                                    {% else %}
+                                        <a class="dropdown-item" href="{% url 'client:update_client_profile' user.client_profile.slug %}">Profile Settings</a>
+                                    {% endif %}
+                                    
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'doctor:logout' %}">Logout</a>
+                                </div>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link header-login" href="{% url 'login' %}">Login / Register</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- /Header -->
+
+        {% block body %}
+        {% endblock body %}
+
+        <!-- Footer -->
+        <footer class="footer">
+
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="copyright-text">
+                                <p class="mb-0">&copy; 2023 ModernLabs. All rights reserved.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="copyright-menu">
+                                <ul class="policy-menu">
+                                    <li><a href="term-condition.html">Terms and Conditions</a></li>
+                                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- /Footer -->
+    </div>
+    <!-- /Main Wrapper -->
+
+    <!-- jQuery -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Slick JS -->
+    <script src="{% static 'assets/js/slick.js' %}"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+    {% block schedule_footer %}
+    <!-- Sticky Sidebar JS -->
+    <script src="{% static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js' %}"></script>
+    <script src="{% static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js' %}"></script>
+
+    <!-- Select2 JS -->
+    <script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
+    {% endblock schedule_footer %}
+
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $("#profile_doctor").autocomplete({
+                source: '{% url 'doctor:outocomplete' %}'
+            });
+        });
+    </script>
 </body>
-
-<!-- doccure/  30 Nov 2019 04:11:53 GMT -->
-
 </html>

@@ -4,12 +4,14 @@ from doctor.views import doctors_list
 
 from django.conf import settings
 from django.conf.urls.static import static
+from doctor.views import doctors_list, index
 
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),  # تسجيل الدخول / تسجيل الخروج
+    path('', index, name="index"),  # الرابط الفاضي يفتح صفحة index
 
     path('admin/', admin.site.urls),
-    path('', doctors_list, name="mainpage"),  # الصفحة الرئيسية
+    path('main/', doctors_list, name="mainpage"),  # الصفحة الرئيسية
     path('doctor/', include(('doctor.urls', 'doctor'), namespace='doctor')),
     path('client/', include(('client.urls', 'client'), namespace='client')),
 

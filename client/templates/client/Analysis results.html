@@ -1,53 +1,161 @@
-{% extends 'base.html' %}
-{% block body %}
-		<!-- Breadcrumb -->
-		<div class="breadcrumb-bar">
-			<div class="container-fluid">
-				<div class="row align-items-center">
-					<div class="col-md-12 col-12">
-						<nav aria-label="breadcrumb" class="page-breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">Booking</li>
-							</ol>
-						</nav>
-						<h2 class="breadcrumb-title">Booking</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Breadcrumb -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Analysis File</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #a7d0f7;
+            overflow-x: hidden;
+        }
 
-		<!-- Page Content -->
-		<div class="content success-page-cont">
-			<div class="container-fluid">
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            background: transparent;
+            color: white;
+        }
 
-				<div class="row justify-content-center">
-					<div class="col-lg-6">
+        .nav .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
 
-						<!-- Success Card -->
-						<div class="card success-card">
-							<div class="card-body">
-								<div class="success-cont">
-									
-									<h3>اختر ملف التحليل</h3>
+        .nav-links a {
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
 
-									<form method="post" enctype="multipart/form-data">
-										{% csrf_token %}
-										<input type="file" name="file" id="file" class="mt-5" required>
-										<br>
-										<input type="submit" value="Submit " class="btn btn-primary view-inv-btn mt-5">
-									</form>
-									
-								</div>
-							</div>
-						</div>
-						<!-- /Success Card -->
+        .nav-links a:hover {
+            background: white;
+            color: #3498db;
+        }
 
-					</div>
-				</div>
+        .breadcrumb-bar {
+            background: transparent;
+            padding: 30px 60px;
+            color: white;
+        }
 
-			</div>
-		</div>
-		<!-- /Page Content -->
-{% endblock body %}
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .breadcrumb-title {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .card h3 {
+            color: #3498db;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .btn-submit {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: #217dbb;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+
+    <!-- /Navigation Bar -->
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+
+                    <h2 class="breadcrumb-title">Upload Analysis File</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
+
+    <!-- Page Content -->
+    <div class="content">
+        <div class="card">
+            <h3><i class="fas fa-vials"></i> Choose your analysis file</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" id="file" class="form-control" required>
+                <input type="submit" value="Analyze File" class="btn-submit">
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

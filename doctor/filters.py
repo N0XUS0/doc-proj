@@ -16,3 +16,13 @@ class DoctorFilter(django_filters.FilterSet):
         fields = ('name','gender','specialization','address','address_detail','price')
         
         
+from django import template
+
+register = template.Library()
+
+@register.filter
+def get_item(dictionary, key):
+    try:
+        return dictionary.get(key, None)
+    except:
+        return None

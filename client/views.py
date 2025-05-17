@@ -86,95 +86,98 @@ def my_appointments(request):
 def booking2(request):
     return render(request, 'client/booking2.html', {})
 
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+import PyPDF2
+import numpy as np
+import cv2
+from deepface import DeepFace
 @login_required
 def test_ana(request):
-    normal_results = {
-        # Blood Picture
-        'hgb': np.arange(13.5, 17.6, 0.1),
-        'rbc': np.arange(4.3, 6.2, 0.1),
-        'hct': np.arange(39, 52, 0.1),
-        'mcv': np.arange(80, 101, 0.1),
-        'mch': np.arange(27, 35, 0.1),
-        'mchc': np.arange(32, 38, 0.1),
-        'rdw': np.arange(11.5, 14.6, 0.1),
-        'pct': np.arange(0.1, 0.6, 0.01),
-        'mpv': np.arange(6.0, 12.1, 0.1),
-        'wbc': np.arange(4.0, 11.1, 0.1),
-        'neutrophil': np.arange(35, 81.1, 0.1),
-        'lymphocytes': np.arange(18.0, 44.1, 0.1),
-        'monocytes': np.arange(0, 10.0, 0.1),
-        'eosinophils': np.arange(0, 4.1, 0.1),
-        'basophils': np.arange(0, 1.1, 0.1),
-        # Stool Examination
-        # Physical Examination
-        'odor': ['offensive'],
-        'color': ["brownish"],
-        'reaction': ['variable'],
-        'mucus': ['absent'],
-        'consistency': ['formed'],
-        'food particles': ['absent'],
-        # Microscopic Examination
-        'trophozoite': ['absent'],
-        'cysts': ['absent'],
-        'ova': ['not detected'],
-        'larva': ['absent'],
-        'flagellates': ['absent'],
-        'ciliate': ['absent'],
-        'undigested food': ['absent'],
-        'parasitology artifacts': ['absent']
+    normal_ranges = {
+        "hgb": (13.5, 17.5),
+        "rbc": (4.3, 6.2),
+        "hct": (39, 52),
+        "mcv": (80, 100),
+        "mch": (27, 34),
+        "mchc": (32, 36),
+        "rdw": (11.5, 14.5),
+        "pct": (0.15, 0.5),
+        "mpv": (6.0, 12.0),
+        "wbc": (4.0, 11.0),
+        "neutrophil": (35, 80),
+        "lymphocytes": (18, 44),
+        "monocytes": (0, 10),
+        "eosinophils": (0, 4),
+        "basophils": (0, 1)
     }
 
-    if request.method == 'POST':
+    diseases_specializations = {
+        "فقر دم (Anemia)": ["هيماتولوجيا", "باطنة"],
+        "احتمال عدوى (Infection)": ["ميكروبيولوجيا", "أمراض معدية"],
+    }
+
+    if request.method == "POST":
         file = request.FILES['file']
-        pdf_reader = PyPDF2.PdfReader(file)
+        pdf = PyPDF2.PdfReader(file)
+        content = ""
+        for page in pdf.pages:
+            content += page.extract_text()
 
-        page_text = ''
-        for page_num in range(len(pdf_reader.pages)):
-            page = pdf_reader.pages[page_num]
-            page_text += page.extract_text()
+        # استخراج القيم
+        values = {}
+        for line in content.split("\n"):
+            parts = line.strip().split(":")
+            if len(parts) == 2:
+                key = parts[0].strip().lower()
+                try:
+                    value = float(parts[1].strip())
+                    values[key] = value
+                except:
+                    pass
 
-        lines = page_text.split('\n')
-        new_lines = []
-        for line in lines:
-            if ":" in line:
-                new_lines.append(line)
+        # تحليل القيم
+        abnormal_keys = []
+        abnormal_values = []
+        for key, value in values.items():
+            if key in normal_ranges:
+                low, high = normal_ranges[key]
+                if value < low or value > high:
+                    abnormal_keys.append(key)
+                    abnormal_values.append(value)
 
-        keys_in_text = []
-        for key in normal_results:
-            if key in page_text:
-                keys_in_text.append(key)
+        # تشخيص الحالة وربطها بالتخصصات
+        matched_diseases = []
+        suggested_specializations = []
+        
+        for disease_name, disease_keys in diseases_specializations.items():
+            if any(key in abnormal_keys for key in normal_ranges):
+                matched_diseases.append(disease_name)
+                suggested_specializations.extend(disease_keys)
 
-        numbers = []
-        for my_string in new_lines:
-            try:
-                number_string = my_string.split(":")[1].strip()
-                number = float(number_string)
-                numbers.append(number)
-            except ValueError:
-                numbers.append(number_string)
+        # جلب الأطباء المقترحين
+        suggested_doctors = Profile_Doctor.objects.filter(
+            specialization__spec__in=suggested_specializations,
+            active_doctor=True
+        ).select_related('specialization')[:5]  # عرض أول 5 أطباء
 
-        patient_results = dict(zip(keys_in_text, numbers))
+        # حالة المريض
+        if not matched_diseases:
+            status = "✅ المريض سليم"
+        elif len(matched_diseases) == 1:
+            status = f"❗ محتمل وجود: {matched_diseases[0]}"
+        else:
+            status = "🚨 يوجد أكثر من مؤشر مرضي: " + "، ".join(matched_diseases)
 
-        newkey = []
-        newvalue = []
+        return render(request, 'client/analysis.html', {
+            'newkey': abnormal_keys,
+            'newvalue': abnormal_values,
+            'status': status,
+            'suggested_doctors': suggested_doctors,
+            'matched_diseases': matched_diseases,
+            'suggested_specializations': list(set(suggested_specializations))
+        })
 
-        for key, value in patient_results.items():
-            if isinstance(value, float):
-                isB = np.isclose(normal_results[key], patient_results[key]).any()
-                if not isB:
-                    isB_str = str(normal_results[key]) == str(patient_results[key])
-                    newkey.append(key)
-                    newvalue.append(value)
-                    if not isB_str:
-                        print(f"Sorry, but you have a problem in '{key}' with result {value}")
-            elif isinstance(value, str):
-                isB_str = normal_results[key] == patient_results[key]
-                if not isB_str:
-                    print(f"Sorry, but you have a problem in '{key}' with result {value}") 
-
-        return render(request, 'client/analysis.html', context={'newkey': newkey, 'newvalue': newvalue})
-
-    # return an empty form
     return render(request, 'client/Analysis results.html')
 def booking_success(request , slug):
     docs = Profile_Doctor.objects.get(slug = slug)

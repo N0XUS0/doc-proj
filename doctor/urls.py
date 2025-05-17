@@ -39,6 +39,7 @@ urlpatterns = [
 
     # path('app/' , views.app , name='app')
     path('' , views.doctors_list , name='doctors_list'),
+    
     path('search' , views.doctor_search , name='search'),
     path('login/' , views.doctor_login , name='login'),
     path('doctor_signup/' , views.doctor_signup , name='doctor_signup'),

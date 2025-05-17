@@ -20,7 +20,6 @@ GENDER_OPTION=(
 
 # Create your models here.
 
-
 class Profile_Doctor(models.Model):
     user = models.OneToOneField(User, verbose_name=_("User") ,on_delete=models.CASCADE)
     name = models.CharField(_("الاسم رباعي"), max_length=50)
@@ -89,17 +88,16 @@ post_save.connect(create_profile,sender=User)
     
     
 class Specialization(models.Model):
-    spec = models.CharField(_("تخصص2"),max_length=200)
-    image = models.ImageField(_("الصوره"), upload_to='specialization_image/',null=True,blank=True)
-    
+    spec = models.CharField(_("التخصص"), max_length=200, unique=True)
+    image = models.ImageField(_("الصوره"), upload_to='specialization_image/', null=True, blank=True)
+    description = models.TextField(_("الوصف"), null=True, blank=True)
     
     def __str__(self):
         return self.spec
 
     class Meta:
-        verbose_name = 'Specialization'
-        verbose_name_plural = 'Specializations'
-        
+        verbose_name = 'التخصص'
+        verbose_name_plural = 'التخصصات'
         
 
 class Doctor_Image(models.Model):

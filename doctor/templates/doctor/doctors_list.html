@@ -1,476 +1,810 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block body %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مودرن لاب | الذكاء الاصطناعي للرعاية الصحية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #2e59d9;
+            --accent-color: #17a2b8;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fc;
+            --success-color: #1cc88a;
+            --danger-color: #e74a3b;
+            --warning-color: #f6c23e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container-fluid {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        
+        /* Navigation */
+        .ai-navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-navbar .logo {
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ai-navbar .logo i {
+            margin-left: 10px;
+        }
+        
+        .ai-navbar .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .ai-navbar .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .ai-navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ai-navbar .nav-links a:hover {
+            color: var(--light-color);
+            transform: translateY(-2px);
+        }
+        
+        .ai-navbar .nav-links a i {
+            margin-left: 5px;
+        }
+        
+        /* Hero Section */
+        .ai-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/static/assets/img/amr.png" %}');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: right;
+            padding-top: 80px;
+        }
+        
+        .ai-hero-content {
+            max-width: 600px;
+            margin-right: auto;
+            padding: 0 2rem;
+        }
+        
+        .ai-hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .ai-hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .ai-hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .ai-hero-image img {
+            max-width: 600px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-right: 1rem;
+        }
+        
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        /* Features Section */
+        .ai-features {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: var(--primary-color);
+            bottom: -10px;
+            right: 25%;
+            border-radius: 2px;
+        }
+        
+        .section-header p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+        
+        .feature-card p {
+            color: #666;
+        }
+        
+        /* Specializations Section */
+        .ai-specializations {
+            padding: 5rem 0;
+            background-color: var(--light-color);
+        }
+        
+        .specializations-slider {
+            display: flex;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scroll-snap-type: x mandatory;
+            gap: 1.5rem;
+            padding: 1rem 2rem;
+        }
+        
+        .specialization-card {
+            min-width: 250px;
+            scroll-snap-align: start;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .specialization-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .specialization-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .specialization-card h3 {
+            padding: 1rem;
+            color: var(--dark-color);
+        }
+        
+        /* Doctors Section */
+        .ai-doctors {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .doctor-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .doctor-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .doctor-info {
+            padding: 1.5rem;
+        }
+        
+        .doctor-info h3 {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .doctor-info .specialty {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .doctor-info .rating {
+            color: var(--warning-color);
+            margin-bottom: 1rem;
+        }
+        
+        .doctor-info .location {
+            display: flex;
+            align-items: center;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .doctor-info .location i {
+            margin-left: 5px;
+        }
+        
+        .doctor-info .price {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .doctor-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .doctor-actions .btn {
+            width: 48%;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Labs Section */
+        .ai-labs {
+            padding: 5rem 0;
+            background-color: var(--light-color);
+        }
+        
+        /* Contact Section */
+        .ai-contact {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .contact-form h3 {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .contact-form textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .contact-form .btn {
+            width: 100%;
+        }
+        
+        .contact-image {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .contact-image img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        
+        /* Footer */
+        .ai-footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .ai-hero {
+                flex-direction: column;
+                height: auto;
+                padding: 6rem 0;
+            }
+            
+            .ai-hero-content {
+                margin-right: 0;
+                margin-bottom: 3rem;
+                text-align: center;
+            }
+            
+            .ai-navbar .nav-links {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .ai-hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AI Assistant Navigation -->
+    <nav class="ai-navbar">
+        <div class="logo">
+            <i class="fas fa-flask"></i>
+            <span>AI Assistant</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'client:test-ana' %}"><i class="fas fa-chart-line"></i>AI Analysis</a></li>
+            <li><a href="#doctors"><i class="fas fa-user-md"></i>Doctors</a></li>
+            <li><a href="#contact"><i class="fas fa-heartbeat"></i>Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- AI Hero Section -->
+    <section class="ai-hero">
+        <div class="ai-hero-content">
+            <h1>AI Healthcare Assistant</h1>
+            <p>A smart, life-saving tool that can protect your health. The AI Lab Analyzer simplifies medical reports and helps spot hidden health problems before they become serious.</p>
+            <div>
+                <a href="#features" class="btn btn-outline">Features</a>
+				<a href="{% url 'client:test-ana' %}" class="btn btn-primary">START NOW</a>
+            </div>
+        </div>
+        <div class="ai-hero-image">
+            <img src="/static/assets/img/amr.png" alt="AI Health Assistant" style="border-radius: 50%;">
+        </div>
+    </section>
+
+    <!-- AI Features Section -->
+    <section class="ai-features" id="features">
+        <div class="container-fluid">
+            <div class="section-header">
+                <h2>AI Assistant Features</h2>
+                <p>Discover how our AI assistant can improve your healthcare journey</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Quick Analysis</h3>
+                    <p>Instant analysis of medical reports using the latest AI technology</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Health Protection</h3>
+                    <p>Early detection of potential health issues before they worsen</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Doctor Recommendations</h3>
+                    <p>Connect you with the best specialist doctors based on your health condition</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Continuous Monitoring</h3>
+                    <p>Track your health progress and provide appropriate recommendations</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-file-medical"></i>
+                    <h3>Complete Medical Record</h3>
+                    <p>Store all your medical reports in one secure place</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bell"></i>
+                    <h3>Health Alerts</h3>
+                    <p>Instant notifications for any important changes in your health</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specializations Section -->
+    <section class="ai-specializations" id="specializations">
+        <div class="container-fluid">
+            <div class="section-header">
+                <h2>Medical Specializations</h2>
+                <p>Discover the best doctors in various medical specialties</p>
+            </div>
+            <div class="specializations-slider">
+                {% for specialization in specializations %}
+                <div class="specialization-card">
+                    <a href="{% url 'doctor:show_Specialization_detail' specialization.id %}">
+                        <img src="{{specialization.image.url}}" alt="{{specialization.spec}}">
+                        <h3>{{specialization.spec}}</h3>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctors Section -->
+    <section class="ai-doctors" id="doctors">
+        <div class="container-fluid">
+            <div class="section-header">
+                <h2>Top Doctors</h2>
+                <p>Meet our team of experienced specialist doctors</p>
+            </div>
+            <div class="doctors-grid">
+                {% for d in doctors %}
+                {% if d.profile_doctor.name and d.profile_doctor.specialization and d.profile_doctor.active_doctor and d.profile_doctor.address and d.profile_doctor.address_detail and d.profile_doctor.price %}
+                <div class="doctor-card">
+                    <a href="{% url 'doctor:doctor_detail' d.profile_doctor.slug %}">
+                        {% if d.profile_doctor.image %}
+                        <img src="{{d.profile_doctor.image.url}}" alt="{{d.profile_doctor.user.first_name}}">
+                        {% else %}
+                        {% endif %}
+                    </a>
+                    <div class="doctor-info">
+                        <h3>{{d.profile_doctor.user.first_name}} {{d.profile_doctor.user.last_name}}</h3>
+                        <span class="specialty">{{d.profile_doctor.specialist_doctor}}</span>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(17)</span>
+                        </div>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{d.profile_doctor.address}} : {{d.profile_doctor.address_detail}}</span>
+                        </div>
+                        <div class="price">Consultation Fee: {{d.profile_doctor.price}} EGP</div>
+                        <div class="doctor-actions">
+                            <a href="{% url 'doctor:doctor_detail' d.profile_doctor.slug %}" class="btn btn-outline">View Profile</a>
+                            {% if not user.profile_doctor.active_doctor %}
+                            <a href="{% url 'client:booking' d.profile_doctor.slug %}" class="btn btn-primary">Book Appointment</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs Section -->
+    <section class="ai-labs" id="labs">
+        <div class="container-fluid">
+            <div class="section-header">
+                <h2>Labs & Radiology Centers</h2>
+                <p>Discover the best medical labs and radiology centers in your area</p>
+            </div>
+            <div class="doctors-grid">
+                <!-- Lab 1 -->
+                <div class="doctor-card">
+                    <a href="#">
+                    </a>
+                    <div class="doctor-info">
+                        <h3>Al Borg Labs</h3>
+                        <span class="specialty">All types of tests and examinations</span>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(17)</span>
+                        </div>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Senbellawein, Borg Al-Namsa next to Cairo Bank</span>
+                        </div>
+                        <div class="price">Examination Fee: 200 EGP</div>
 
 
-<!-- Home Banner -->
-<section class="section section-search">
-	<div class="container-fluid">
-		<div class="banner-wrapper" dir="rtl">
-			<div class="banner-header">
-				<h1 class=" text-white" style="display: flex;">مودرن لاب</h1>
-				<h1 class=" text-white" style="display: flex;">ابحث عن دكتور ، احجز موعد</h1>
-				<p style="display: flex;">اكتشف أفضل الأطباء والعيادات والمستشفيات في المدينة الأقرب إليك.</p>
-			</div>
+                    </div>
+                </div>
+                
+                <!-- Lab 2 -->
+                <div class="doctor-card">
+                    <a href="#">
+                    </a>
+                    <div class="doctor-info">
+                        <h3>Al Mokhtabar Labs</h3>
+                        <span class="specialty">All types of tests and examinations</span>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(17)</span>
+                        </div>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Mansoura, University District</span>
+                        </div>
+                        <div class="price">Examination Fee: 200 EGP</div>
 
-			<!-- Search -->
-			<div class="search-box">
-				<form action="templateshub.net">
-					<div class="form-group search-location">
-						<input type="text" class="form-control" placeholder="البحث بالموقع">
-						<span class="form-text" style="display: flex;" dir="rtl">بناء علي موقعك </span>
-					</div>
-					<div class="form-group search-info">
-						<input type="text" class="form-control" placeholder="الأطباء ،العيادات والمستشفيات ،الأمراض " type='text' name='profile_doctor' id='profile_doctor'>
-						<span class="form-text" dir="rtl" style="display: flex;"> مثال: فحص الأسنان ، السكر ،
-							معامل</span>
-					</div>
-					<button type="submit" class="btn btn-primary search-btn"><i class="fas fa-search"></i>
-						<span>Search</span></button>
-				</form>
-			</div>
-			<!-- /Search -->
+                    </div>
+                </div>
+                
+                <!-- Lab 3 -->
+                <div class="doctor-card">
+                    <a href="#">
+                    </a>
+                    <div class="doctor-info">
+                        <h3>Nile Radiology Center</h3>
+                        <span class="specialty">All types of radiology</span>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(17)</span>
+                        </div>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Mansoura, University District</span>
+                        </div>
+                        <div class="price">Examination Fee: 200 EGP</div>
 
-		</div>
-	</div>
-</section>
-<!-- /Home Banner -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Clinic and Specialities -->
-<section class="section section-specialities">
-	<div class="container-fluid">
-		<div class="section-header text-center">
-			<h2>العيادات والتخصص</h2>
-			<p class="sub-title">اكتشف أفضل الأطباء والعيادات والمستشفيات في المدينة الأقرب إليك.
+    <!-- Contact Section -->
+    <section class="ai-contact" id="contact">
+        <div class="container-fluid">
+            <div class="section-header">
+                <h2>Contact Us</h2>
+                <p>Have a question or need help? Feel free to contact us</p>
+            </div>
+            <div class="contact-container">
+                <form class="contact-form">
+                    <h3>Send Message</h3>
+                    <input type="text" placeholder="Full Name">
+                    <input type="email" placeholder="Email">
+                    <input type="tel" placeholder="Phone Number">
+                    <textarea placeholder="Your Message"></textarea>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+                <div class="contact-image">
+                </div>
+            </div>
+        </div>
+    </section>
 
-			</p>
-		</div>
-		<div class="row justify-content-center">
-			<div class="col-md-9">
-				<!-- Slider -->
-				<div class="specialities-slider slider">
+    <!-- Footer -->
+    <footer class="ai-footer" >
+        <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#doctors">Doctors</a>
+            <a href="#labs">Labs</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2023 AI Assistant. All rights reserved.
+        </div>
+    </footer>
 
-					{% for specialization in specializations %}
-					<!-- Slider Item -->
-					<div class="speicality-item text-center">
-						<div class="speicality-img">
-							<a href="{% url 'doctor:show_Specialization_detail' specialization.id %}"> <img src="{{specialization.image.url}}" class="img-fluid" alt="Speciality">
-								<span><i class="fa fa-circle" aria-hidden="true"></i></span>
-						</div>
-						<p>{{specialization.spec}}</p> </a>
-					</div>
-					<!-- /Slider Item -->
-
-					{% endfor %}
-				</div>
-				<!-- /Slider -->
-
-			</div>
-		</div>
-	</div>
-</section>
-<!-- Clinic and Specialities -->
-
-<!-- Popular Section -->
-<section class="section section-doctor">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-lg-4">
-				<div class="section-header ">
-					<h2>حجز العيادات</h2>
-					<p>استكشف افضل عيادة </p>
-				</div>
-				<div class="about-content">
-					<p>تساعدك مودرن لاب في العثور على أفضل العيادات والمختبرات الطبية لك للحصول على رعاية صحية
-						لحياة أفضل
-
-					</p>
-					<p>هدفنا الحفاظ علي صحتك صحتك ، مودرن لاب تساعدك على الحفاظ على صحتك ، سجل الدخول الآن
-						واكتشف أفضل العيادات والمختبرات للحفاظ على صحتك</p>
-					<a href="javascript:;">اقرا المزيد</a>
-				</div>
-			</div>
-			<div class="col-lg-8">
-				<div class="doctor-slider slider">
-					{% for d in doctors %}
-
-					{% if d.profile_doctor.name and d.profile_doctor.specialization and d.profile_doctor.active_doctor and d.profile_doctor.address and d.profile_doctor.address_detail and d.profile_doctor.price %}
-
-
-					<!-- Doctor Widget -->
-					<div class="profile-widget">
-						<div class="doc-img">
-							<a href="{% url 'doctor:doctor_detail' d.profile_doctor.slug %}">
-								{% if d.profile_doctor.image %}
-								<img class="img-fluid" alt="User Image" src="{{d.profile_doctor.image.url}}">
-								{% else %}
-								<img class="img-fluid" alt="User Image"
-									src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}">
-								{% endif %}
-							</a>
-							<a href="javascript:void(0)" class="fav-btn">
-								<i class="far fa-bookmark"></i>
-							</a>
-
-						</div>
-
-						<div class="pro-content">
-							<h3 class="title">
-								<a href="doctor-profile.html">{{d.profile_doctor.user.first_name}} {{d.profile_doctor.user.last_name}}</a>
-								<i class="fas fa-check-circle verified"></i>
-							</h3>
-							<p class="speciality">{{d.profile_doctor.specialist_doctor}}</p>
-							<div class="rating">
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<span class="d-inline-block average-rating">(17)</span>
-							</div>
-							<ul class="available-info">
-								<li>
-									<i class="fas fa-map-marker-alt"></i>{{d.profile_doctor.address}} : {{d.profile_doctor.address_detail}}
-								</li>
-								<li>
-									<i class="far fa-clock"></i> مدة الانتظار : {{d.profile_doctor.waiting_time}} دقائق
-								</li>
-								<li>
-									<i class="far fa-money-bill-alt"></i> الكشف {{d.profile_doctor.price}} ج
-									<i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
-								</li>
-							</ul>
-							<div class="row row-sm">
-								<div class="col-6">
-									<a href="{% url 'doctor:doctor_detail' d.profile_doctor.slug %}" class="btn view-btn">عرض الصفحة </a>
-								</div>
-								{% if not user.profile_doctor.active_doctor %}
-								<div class="col-6">
-									<a href="{% url 'client:booking' d.profile_doctor.slug %}" class="btn book-btn">حجز الان </a>
-								</div>
-								{% endif %}
-							</div>
-						</div>
-					</div>
-					<!-- /Doctor Widget -->
-					{% endif %}
-					{% endfor %}
-
-
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- /Popular Section -->
-
-
-<!-- Popular Section -->
-<section class="section section-doctor">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-lg-4">
-				<div class="section-header ">
-					<h2> المعامل الطبية ومراكز الاشعة</h2>
-					<p>استكشف افضل معمل طبي </p>
-				</div>
-				<div class="about-content">
-					<p>تساعدك مودرن لاب في العثور على أفضل العيادات والمختبرات الطبية لك للحصول على رعاية صحية
-						لحياة أفضل</p>
-					<p>هدفنا الحفاظ علي صحتك صحتك ، مودرن لاب تساعدك على الحفاظ على صحتك ، سجل الدخول الآن
-						واكتشف أفضل العيادات والمختبرات للحفاظ على صحتك</p>
-					<a href="javascript:;">اقرا المزيد</a>
-				</div>
-			</div>
-			<div class="col-lg-8">
-				<div class="doctor-slider slider">
-
-
-
-
-					<!-- Doctor Widget -->
-					<div class="profile-widget">
-						<div class="doc-img">
-							<a href="doctor-profile.html">
-								<img class="img-fluid" alt="User Image" src="{% static 'assets/img/logo (1).png' %}">
-							</a>
-							<a href="javascript:void(0)" class="fav-btn">
-								<i class="far fa-bookmark"></i>
-							</a>
-						</div>
-						<div class="pro-content">
-							<h3 class="title">
-								<a href="doctor-profile.html">معامل البرج</a>
-								<i class="fas fa-check-circle verified"></i>
-							</h3>
-							<p class="speciality">جميع انواع التحاليل والفحوصات </p>
-							<div class="rating">
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<span class="d-inline-block average-rating">(17)</span>
-							</div>
-							<ul class="available-info">
-								<li>
-									<i class="fas fa-map-marker-alt"></i> السنبلاوين 9 برج النمس بجوار بنك
-									القاهرة
-
-								</li>
-								<li>
-									<i class="far fa-clock"></i> مدة الانتظار : 5 دقائق
-								</li>
-								<li>
-									<i class="far fa-money-bill-alt"></i> الكشف :200 ج
-									<i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
-								</li>
-							</ul>
-							<div class="row row-sm">
-								<div class="col-6">
-									<a href="doctor-profile.html" class="btn view-btn">عرض الصفحة </a>
-								</div>
-								<div class="col-6">
-									<a href="booking.html" class="btn book-btn">حجز الان </a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- /Doctor Widget -->
-
-
-					<!-- Doctor Widget -->
-					<div class="profile-widget">
-						<div class="doc-img">
-							<a href="doctor-profile.html">
-								<img class="img-fluid" alt="User Image" src="{% static 'assets/img/logo (1).png' %}">
-							</a>
-							<a href="javascript:void(0)" class="fav-btn">
-								<i class="far fa-bookmark"></i>
-							</a>
-						</div>
-						<div class="pro-content">
-							<h3 class="title">
-								<a href="doctor-profile.html">معامل البرج</a>
-								<i class="fas fa-check-circle verified"></i>
-							</h3>
-							<p class="speciality">جميع انواع التحاليل والفحوصات </p>
-							<div class="rating">
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<span class="d-inline-block average-rating">(17)</span>
-							</div>
-							<ul class="available-info">
-								<li>
-									<i class="fas fa-map-marker-alt"></i> السنبلاوين 9 برج النمس بجوار بنك
-									القاهرة
-
-								</li>
-								<li>
-									<i class="far fa-clock"></i> مدة الانتظار : 5 دقائق
-								</li>
-								<li>
-									<i class="far fa-money-bill-alt"></i> الكشف :200 ج
-									<i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
-								</li>
-							</ul>
-							<div class="row row-sm">
-								<div class="col-6">
-									<a href="doctor-profile.html" class="btn view-btn">عرض الصفحة </a>
-								</div>
-								<div class="col-6">
-									<a href="booking.html" class="btn book-btn">حجز الان </a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- /Doctor Widget -->
-
-					<!-- Doctor Widget -->
-					<div class="profile-widget">
-						<div class="doc-img">
-							<a href="doctor-profile.html">
-								<img class="img-fluid" alt="User Image" src="{% static 'assets/img/download.jpg' %}">
-							</a>
-							<a href="javascript:void(0)" class="fav-btn">
-								<i class="far fa-bookmark"></i>
-							</a>
-						</div>
-						<div class="pro-content">
-							<h3 class="title">
-								<a href="doctor-profile.html">معامل المختبر </a>
-								<i class="fas fa-check-circle verified"></i>
-							</h3>
-							<p class="speciality">جميع انواع التحاليل والفحوصات </p>
-							<div class="rating">
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<span class="d-inline-block average-rating">(17)</span>
-							</div>
-							<ul class="available-info">
-								<li>
-									<i class="fas fa-map-marker-alt"></i> المنصورة حي الجامعة
-								</li>
-								<li>
-									<i class="far fa-clock"></i> مدة الانتظار : 5 دقائق
-								</li>
-								<li>
-									<i class="far fa-money-bill-alt"></i> الكشف :200 ج
-									<i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
-								</li>
-							</ul>
-							<div class="row row-sm">
-								<div class="col-6">
-									<a href="doctor-profile.html" class="btn view-btn">عرض الصفحة </a>
-								</div>
-								<div class="col-6">
-									<a href="booking.html" class="btn book-btn">حجز الان </a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- /Doctor Widget -->
-
-					<!-- Doctor Widget -->
-					<div class="profile-widget">
-						<div class="doc-img">
-							<a href="doctor-profile.html">
-								<img class="img-fluid" alt="User Image" src="{% static 'assets/img/download2.png' %}">
-							</a>
-							<a href="javascript:void(0)" class="fav-btn">
-								<i class="far fa-bookmark"></i>
-							</a>
-						</div>
-						<div class="pro-content">
-							<h3 class="title">
-								<a href="doctor-profile.html">مركز النيل للاشعة </a>
-								<i class="fas fa-check-circle verified"></i>
-							</h3>
-							<p class="speciality">جميع انواع الاشعة </p>
-							<div class="rating">
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<i class="fas fa-star filled"></i>
-								<span class="d-inline-block average-rating">(17)</span>
-							</div>
-							<ul class="available-info">
-								<li>
-									<i class="fas fa-map-marker-alt"></i> المنصورة حي الجامعة
-								</li>
-								<li>
-									<i class="far fa-clock"></i> مدة الانتظار : 5 دقائق
-								</li>
-								<li>
-									<i class="far fa-money-bill-alt"></i> الكشف :200 ج
-									<i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
-								</li>
-							</ul>
-							<div class="row row-sm">
-								<div class="col-6">
-									<a href="doctor-profile.html" class="btn view-btn">عرض الصفحة </a>
-								</div>
-								<div class="col-6">
-									<a href="booking.html" class="btn book-btn">حجز الان </a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- /Doctor Widget -->
-1
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
-
-
-<!-- Availabe Features -->
-<section class="section section-features">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-5 features-img">
-				<img src="{% static 'assets/img/features/feature.png' %}" class="img-fluid" alt="Feature">
-			</div>
-			<div class="col-md-7">
-				<div class="section-header">
-					<h2 class="mt-2" style="display: flex;direction: rtl;">الميزات المتوفرة في عيادتنا</h2>
-					<p style="display: flex;direction: rtl;">مودرن لاب توفر لك العديد من الخدمات ،حيث تستطيع
-						معرفة نتيجة تحاليلك من خلال موقعنا واقتراح افضل الاطباء المناسبة لحالتك </p>
-				</div>
-				<div class="features-slider slider">
-					<!-- Slider Item -->
-					<div class="feature-item text-center">
-						<img src="{% static 'assets/img/features/feature-01.jpg' %}" class="img-fluid" alt="Feature">
-						<p>علاج طبيعي</p>
-					</div>
-					<!-- /Slider Item -->
-
-					<!-- Slider Item -->
-					<div class="feature-item text-center">
-						<img src="{% static 'assets/img/features/feature-02.jpg' %}" class="img-fluid" alt="Feature">
-						<p>اشعة</p>
-					</div>
-					<!-- /Slider Item -->
-
-					<!-- Slider Item -->
-					<div class="feature-item text-center">
-						<img src="{% static 'assets/img/features/feature-03.jpg' %}" class="img-fluid" alt="Feature">
-						<p>مستشفي</p>
-					</div>
-					<!-- /Slider Item -->
-
-					<!-- Slider Item -->
-					<div class="feature-item text-center">
-						<img src="{% static 'assets/img/features/feature-04.jpg' %}" class="img-fluid" alt="Feature">
-						<p>معمل طبي</p>
-					</div>
-					<!-- /Slider Item -->
-
-					<!-- Slider Item -->
-					<div class="feature-item text-center">
-						<img src="{% static 'assets/img/features/feature-05.jpg' %}" class="img-fluid" alt="Feature">
-						<p>عيادة</p>
-					</div>
-					<!-- /Slider Item -->
-
-					<!-- Slider Item -->
-					<div class="feature-item text-center">
-						<img src="{% static 'assets/img/features/feature-06.jpg' %}" class="img-fluid" alt="Feature">
-						<p>صيدلية</p>
-					</div>
-					<!-- /Slider Item -->
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- Availabe Features -->
-
-<!-- contact -->
-<div>
-	<div class="contactform">
-		<form dir="rtl">
-			<h3>تواصل معنا</h3>
-			<input type="text" name="" id="" placeholder="الاسم ">
-			<input type="email" name="" id="" placeholder="الايميل">
-			<input type="number" name="" id="" placeholder="رقم التلفون">
-			<textarea style="height:110px">اكتب رسالتك هنا</textarea>
-			<button>send message</button>
-		</form>
-		<div>
-			<img src="{% static 'assets/img/features/feature.png' %}" />
-		</div>
-	</div>
-</div>
-
-<!-- contact -->
-{% endblock body %}
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Sticky navbar on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.ai-navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

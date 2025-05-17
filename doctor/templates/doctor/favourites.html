@@ -3,100 +3,222 @@
 
 {% block body %}
 
-
-
 <!-- Breadcrumb -->
-<div class="breadcrumb-bar">
-	<div class="container-fluid">
-		<div class="row align-items-center">
-			<div class="col-md-12 col-12">
-				<nav aria-label="breadcrumb" class="page-breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index.html">الصفحه الرئيسيه</a></li>
-						<li class="breadcrumb-item active" aria-current="page">التخصص</li>
-					</ol>
-				</nav>
-				<h2 class="breadcrumb-title">Favourites</h2>
-			</div>
-		</div>
-	</div>
-</div>
+
 <!-- /Breadcrumb -->
 
 <!-- Page Content -->
 <div class="content">
-	<div class="container-fluid">
-		<div class="row" style="justify-Content: center">
+    <div class="container-fluid">
+        <div class="row" style="justify-content: center">
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <div class="row row-grid">
 
-			<div class="col-md-7 col-lg-8 col-xl-9">
-				<div class="row row-grid">
+                    {% for doc_specializations in doc_specialization %}
+                    {% if doc_specializations.name and doc_specializations.active_doctor and doc_specializations.address and doc_specializations.address_detail and doc_specializations.price %}
 
-					{% for doc_specializations in doc_specialization %}
-					{% if doc_specializations.name and doc_specializations.active_doctor and doc_specializations.address and doc_specializations.address_detail and doc_specializations.price %}
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="profile-widget">
+                            <div class="doc-img">
+                                <a href="doctor-profile.html">
+                                    {% if doc_specializations.image %}
+                                    <img class="img-fluid" alt="User Image" src="{{doc_specializations.image.url}}">
+                                    {% else %}
+                                    <img class="img-fluid" alt="User Image"
+                                        src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}">
+                                    {% endif %}
+                                </a>
+                                <a href="javascript:void(0)" class="fav-btn">
+                                    <i class="far fa-bookmark"></i>
+                                </a>
+                            </div>
+                            <div class="pro-content">
+                                <h3 class="title">
+                                    <a href="doctor-profile.html">{{doc_specializations.user.first_name}} {{doc_specializations.user.last_name}}</a>
+                                    <i class="fas fa-check-circle verified"></i>
+                                </h3>
+                                <p class="speciality">{{doc_specializations.specialist_doctor}}</p>
+                                <div class="rating">
+                                    <i class="fas fa-star filled"></i>
+                                    <i class="fas fa-star filled"></i>
+                                    <i class="fas fa-star filled"></i>
+                                    <i class="fas fa-star filled"></i>
+                                    <i class="fas fa-star filled"></i>
+                                    <span class="d-inline-block average-rating">(17)</span>
+                                </div>
+                                <ul class="available-info">
+                                    <li>
+                                        <i class="fas fa-map-marker-alt"></i> {{doc_specializations.address}} : {{doc_specializations.address_detail}}
+                                    </li>
+                                    <li>
+                                        <i class="far fa-money-bill-alt"></i> Price: {{doc_specializations.price}} EGP <i class="fas fa-info-circle"
+                                            data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                    </li>
+                                </ul>
+                                <div class="row row-sm">
+                                    <div class="col-6">
+                                        <a href="{% url 'doctor:doctor_detail' doc_specializations.slug %}" class="btn view-btn">View Profile</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="{% url 'client:booking' doc_specializations.slug %}" class="btn book-btn">Book Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-					<div class="col-md-6 col-lg-4 col-xl-3">
-						<div class="profile-widget">
-							<div class="doc-img">
-								<a href="doctor-profile.html">
+                    {% endif %}
+                    {% endfor %}
 
-									{% if doc_specializations.image %}
-									<img class="img-fluid" alt="User Image" src="{{doc_specializations.image.url}}">
-									{% else %}
-									<img class="img-fluid" alt="User Image"
-										src="{% static 'assets/img/doctors/Default-Profile_doctor.jpg' %}">
-									{% endif %}
-
-
-
-								</a>
-								<a href="javascript:void(0)" class="fav-btn">
-									<i class="far fa-bookmark"></i>
-								</a>
-							</div>
-							<div class="pro-content">
-								<h3 class="title">
-									<a href="doctor-profile.html">{{doc_specializations.user.first_name}} {{doc_specializations.user.last_name}}</a>
-									<i class="fas fa-check-circle verified"></i>
-								</h3>
-								<p class="speciality">{{doc_specializations.specialist_doctor}}</p>
-								<div class="rating">
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<span class="d-inline-block average-rating">(17)</span>
-								</div>
-								<ul class="available-info">
-									<li>
-										<i class="fas fa-map-marker-alt"></i> {{doc_specializations.address}} : {{doc_specializations.address_detail}}
-									</li>
-
-									<li>
-										<i class="far fa-money-bill-alt"></i> السعر :{{doc_specializations.price}}ج <i class="fas fa-info-circle"
-											data-toggle="tooltip" title="Lorem Ipsum"></i>
-									</li>
-								</ul>
-								<div class="row row-sm">
-									<div class="col-6">
-										<a href="{% url 'doctor:doctor_detail' doc_specializations.slug %}" class="btn view-btn">عرض الصفحة</a>
-									</div>
-									<div class="col-6">
-										<a href="{% url 'client:booking' doc_specializations.slug %}" class="btn book-btn">حجز الان</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					{% endif %}
-					{% endfor %}
-
-				</div>
-			</div>
-		</div>
-	</div>
-
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /Page Content -->
+
+<style>
+    /* AI Assistant Styling */
+    .breadcrumb-bar {
+        background: linear-gradient(135deg, #4e73df, #2e59d9);
+        color: white;
+        padding: 20px 0;
+    }
+    
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .breadcrumb-item a {
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active {
+        color: white;
+    }
+    
+    .breadcrumb-title {
+        color: white;
+        margin-top: 10px;
+        font-weight: 700;
+    }
+    
+    .profile-widget {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+    }
+    
+    .profile-widget:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .doc-img {
+        position: relative;
+    }
+    
+    .doc-img img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .fav-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #ddd;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .fav-btn:hover, .fav-btn.active {
+        color: var(--warning-color);
+    }
+    
+    .pro-content {
+        padding: 20px;
+    }
+    
+    .title {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+    
+    .verified {
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        margin-right: 5px;
+    }
+    
+    .speciality {
+        color: var(--primary-color);
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+    
+    .rating {
+        color: var(--warning-color);
+        margin-bottom: 15px;
+    }
+    
+    .average-rating {
+        color: #666;
+        font-size: 0.9rem;
+    }
+    
+    .available-info {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    .available-info li {
+        margin-bottom: 8px;
+        color: #666;
+    }
+    
+    .available-info i {
+        margin-left: 5px;
+        color: var(--primary-color);
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 8px 15px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .view-btn {
+        background: white;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+    }
+    
+    .view-btn:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .book-btn {
+        background: var(--primary-color);
+        color: white;
+        border: 1px solid var(--primary-color);
+    }
+    
+    .book-btn:hover {
+        background: var(--secondary-color);
+    }
+</style>
 {% endblock body %}

@@ -1,101 +1,182 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Analysis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #a7d0f7;
+        }
 
-{% block body %}
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            background: transparent;
+            color: white;
+        }
 
-	
-		<!-- Breadcrumb -->
-		<div class="breadcrumb-bar">
-			<div class="container-fluid">
-				<div class="row align-items-center">
-					<div class="col-md-12 col-12">
-						<nav aria-label="breadcrumb" class="page-breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">report analysis</li>
-							</ol>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Breadcrumb -->
-		<div class="content">
-			<div class="container-fluid">
+        .nav .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
 
-				<div class="row" style="flex-direction: row-reverse;">
+        .nav-links a {
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
 
-					
-					<!-- Profile Sidebar -->
-					{% include 'client/Profile_Sidebar_client.html' %}
+        .nav-links a:hover {
+            background: white;
+            color: #3498db;
+        }
 
-					<!-- / Profile Sidebar -->
-					
+        .breadcrumb-bar {
+            background: transparent;
+            color: white;
+        }
 
-					<div class="analysis"
-						style="display: flex; justify-content:space-between; 	margin-right: 200px;	max-height: 600px; border-radius: 10px; background-color: white;"
-						dir="rtl">
+        .breadcrumb-title {
+            font-size: 30px;
+            font-weight: bold;
+        }
 
+        .container-fluid {
+            padding: 20px;
+        }
 
+        .card {
+            background-color: #f0fbff;
+            border-left: 5px solid #0dcaf0;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.1);
+            margin-bottom: 30px;
+        }
 
+        .analysis {
+            display: flex;
+            justify-content: space-around;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.1);
+            padding: 25px;
+            overflow-x: auto;
+        }
 
-						<div class="p-4 m-4"
-							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
-							<h4 style="color: #0de4fe;font-weight: bold;">اسم التحليل </h4>
-							{% for x in newkey %}
-							<span> {{x}}</span>
-							
-							{% endfor %}
-						</div>
-						
-						<div class="p-4 m-4"
-							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
-							<h4 style="color: #0de4fe;font-weight: bold;"> النتيجة </h4>
-							{% for y in newvalue %}
-							<span>{{y}}</span>
-							{% endfor %}
+        .analysis > div {
+            max-width: 250px;
+            padding: 0 15px;
+        }
 
+        h5, h4 {
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
 
-						</div>
+        span {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
 
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
 
+<!-- Navigation Bar -->
+<div class="nav">
+    <div class="logo">AI Assistant</div>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </div>
+</div>
 
-						<div class="p-4 m-4"
-							style="display: grid;  border-radius: 10px; max-height: 600px; max-width: 450px;">
-							<h4 style="color: #0de4fe;font-weight: bold;"> التخصص </h4>
-							<span>Cardiology</span>
-							<span>Cardiology</span>
-							<span>Cardiology</span>
-							<span>Cardiology</span>
-							<span>Cardiology</span>
-							<span>Cardiology</span>
-							<span>Cardiology</span>
-						</div>
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+    <div class="container-fluid">
+        <h2 class="breadcrumb-title">🧾 Report Analysis</h2>
+    </div>
+</div>
 
+<!-- Diagnosis Card -->
+<div class="container-fluid">
+    <div class="card">
+        <h4>🧠 Final Assessment:</h4>
+        <p style="font-size: 20px; font-weight: bold; color: {% if '✅' in status %}#28a745{% elif '❗' in status %}#fd7e14{% else %}#dc3545{% endif %};">
+            {{ status }}
+        </p>
+    </div>
 
-						<div class="p-4 m-4"
-							style="display: grid; border-radius: 10px; max-height: 600px; max-width: 450px;">
-							<h4 style="color: #0de4fe;font-weight: bold;"> الاقتراحات </h4>
-							<span></span>
-							<a href="{% url 'doctor:search' %}" class="btn btn view-inv-btn">عرض الدكاتره المقترحه</a>
+    <!-- Analysis Results -->
+    <div class="analysis">
+        <!-- Test Names -->
+        <div>
+            <h5>🧪 Test Name</h5>
+            {% for x in newkey %}
+                <span>🔹 {{ x }}</span>
+            {% endfor %}
+        </div>
 
-							<span></span>
-						</div>
+        <!-- Results -->
+        <div>
+            <h5>📊 Result</h5>
+            {% for y in newvalue %}
+                <span style="color: #dc3545;">{{ y }}</span>
+            {% endfor %}
+        </div>
 
-					</div>
+        <!-- Specialty -->
+        {% if specialty %}
+        <div>
+            <h5>👨‍⚕️ Specialty</h5>
+            {% for sp in specialty %}
+                <span>🩺 {{ sp }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
 
-					<!-- Tab Content -->
+        <!-- Recommendations -->
+        <div>
+            <h5>📌 Recommendations</h5>
+            {% if newkey %}
+                <span>🔺 Please consult a specialist doctor based on the abnormal values.</span>
+            {% else %}
+                <span>✅ All values are normal, no checkup needed.</span>
+            {% endif %}
+            <a href="{% url 'doctor:search' %}" class="btn-primary">👨‍⚕️ View All Doctors</a>
+        </div>
+    </div>
+</div>
 
-
-
-				</div>
-				
-			</div>
-
-		</div>
-
-
-
-
-{% endblock body %}
+</body>
+</html>
